@@ -13,7 +13,7 @@ def distance_to_meters(raw):
     return struct.unpack("<H", raw)[0] * 0.0025
 
 def is_valid_return(dist, intensity):
-    return 0.05 < dist <= MAX_VALID_DISTANCE and intensity != 0
+    return 0.01 < dist <= MAX_VALID_DISTANCE and intensity != 0
 
 def parse_firing_channels(block):
     if block[0:2] != b'\xff\xee':

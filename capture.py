@@ -6,24 +6,31 @@ from config import *
 from parser import parse_payload, is_valid_return
 from geometry import polar_to_xyz
 
-point_buffer = []
-color_buffer = []
+streamer = None
 packet_count = 0
+
+def set_streamer(s):
+    global streamer
+    streamer = s
 
 def firing_to_xyz(firing):
     from config import VERTICAL_ANGLES_DEG
-    xyz = []
+    pts = []
+    cols = []
 
     for ch, ((d1,i1),(d2,i2)) in enumerate(zip(firing["echo1"], firing["echo2"])):
         az = firing["azimuth"][ch]
         vert = VERTICAL_ANGLES_DEG[ch]
 
-        if is_valid_return(d1, i1):
-            xyz.append((*polar_to_xyz(d1, az, vert), i1))
-        if is_valid_return(d2, i2):
-            xyz.append((*polar_to_xyz(d2, az, vert), i2))
+        for d, i in ((d1,i1), (d2,i2)):
+            if is_valid_return(d, i):
+                x, y, z = polar_to_xyz(d, az, vert)
+                pts.append((x, y, z))
+                norm_i = min(1.0, i / 100.0)
+                r, g, b, _ = cm.jet(norm_i)
+                cols.append((r, g, b))
 
-    return xyz
+    return pts, cols
 
 def handle_packet(pkt):
     global packet_count
@@ -41,15 +48,16 @@ def handle_packet(pkt):
     payload = raw[ETH_HEADER_LEN:ETH_HEADER_LEN + PAYLOAD_LEN]
     firings = parse_payload(payload)
 
+    all_pts = []
+    all_cols = []
+
     for firing in firings:
-        for p in firing_to_xyz(firing):
-            point_buffer.append(p)
-            intensity = p[3]
-            r, g, b, _ = cm.jet(intensity / 255.0)
-            color_buffer.append((r, g, b))
+        pts, cols = firing_to_xyz(firing)
+        all_pts.extend(pts)
+        all_cols.extend(cols)
+
+    if streamer:
+        streamer.add_points(all_pts, all_cols)
 
     packet_count += 1
-    print(f"Captured packet {packet_count}, total points: {len(point_buffer)}")
-
-    if packet_count >= PACKETS_TO_CAPTURE:
-        raise KeyboardInterrupt
+    print(f"Packets: {packet_count}, points: {len(all_pts)}")
