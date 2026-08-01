@@ -69,8 +69,7 @@ parser.add_argument(
 parser.add_argument(
     '--checkpoint',
     default=(
-        '/home/manuel/Documents/GitHub/LiDAR/'
-        'checkpoints/latest_model.pth'
+        '/home/manuel/Documents/GitHub/LiDAR/checkpoints/TFM/pointnet++/sem_seg/pointnet2_sem_seg/checkpoints/best_model.pth'
     ),
     type=str
 )
@@ -78,7 +77,7 @@ parser.add_argument(
 
 parser.add_argument(
     '--save_dir',
-    default='./checkpoints',
+    default='./checkpoints-pointnet2',
     type=str
 )
 
@@ -318,73 +317,13 @@ def load_checkpoint(
     )
 
 
-    # ========================================================
-    # CARGAR OPTIMIZER
-    # ========================================================
-
-    if (
-
-        optimizer is not None
-
-        and
-
-        "optimizer_state_dict" in checkpoint
-
-    ):
-
-        optimizer.load_state_dict(
-
-            checkpoint[
-                "optimizer_state_dict"
-            ]
-
-        )
-
-
-        print(
-            "Estado del optimizer cargado"
-        )
-
-
-    # ========================================================
-    # CARGAR SCHEDULER
-    # ========================================================
-
-    if (
-
-        scheduler is not None
-
-        and
-
-        "scheduler_state_dict" in checkpoint
-
-    ):
-
-        scheduler.load_state_dict(
-
-            checkpoint[
-                "scheduler_state_dict"
-            ]
-
-        )
-
-
-        print(
-            "Estado del scheduler cargado"
-        )
 
 
     # ========================================================
     # ÉPOCA
     # ========================================================
 
-    start_epoch = checkpoint.get(
-
-        "epoch",
-
-        0
-
-    )
+    start_epoch = 0
 
 
     # ========================================================
@@ -978,6 +917,28 @@ def main():
         exist_ok=True
 
     )
+    
+    log_path = os.path.join(args.save_dir, "train.log")
+
+    class Logger(object):
+        def __init__(self, filename):
+            self.terminal = sys.stdout
+            self.log = open(filename, "a", buffering=1)  # line-buffered
+
+        def write(self, message):
+            self.terminal.write(message)
+            self.log.write(message)
+
+        def flush(self):
+            self.terminal.flush()
+            self.log.flush()
+
+    sys.stdout = Logger(log_path)
+    sys.stderr = sys.stdout
+
+    print("=" * 80)
+    print("Inicio del entrenamiento")
+    print("=" * 80)
 
 
     device = torch.device(

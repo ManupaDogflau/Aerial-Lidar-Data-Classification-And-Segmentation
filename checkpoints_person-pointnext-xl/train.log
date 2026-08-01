@@ -1,0 +1,4032 @@
+================================================================================
+Inicio del entrenamiento
+================================================================================
+
+Dispositivo: cuda
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/group.py:79: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/upsampling.py:46: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:25: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, x, blocks, pos_embed=None, alpha=0., lambd=1., num_cached = 0):
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:60: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, dy):  # pragma: no cover
+
+Cargando checkpoint:
+pointnext-xl.pth
+/home/manuel/Documents/GitHub/LiDAR/finetunningPointnetxt.py:187: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(
+Pesos cargados: 350
+Pesos ignorados: 2
+train escenas: 58
+val escenas: 12
+
+Train samples: 1160
+Val samples: 240
+/home/manuel/Documents/GitHub/LiDAR/finetunningPointnetxt.py:832: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(
+/home/manuel/Documents/GitHub/LiDAR/finetunningPointnetxt.py:894: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/subsample.py:93: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  output = torch.cuda.IntTensor(B, npoint)
+
+
+======================================================================
+Epoch 001/100
+LR: 0.00100000
+Train Loss: 0.405164
+Train Accuracy: 0.8894
+Val Loss: 0.151010
+Val Accuracy: 0.9790
+Val mIoU: 0.8897
+Person IoU: 0.8023
+Person Recall: 0.9287
+Person F1: 0.8903
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.8897
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9790
+mIoU: 0.8897
+Macro Precision: 0.9239
+Macro Recall: 0.9564
+Macro F1: 0.9393
+
+Por clase:
+  background      | IoU: 0.9770 | Precision: 0.9927 | Recall: 0.9841 | F1: 0.9884
+  person          | IoU: 0.8023 | Precision: 0.8550 | Recall: 0.9287 | F1: 0.8903
+
+Matriz de confusión:
+[[878425  14234]
+ [  6445  83936]]
+
+
+======================================================================
+Epoch 002/100
+LR: 0.00100000
+Train Loss: 0.182686
+Train Accuracy: 0.9554
+Val Loss: 0.114927
+Val Accuracy: 0.9761
+Val mIoU: 0.8787
+Person IoU: 0.7836
+Person Recall: 0.9466
+Person F1: 0.8786
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9761
+mIoU: 0.8787
+Macro Precision: 0.9072
+Macro Recall: 0.9629
+Macro F1: 0.9327
+
+Por clase:
+  background      | IoU: 0.9738 | Precision: 0.9946 | Recall: 0.9791 | F1: 0.9868
+  person          | IoU: 0.7836 | Precision: 0.8198 | Recall: 0.9466 | F1: 0.8786
+
+Matriz de confusión:
+[[874537  18693]
+ [  4792  85018]]
+
+
+======================================================================
+Epoch 003/100
+LR: 0.00100000
+Train Loss: 0.149210
+Train Accuracy: 0.9574
+Val Loss: 0.125221
+Val Accuracy: 0.9801
+Val mIoU: 0.8979
+Person IoU: 0.8176
+Person Recall: 0.9458
+Person F1: 0.8997
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.8979
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9801
+mIoU: 0.8979
+Macro Precision: 0.9260
+Macro Recall: 0.9647
+Macro F1: 0.9443
+
+Por clase:
+  background      | IoU: 0.9781 | Precision: 0.9943 | Recall: 0.9836 | F1: 0.9889
+  person          | IoU: 0.8176 | Precision: 0.8578 | Recall: 0.9458 | F1: 0.8997
+
+Matriz de confusión:
+[[875632  14558]
+ [  5031  87819]]
+
+
+======================================================================
+Epoch 004/100
+LR: 0.00100000
+Train Loss: 0.132648
+Train Accuracy: 0.9616
+Val Loss: 0.093704
+Val Accuracy: 0.9805
+Val mIoU: 0.9005
+Person IoU: 0.8224
+Person Recall: 0.9609
+Person F1: 0.9025
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9005
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9805
+mIoU: 0.9005
+Macro Precision: 0.9233
+Macro Recall: 0.9717
+Macro F1: 0.9458
+
+Por clase:
+  background      | IoU: 0.9785 | Precision: 0.9959 | Recall: 0.9825 | F1: 0.9892
+  person          | IoU: 0.8224 | Precision: 0.8508 | Recall: 0.9609 | F1: 0.9025
+
+Matriz de confusión:
+[[875060  15572]
+ [  3610  88798]]
+
+
+======================================================================
+Epoch 005/100
+LR: 0.00100000
+Train Loss: 0.128777
+Train Accuracy: 0.9600
+Val Loss: 0.097103
+Val Accuracy: 0.9821
+Val mIoU: 0.9009
+Person IoU: 0.8212
+Person Recall: 0.9538
+Person F1: 0.9018
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9009
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9821
+mIoU: 0.9009
+Macro Precision: 0.9254
+Macro Recall: 0.9693
+Macro F1: 0.9460
+
+Por clase:
+  background      | IoU: 0.9805 | Precision: 0.9956 | Recall: 0.9848 | F1: 0.9901
+  person          | IoU: 0.8212 | Precision: 0.8553 | Recall: 0.9538 | F1: 0.9018
+
+Matriz de confusión:
+[[884507  13691]
+ [  3923  80919]]
+
+
+======================================================================
+Epoch 006/100
+LR: 0.00100000
+Train Loss: 0.123219
+Train Accuracy: 0.9631
+Val Loss: 0.113890
+Val Accuracy: 0.9829
+Val mIoU: 0.9097
+Person IoU: 0.8382
+Person Recall: 0.9437
+Person F1: 0.9120
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9097
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9829
+mIoU: 0.9097
+Macro Precision: 0.9382
+Macro Recall: 0.9653
+Macro F1: 0.9513
+
+Por clase:
+  background      | IoU: 0.9812 | Precision: 0.9941 | Recall: 0.9869 | F1: 0.9905
+  person          | IoU: 0.8382 | Precision: 0.8823 | Recall: 0.9437 | F1: 0.9120
+
+Matriz de confusión:
+[[879030  11628]
+ [  5199  87183]]
+
+
+======================================================================
+Epoch 007/100
+LR: 0.00100000
+Train Loss: 0.116152
+Train Accuracy: 0.9632
+Val Loss: 0.097767
+Val Accuracy: 0.9806
+Val mIoU: 0.9033
+Person IoU: 0.8279
+Person Recall: 0.9699
+Person F1: 0.9059
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9806
+mIoU: 0.9033
+Macro Precision: 0.9232
+Macro Recall: 0.9758
+Macro F1: 0.9475
+
+Por clase:
+  background      | IoU: 0.9786 | Precision: 0.9967 | Recall: 0.9817 | F1: 0.9892
+  person          | IoU: 0.8279 | Precision: 0.8497 | Recall: 0.9699 | F1: 0.9059
+
+Matriz de confusión:
+[[872197  16230]
+ [  2844  91769]]
+
+
+======================================================================
+Epoch 008/100
+LR: 0.00100000
+Train Loss: 0.105125
+Train Accuracy: 0.9663
+Val Loss: 0.112926
+Val Accuracy: 0.9817
+Val mIoU: 0.8976
+Person IoU: 0.8150
+Person Recall: 0.9614
+Person F1: 0.8981
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9817
+mIoU: 0.8976
+Macro Precision: 0.9195
+Macro Recall: 0.9725
+Macro F1: 0.9440
+
+Por clase:
+  background      | IoU: 0.9801 | Precision: 0.9964 | Recall: 0.9836 | F1: 0.9900
+  person          | IoU: 0.8150 | Precision: 0.8425 | Recall: 0.9614 | F1: 0.8981
+
+Matriz de confusión:
+[[885932  14790]
+ [  3174  79144]]
+
+
+======================================================================
+Epoch 009/100
+LR: 0.00100000
+Train Loss: 0.106998
+Train Accuracy: 0.9650
+Val Loss: 0.091003
+Val Accuracy: 0.9825
+Val mIoU: 0.9077
+Person IoU: 0.8346
+Person Recall: 0.9641
+Person F1: 0.9098
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9825
+mIoU: 0.9077
+Macro Precision: 0.9288
+Macro Recall: 0.9742
+Macro F1: 0.9501
+
+Por clase:
+  background      | IoU: 0.9808 | Precision: 0.9963 | Recall: 0.9843 | F1: 0.9903
+  person          | IoU: 0.8346 | Precision: 0.8613 | Recall: 0.9641 | F1: 0.9098
+
+Matriz de confusión:
+[[879013  13978]
+ [  3230  86819]]
+
+
+======================================================================
+Epoch 010/100
+LR: 0.00100000
+Train Loss: 0.101527
+Train Accuracy: 0.9657
+Val Loss: 0.084757
+Val Accuracy: 0.9843
+Val mIoU: 0.9198
+Person IoU: 0.8569
+Person Recall: 0.9751
+Person F1: 0.9229
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9198
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9843
+mIoU: 0.9198
+Macro Precision: 0.9367
+Macro Recall: 0.9802
+Macro F1: 0.9571
+
+Por clase:
+  background      | IoU: 0.9827 | Precision: 0.9973 | Recall: 0.9853 | F1: 0.9912
+  person          | IoU: 0.8569 | Precision: 0.8760 | Recall: 0.9751 | F1: 0.9229
+
+Matriz de confusión:
+[[875066  13092]
+ [  2358  92524]]
+
+
+======================================================================
+Epoch 011/100
+LR: 0.00100000
+Train Loss: 0.096676
+Train Accuracy: 0.9664
+Val Loss: 0.076153
+Val Accuracy: 0.9868
+Val mIoU: 0.9213
+Person IoU: 0.8570
+Person Recall: 0.9718
+Person F1: 0.9230
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9213
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9868
+mIoU: 0.9213
+Macro Precision: 0.9381
+Macro Recall: 0.9799
+Macro F1: 0.9579
+
+Por clase:
+  background      | IoU: 0.9856 | Precision: 0.9975 | Recall: 0.9881 | F1: 0.9928
+  person          | IoU: 0.8570 | Precision: 0.8788 | Recall: 0.9718 | F1: 0.9230
+
+Matriz de confusión:
+[[892012  10756]
+ [  2264  78008]]
+
+
+======================================================================
+Epoch 012/100
+LR: 0.00100000
+Train Loss: 0.094220
+Train Accuracy: 0.9659
+Val Loss: 0.068530
+Val Accuracy: 0.9827
+Val mIoU: 0.9138
+Person IoU: 0.8468
+Person Recall: 0.9804
+Person F1: 0.9171
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9827
+mIoU: 0.9138
+Macro Precision: 0.9296
+Macro Recall: 0.9816
+Macro F1: 0.9537
+
+Por clase:
+  background      | IoU: 0.9808 | Precision: 0.9978 | Recall: 0.9829 | F1: 0.9903
+  person          | IoU: 0.8468 | Precision: 0.8615 | Recall: 0.9804 | F1: 0.9171
+
+Matriz de confusión:
+[[871680  15167]
+ [  1888  94305]]
+
+
+======================================================================
+Epoch 013/100
+LR: 0.00100000
+Train Loss: 0.089839
+Train Accuracy: 0.9684
+Val Loss: 0.078699
+Val Accuracy: 0.9833
+Val mIoU: 0.9150
+Person IoU: 0.8485
+Person Recall: 0.9767
+Person F1: 0.9180
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9833
+mIoU: 0.9150
+Macro Precision: 0.9318
+Macro Recall: 0.9803
+Macro F1: 0.9544
+
+Por clase:
+  background      | IoU: 0.9816 | Precision: 0.9975 | Recall: 0.9840 | F1: 0.9907
+  person          | IoU: 0.8485 | Precision: 0.8660 | Recall: 0.9767 | F1: 0.9180
+
+Matriz de confusión:
+[[874686  14220]
+ [  2196  91938]]
+
+
+======================================================================
+Epoch 014/100
+LR: 0.00100000
+Train Loss: 0.090166
+Train Accuracy: 0.9658
+Val Loss: 0.064746
+Val Accuracy: 0.9840
+Val mIoU: 0.9199
+Person IoU: 0.8575
+Person Recall: 0.9841
+Person F1: 0.9233
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9840
+mIoU: 0.9199
+Macro Precision: 0.9339
+Macro Recall: 0.9840
+Macro F1: 0.9572
+
+Por clase:
+  background      | IoU: 0.9823 | Precision: 0.9983 | Recall: 0.9840 | F1: 0.9910
+  person          | IoU: 0.8575 | Precision: 0.8695 | Recall: 0.9841 | F1: 0.9233
+
+Matriz de confusión:
+[[872473  14231]
+ [  1529  94807]]
+
+
+======================================================================
+Epoch 015/100
+LR: 0.00100000
+Train Loss: 0.088721
+Train Accuracy: 0.9685
+Val Loss: 0.069017
+Val Accuracy: 0.9849
+Val mIoU: 0.9201
+Person IoU: 0.8567
+Person Recall: 0.9798
+Person F1: 0.9228
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9849
+mIoU: 0.9201
+Macro Precision: 0.9350
+Macro Recall: 0.9826
+Macro F1: 0.9572
+
+Por clase:
+  background      | IoU: 0.9834 | Precision: 0.9979 | Recall: 0.9854 | F1: 0.9916
+  person          | IoU: 0.8567 | Precision: 0.8721 | Recall: 0.9798 | F1: 0.9228
+
+Matriz de confusión:
+[[879384  13022]
+ [  1827  88807]]
+
+
+======================================================================
+Epoch 016/100
+LR: 0.00100000
+Train Loss: 0.085092
+Train Accuracy: 0.9686
+Val Loss: 0.068179
+Val Accuracy: 0.9853
+Val mIoU: 0.9253
+Person IoU: 0.8669
+Person Recall: 0.9780
+Person F1: 0.9287
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9253
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9853
+mIoU: 0.9253
+Macro Precision: 0.9409
+Macro Recall: 0.9821
+Macro F1: 0.9603
+
+Por clase:
+  background      | IoU: 0.9838 | Precision: 0.9976 | Recall: 0.9861 | F1: 0.9918
+  person          | IoU: 0.8669 | Precision: 0.8842 | Recall: 0.9780 | F1: 0.9287
+
+Matriz de confusión:
+[[874699  12306]
+ [  2114  93921]]
+
+
+======================================================================
+Epoch 017/100
+LR: 0.00100000
+Train Loss: 0.082030
+Train Accuracy: 0.9701
+Val Loss: 0.085496
+Val Accuracy: 0.9855
+Val mIoU: 0.9200
+Person IoU: 0.8559
+Person Recall: 0.9747
+Person F1: 0.9224
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9855
+mIoU: 0.9200
+Macro Precision: 0.9365
+Macro Recall: 0.9806
+Macro F1: 0.9572
+
+Por clase:
+  background      | IoU: 0.9841 | Precision: 0.9975 | Recall: 0.9866 | F1: 0.9920
+  person          | IoU: 0.8559 | Precision: 0.8754 | Recall: 0.9747 | F1: 0.9224
+
+Matriz de confusión:
+[[884114  12052]
+ [  2199  84675]]
+
+
+======================================================================
+Epoch 018/100
+LR: 0.00100000
+Train Loss: 0.081862
+Train Accuracy: 0.9700
+Val Loss: 0.068090
+Val Accuracy: 0.9836
+Val mIoU: 0.9172
+Person IoU: 0.8525
+Person Recall: 0.9853
+Person F1: 0.9204
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9836
+mIoU: 0.9172
+Macro Precision: 0.9310
+Macro Recall: 0.9844
+Macro F1: 0.9556
+
+Por clase:
+  background      | IoU: 0.9819 | Precision: 0.9984 | Recall: 0.9835 | F1: 0.9909
+  person          | IoU: 0.8525 | Precision: 0.8635 | Recall: 0.9853 | F1: 0.9204
+
+Matriz de confusión:
+[[874021  14688]
+ [  1388  92943]]
+
+
+======================================================================
+Epoch 019/100
+LR: 0.00100000
+Train Loss: 0.079994
+Train Accuracy: 0.9698
+Val Loss: 0.073400
+Val Accuracy: 0.9854
+Val mIoU: 0.9204
+Person IoU: 0.8568
+Person Recall: 0.9720
+Person F1: 0.9229
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9204
+Macro Precision: 0.9379
+Macro Recall: 0.9794
+Macro F1: 0.9574
+
+Por clase:
+  background      | IoU: 0.9841 | Precision: 0.9972 | Recall: 0.9868 | F1: 0.9920
+  person          | IoU: 0.8568 | Precision: 0.8786 | Recall: 0.9720 | F1: 0.9229
+
+Matriz de confusión:
+[[883074  11840]
+ [  2471  85655]]
+
+
+======================================================================
+Epoch 020/100
+LR: 0.00100000
+Train Loss: 0.077890
+Train Accuracy: 0.9706
+Val Loss: 0.060953
+Val Accuracy: 0.9862
+Val mIoU: 0.9243
+Person IoU: 0.8638
+Person Recall: 0.9804
+Person F1: 0.9269
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9243
+Macro Precision: 0.9385
+Macro Recall: 0.9836
+Macro F1: 0.9596
+
+Por clase:
+  background      | IoU: 0.9849 | Precision: 0.9981 | Recall: 0.9868 | F1: 0.9924
+  person          | IoU: 0.8638 | Precision: 0.8789 | Recall: 0.9804 | F1: 0.9269
+
+Matriz de confusión:
+[[883351  11861]
+ [  1718  86110]]
+
+
+======================================================================
+Epoch 021/100
+LR: 0.00100000
+Train Loss: 0.073827
+Train Accuracy: 0.9706
+Val Loss: 0.056841
+Val Accuracy: 0.9849
+Val mIoU: 0.9175
+Person IoU: 0.8515
+Person Recall: 0.9843
+Person F1: 0.9198
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9849
+mIoU: 0.9175
+Macro Precision: 0.9309
+Macro Recall: 0.9846
+Macro F1: 0.9557
+
+Por clase:
+  background      | IoU: 0.9835 | Precision: 0.9985 | Recall: 0.9849 | F1: 0.9917
+  person          | IoU: 0.8515 | Precision: 0.8633 | Recall: 0.9843 | F1: 0.9198
+
+Matriz de confusión:
+[[882964  13497]
+ [  1361  85218]]
+
+
+======================================================================
+Epoch 022/100
+LR: 0.00050000
+Train Loss: 0.076507
+Train Accuracy: 0.9700
+Val Loss: 0.055960
+Val Accuracy: 0.9845
+Val mIoU: 0.9195
+Person IoU: 0.8561
+Person Recall: 0.9830
+Person F1: 0.9225
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9845
+mIoU: 0.9195
+Macro Precision: 0.9336
+Macro Recall: 0.9838
+Macro F1: 0.9569
+
+Por clase:
+  background      | IoU: 0.9829 | Precision: 0.9982 | Recall: 0.9846 | F1: 0.9914
+  person          | IoU: 0.8561 | Precision: 0.8690 | Recall: 0.9830 | F1: 0.9225
+
+Matriz de confusión:
+[[876891  13703]
+ [  1568  90878]]
+
+
+======================================================================
+Epoch 023/100
+LR: 0.00050000
+Train Loss: 0.073884
+Train Accuracy: 0.9696
+Val Loss: 0.060588
+Val Accuracy: 0.9849
+Val mIoU: 0.9243
+Person IoU: 0.8653
+Person Recall: 0.9795
+Person F1: 0.9278
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9849
+mIoU: 0.9243
+Macro Precision: 0.9395
+Macro Recall: 0.9825
+Macro F1: 0.9597
+
+Por clase:
+  background      | IoU: 0.9833 | Precision: 0.9977 | Recall: 0.9855 | F1: 0.9916
+  person          | IoU: 0.8653 | Precision: 0.8812 | Recall: 0.9795 | F1: 0.9278
+
+Matriz de confusión:
+[[873044  12827]
+ [  1988  95181]]
+
+
+======================================================================
+Epoch 024/100
+LR: 0.00050000
+Train Loss: 0.073872
+Train Accuracy: 0.9710
+Val Loss: 0.070562
+Val Accuracy: 0.9866
+Val mIoU: 0.9256
+Person IoU: 0.8658
+Person Recall: 0.9750
+Person F1: 0.9281
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9256
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9866
+mIoU: 0.9256
+Macro Precision: 0.9415
+Macro Recall: 0.9814
+Macro F1: 0.9603
+
+Por clase:
+  background      | IoU: 0.9853 | Precision: 0.9975 | Recall: 0.9877 | F1: 0.9926
+  person          | IoU: 0.8658 | Precision: 0.8854 | Recall: 0.9750 | F1: 0.9281
+
+Matriz de confusión:
+[[884655  11021]
+ [  2180  85184]]
+
+
+======================================================================
+Epoch 025/100
+LR: 0.00050000
+Train Loss: 0.069595
+Train Accuracy: 0.9727
+Val Loss: 0.052413
+Val Accuracy: 0.9854
+Val mIoU: 0.9230
+Person IoU: 0.8620
+Person Recall: 0.9836
+Person F1: 0.9259
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9230
+Macro Precision: 0.9364
+Macro Recall: 0.9846
+Macro F1: 0.9589
+
+Por clase:
+  background      | IoU: 0.9839 | Precision: 0.9983 | Recall: 0.9856 | F1: 0.9919
+  person          | IoU: 0.8620 | Precision: 0.8746 | Recall: 0.9836 | F1: 0.9259
+
+Matriz de confusión:
+[[878882  12873]
+ [  1501  89784]]
+
+
+======================================================================
+Epoch 026/100
+LR: 0.00050000
+Train Loss: 0.071568
+Train Accuracy: 0.9708
+Val Loss: 0.067555
+Val Accuracy: 0.9860
+Val mIoU: 0.9255
+Person IoU: 0.8664
+Person Recall: 0.9793
+Person F1: 0.9284
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9860
+mIoU: 0.9255
+Macro Precision: 0.9402
+Macro Recall: 0.9830
+Macro F1: 0.9603
+
+Por clase:
+  background      | IoU: 0.9846 | Precision: 0.9979 | Recall: 0.9867 | F1: 0.9922
+  person          | IoU: 0.8664 | Precision: 0.8826 | Recall: 0.9793 | F1: 0.9284
+
+Matriz de confusión:
+[[879903  11888]
+ [  1890  89359]]
+
+
+======================================================================
+Epoch 027/100
+LR: 0.00050000
+Train Loss: 0.072395
+Train Accuracy: 0.9710
+Val Loss: 0.076696
+Val Accuracy: 0.9857
+Val mIoU: 0.9224
+Person IoU: 0.8606
+Person Recall: 0.9706
+Person F1: 0.9251
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9857
+mIoU: 0.9224
+Macro Precision: 0.9403
+Macro Recall: 0.9789
+Macro F1: 0.9586
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9970 | Recall: 0.9872 | F1: 0.9921
+  person          | IoU: 0.8606 | Precision: 0.8836 | Recall: 0.9706 | F1: 0.9251
+
+Matriz de confusión:
+[[882261  11428]
+ [  2625  86726]]
+
+
+======================================================================
+Epoch 028/100
+LR: 0.00050000
+Train Loss: 0.071823
+Train Accuracy: 0.9707
+Val Loss: 0.074537
+Val Accuracy: 0.9858
+Val mIoU: 0.9252
+Person IoU: 0.8660
+Person Recall: 0.9755
+Person F1: 0.9282
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9858
+mIoU: 0.9252
+Macro Precision: 0.9413
+Macro Recall: 0.9812
+Macro F1: 0.9602
+
+Por clase:
+  background      | IoU: 0.9844 | Precision: 0.9974 | Recall: 0.9869 | F1: 0.9921
+  person          | IoU: 0.8660 | Precision: 0.8852 | Recall: 0.9755 | F1: 0.9282
+
+Matriz de confusión:
+[[879127  11670]
+ [  2256  89987]]
+
+
+======================================================================
+Epoch 029/100
+LR: 0.00050000
+Train Loss: 0.069025
+Train Accuracy: 0.9724
+Val Loss: 0.069150
+Val Accuracy: 0.9853
+Val mIoU: 0.9209
+Person IoU: 0.8579
+Person Recall: 0.9714
+Person F1: 0.9235
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9853
+mIoU: 0.9209
+Macro Precision: 0.9386
+Macro Recall: 0.9791
+Macro F1: 0.9577
+
+Por clase:
+  background      | IoU: 0.9839 | Precision: 0.9971 | Recall: 0.9867 | F1: 0.9919
+  person          | IoU: 0.8579 | Precision: 0.8801 | Recall: 0.9714 | F1: 0.9235
+
+Matriz de confusión:
+[[881426  11872]
+ [  2566  87176]]
+
+
+======================================================================
+Epoch 030/100
+LR: 0.00050000
+Train Loss: 0.069647
+Train Accuracy: 0.9711
+Val Loss: 0.070963
+Val Accuracy: 0.9859
+Val mIoU: 0.9270
+Person IoU: 0.8695
+Person Recall: 0.9783
+Person F1: 0.9302
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9270
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9859
+mIoU: 0.9270
+Macro Precision: 0.9421
+Macro Recall: 0.9825
+Macro F1: 0.9612
+
+Por clase:
+  background      | IoU: 0.9845 | Precision: 0.9977 | Recall: 0.9867 | F1: 0.9922
+  person          | IoU: 0.8695 | Precision: 0.8866 | Recall: 0.9783 | F1: 0.9302
+
+Matriz de confusión:
+[[876949  11799]
+ [  2049  92243]]
+
+
+======================================================================
+Epoch 031/100
+LR: 0.00050000
+Train Loss: 0.067466
+Train Accuracy: 0.9733
+Val Loss: 0.070860
+Val Accuracy: 0.9871
+Val mIoU: 0.9283
+Person IoU: 0.8707
+Person Recall: 0.9756
+Person F1: 0.9309
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9283
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9871
+mIoU: 0.9283
+Macro Precision: 0.9438
+Macro Recall: 0.9819
+Macro F1: 0.9619
+
+Por clase:
+  background      | IoU: 0.9859 | Precision: 0.9976 | Recall: 0.9882 | F1: 0.9929
+  person          | IoU: 0.8707 | Precision: 0.8900 | Recall: 0.9756 | F1: 0.9309
+
+Matriz de confusión:
+[[885072  10538]
+ [  2133  85297]]
+
+
+======================================================================
+Epoch 032/100
+LR: 0.00050000
+Train Loss: 0.068119
+Train Accuracy: 0.9725
+Val Loss: 0.074652
+Val Accuracy: 0.9861
+Val mIoU: 0.9242
+Person IoU: 0.8636
+Person Recall: 0.9717
+Person F1: 0.9268
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9861
+mIoU: 0.9242
+Macro Precision: 0.9415
+Macro Recall: 0.9796
+Macro F1: 0.9596
+
+Por clase:
+  background      | IoU: 0.9847 | Precision: 0.9971 | Recall: 0.9875 | F1: 0.9923
+  person          | IoU: 0.8636 | Precision: 0.8859 | Recall: 0.9717 | F1: 0.9268
+
+Matriz de confusión:
+[[882468  11187]
+ [  2526  86859]]
+
+
+======================================================================
+Epoch 033/100
+LR: 0.00050000
+Train Loss: 0.066243
+Train Accuracy: 0.9729
+Val Loss: 0.064747
+Val Accuracy: 0.9865
+Val mIoU: 0.9268
+Person IoU: 0.8685
+Person Recall: 0.9796
+Person F1: 0.9296
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9865
+mIoU: 0.9268
+Macro Precision: 0.9412
+Macro Recall: 0.9834
+Macro F1: 0.9611
+
+Por clase:
+  background      | IoU: 0.9852 | Precision: 0.9979 | Recall: 0.9872 | F1: 0.9925
+  person          | IoU: 0.8685 | Precision: 0.8845 | Recall: 0.9796 | F1: 0.9296
+
+Matriz de confusión:
+[[881994  11459]
+ [  1827  87760]]
+
+
+======================================================================
+Epoch 034/100
+LR: 0.00050000
+Train Loss: 0.064868
+Train Accuracy: 0.9737
+Val Loss: 0.069552
+Val Accuracy: 0.9851
+Val mIoU: 0.9233
+Person IoU: 0.8630
+Person Recall: 0.9765
+Person F1: 0.9264
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9851
+mIoU: 0.9233
+Macro Precision: 0.9394
+Macro Recall: 0.9813
+Macro F1: 0.9591
+
+Por clase:
+  background      | IoU: 0.9836 | Precision: 0.9975 | Recall: 0.9860 | F1: 0.9917
+  person          | IoU: 0.8630 | Precision: 0.8813 | Recall: 0.9765 | F1: 0.9264
+
+Matriz de confusión:
+[[876273  12410]
+ [  2220  92137]]
+
+
+======================================================================
+Epoch 035/100
+LR: 0.00050000
+Train Loss: 0.065333
+Train Accuracy: 0.9720
+Val Loss: 0.066903
+Val Accuracy: 0.9858
+Val mIoU: 0.9271
+Person IoU: 0.8700
+Person Recall: 0.9765
+Person F1: 0.9305
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9858
+mIoU: 0.9271
+Macro Precision: 0.9430
+Macro Recall: 0.9817
+Macro F1: 0.9613
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9974 | Recall: 0.9868 | F1: 0.9921
+  person          | IoU: 0.8700 | Precision: 0.8886 | Recall: 0.9765 | F1: 0.9305
+
+Matriz de confusión:
+[[875554  11728]
+ [  2247  93511]]
+
+
+======================================================================
+Epoch 036/100
+LR: 0.00050000
+Train Loss: 0.065166
+Train Accuracy: 0.9739
+Val Loss: 0.083367
+Val Accuracy: 0.9851
+Val mIoU: 0.9215
+Person IoU: 0.8594
+Person Recall: 0.9703
+Person F1: 0.9244
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9851
+mIoU: 0.9215
+Macro Precision: 0.9398
+Macro Recall: 0.9784
+Macro F1: 0.9580
+
+Por clase:
+  background      | IoU: 0.9836 | Precision: 0.9969 | Recall: 0.9866 | F1: 0.9917
+  person          | IoU: 0.8594 | Precision: 0.8826 | Recall: 0.9703 | F1: 0.9244
+
+Matriz de confusión:
+[[878583  11937]
+ [  2750  89770]]
+
+
+======================================================================
+Epoch 037/100
+LR: 0.00025000
+Train Loss: 0.062961
+Train Accuracy: 0.9733
+Val Loss: 0.073779
+Val Accuracy: 0.9858
+Val mIoU: 0.9268
+Person IoU: 0.8693
+Person Recall: 0.9722
+Person F1: 0.9301
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9858
+mIoU: 0.9268
+Macro Precision: 0.9442
+Macro Recall: 0.9797
+Macro F1: 0.9611
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9970 | Recall: 0.9873 | F1: 0.9921
+  person          | IoU: 0.8693 | Precision: 0.8914 | Recall: 0.9722 | F1: 0.9301
+
+Matriz de confusión:
+[[876283  11301]
+ [  2656  92800]]
+
+
+======================================================================
+Epoch 038/100
+LR: 0.00025000
+Train Loss: 0.062387
+Train Accuracy: 0.9715
+Val Loss: 0.097790
+Val Accuracy: 0.9853
+Val mIoU: 0.9140
+Person IoU: 0.8440
+Person Recall: 0.9579
+Person F1: 0.9154
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9853
+mIoU: 0.9140
+Macro Precision: 0.9363
+Macro Recall: 0.9728
+Macro F1: 0.9537
+
+Por clase:
+  background      | IoU: 0.9840 | Precision: 0.9962 | Recall: 0.9878 | F1: 0.9920
+  person          | IoU: 0.8440 | Precision: 0.8765 | Recall: 0.9579 | F1: 0.9154
+
+Matriz de confusión:
+[[890476  11011]
+ [  3433  78120]]
+
+
+======================================================================
+Epoch 039/100
+LR: 0.00025000
+Train Loss: 0.062716
+Train Accuracy: 0.9734
+Val Loss: 0.091254
+Val Accuracy: 0.9854
+Val mIoU: 0.9249
+Person IoU: 0.8658
+Person Recall: 0.9750
+Person F1: 0.9281
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9249
+Macro Precision: 0.9414
+Macro Recall: 0.9808
+Macro F1: 0.9600
+
+Por clase:
+  background      | IoU: 0.9839 | Precision: 0.9973 | Recall: 0.9865 | F1: 0.9919
+  person          | IoU: 0.8658 | Precision: 0.8855 | Recall: 0.9750 | F1: 0.9281
+
+Matriz de confusión:
+[[876237  11960]
+ [  2368  92475]]
+
+
+======================================================================
+Epoch 040/100
+LR: 0.00025000
+Train Loss: 0.064216
+Train Accuracy: 0.9730
+Val Loss: 0.092599
+Val Accuracy: 0.9858
+Val mIoU: 0.9219
+Person IoU: 0.8593
+Person Recall: 0.9648
+Person F1: 0.9243
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9858
+mIoU: 0.9219
+Macro Precision: 0.9418
+Macro Recall: 0.9764
+Macro F1: 0.9583
+
+Por clase:
+  background      | IoU: 0.9845 | Precision: 0.9965 | Recall: 0.9879 | F1: 0.9922
+  person          | IoU: 0.8593 | Precision: 0.8871 | Recall: 0.9648 | F1: 0.9243
+
+Matriz de confusión:
+[[884097  10818]
+ [  3102  85023]]
+
+
+======================================================================
+Epoch 041/100
+LR: 0.00025000
+Train Loss: 0.061409
+Train Accuracy: 0.9734
+Val Loss: 0.076070
+Val Accuracy: 0.9856
+Val mIoU: 0.9249
+Person IoU: 0.8656
+Person Recall: 0.9693
+Person F1: 0.9280
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9856
+mIoU: 0.9249
+Macro Precision: 0.9434
+Macro Recall: 0.9783
+Macro F1: 0.9600
+
+Por clase:
+  background      | IoU: 0.9841 | Precision: 0.9967 | Recall: 0.9873 | F1: 0.9920
+  person          | IoU: 0.8656 | Precision: 0.8900 | Recall: 0.9693 | F1: 0.9280
+
+Matriz de confusión:
+[[877815  11255]
+ [  2884  91086]]
+
+
+======================================================================
+Epoch 042/100
+LR: 0.00025000
+Train Loss: 0.063982
+Train Accuracy: 0.9720
+Val Loss: 0.070780
+Val Accuracy: 0.9857
+Val mIoU: 0.9254
+Person IoU: 0.8666
+Person Recall: 0.9746
+Person F1: 0.9286
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9857
+mIoU: 0.9254
+Macro Precision: 0.9420
+Macro Recall: 0.9808
+Macro F1: 0.9603
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9973 | Recall: 0.9869 | F1: 0.9921
+  person          | IoU: 0.8666 | Precision: 0.8866 | Recall: 0.9746 | F1: 0.9286
+
+Matriz de confusión:
+[[877734  11669]
+ [  2374  91263]]
+
+
+======================================================================
+Epoch 043/100
+LR: 0.00012500
+Train Loss: 0.060985
+Train Accuracy: 0.9753
+Val Loss: 0.083977
+Val Accuracy: 0.9855
+Val mIoU: 0.9230
+Person IoU: 0.8621
+Person Recall: 0.9684
+Person F1: 0.9259
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9855
+mIoU: 0.9230
+Macro Precision: 0.9419
+Macro Recall: 0.9778
+Macro F1: 0.9589
+
+Por clase:
+  background      | IoU: 0.9840 | Precision: 0.9967 | Recall: 0.9872 | F1: 0.9919
+  person          | IoU: 0.8621 | Precision: 0.8870 | Recall: 0.9684 | F1: 0.9259
+
+Matriz de confusión:
+[[879447  11374]
+ [  2913  89306]]
+
+
+======================================================================
+Epoch 044/100
+LR: 0.00012500
+Train Loss: 0.062188
+Train Accuracy: 0.9741
+Val Loss: 0.081723
+Val Accuracy: 0.9850
+Val mIoU: 0.9236
+Person IoU: 0.8638
+Person Recall: 0.9714
+Person F1: 0.9269
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9850
+mIoU: 0.9236
+Macro Precision: 0.9416
+Macro Recall: 0.9790
+Macro F1: 0.9593
+
+Por clase:
+  background      | IoU: 0.9835 | Precision: 0.9969 | Recall: 0.9865 | F1: 0.9917
+  person          | IoU: 0.8638 | Precision: 0.8863 | Recall: 0.9714 | F1: 0.9269
+
+Matriz de confusión:
+[[874938  11978]
+ [  2745  93379]]
+
+
+======================================================================
+Epoch 045/100
+LR: 0.00012500
+Train Loss: 0.061668
+Train Accuracy: 0.9725
+Val Loss: 0.100177
+Val Accuracy: 0.9860
+Val mIoU: 0.9244
+Person IoU: 0.8641
+Person Recall: 0.9658
+Person F1: 0.9271
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9860
+mIoU: 0.9244
+Macro Precision: 0.9440
+Macro Recall: 0.9769
+Macro F1: 0.9597
+
+Por clase:
+  background      | IoU: 0.9847 | Precision: 0.9965 | Recall: 0.9881 | F1: 0.9923
+  person          | IoU: 0.8641 | Precision: 0.8914 | Recall: 0.9658 | F1: 0.9271
+
+Matriz de confusión:
+[[882036  10632]
+ [  3095  87277]]
+
+
+======================================================================
+Epoch 046/100
+LR: 0.00012500
+Train Loss: 0.061047
+Train Accuracy: 0.9727
+Val Loss: 0.061469
+Val Accuracy: 0.9872
+Val mIoU: 0.9305
+Person IoU: 0.8750
+Person Recall: 0.9750
+Person F1: 0.9333
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9305
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9872
+mIoU: 0.9305
+Macro Precision: 0.9463
+Macro Recall: 0.9817
+Macro F1: 0.9631
+
+Por clase:
+  background      | IoU: 0.9859 | Precision: 0.9974 | Recall: 0.9884 | F1: 0.9929
+  person          | IoU: 0.8750 | Precision: 0.8951 | Recall: 0.9750 | F1: 0.9333
+
+Matriz de confusión:
+[[882407  10324]
+ [  2259  88050]]
+
+
+======================================================================
+Epoch 047/100
+LR: 0.00012500
+Train Loss: 0.060780
+Train Accuracy: 0.9741
+Val Loss: 0.068680
+Val Accuracy: 0.9852
+Val mIoU: 0.9250
+Person IoU: 0.8664
+Person Recall: 0.9768
+Person F1: 0.9284
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9852
+mIoU: 0.9250
+Macro Precision: 0.9410
+Macro Recall: 0.9815
+Macro F1: 0.9601
+
+Por clase:
+  background      | IoU: 0.9836 | Precision: 0.9974 | Recall: 0.9861 | F1: 0.9917
+  person          | IoU: 0.8664 | Precision: 0.8846 | Recall: 0.9768 | F1: 0.9284
+
+Matriz de confusión:
+[[873842  12343]
+ [  2244  94611]]
+
+
+======================================================================
+Epoch 048/100
+LR: 0.00012500
+Train Loss: 0.058900
+Train Accuracy: 0.9742
+Val Loss: 0.093230
+Val Accuracy: 0.9860
+Val mIoU: 0.9241
+Person IoU: 0.8635
+Person Recall: 0.9688
+Person F1: 0.9268
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9860
+mIoU: 0.9241
+Macro Precision: 0.9425
+Macro Recall: 0.9783
+Macro F1: 0.9595
+
+Por clase:
+  background      | IoU: 0.9846 | Precision: 0.9968 | Recall: 0.9877 | F1: 0.9923
+  person          | IoU: 0.8635 | Precision: 0.8882 | Recall: 0.9688 | F1: 0.9268
+
+Matriz de confusión:
+[[882250  10952]
+ [  2804  87034]]
+
+
+======================================================================
+Epoch 049/100
+LR: 0.00012500
+Train Loss: 0.061059
+Train Accuracy: 0.9742
+Val Loss: 0.095340
+Val Accuracy: 0.9860
+Val mIoU: 0.9222
+Person IoU: 0.8596
+Person Recall: 0.9616
+Person F1: 0.9245
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9860
+mIoU: 0.9222
+Macro Precision: 0.9432
+Macro Recall: 0.9750
+Macro F1: 0.9584
+
+Por clase:
+  background      | IoU: 0.9847 | Precision: 0.9962 | Recall: 0.9884 | F1: 0.9923
+  person          | IoU: 0.8596 | Precision: 0.8902 | Recall: 0.9616 | F1: 0.9245
+
+Matriz de confusión:
+[[885225  10374]
+ [  3358  84083]]
+
+
+======================================================================
+Epoch 050/100
+LR: 0.00012500
+Train Loss: 0.061378
+Train Accuracy: 0.9733
+Val Loss: 0.085678
+Val Accuracy: 0.9857
+Val mIoU: 0.9239
+Person IoU: 0.8634
+Person Recall: 0.9670
+Person F1: 0.9267
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9857
+mIoU: 0.9239
+Macro Precision: 0.9431
+Macro Recall: 0.9773
+Macro F1: 0.9594
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9966 | Recall: 0.9877 | F1: 0.9921
+  person          | IoU: 0.8634 | Precision: 0.8896 | Recall: 0.9670 | F1: 0.9267
+
+Matriz de confusión:
+[[880316  11002]
+ [  3025  88697]]
+
+
+======================================================================
+Epoch 051/100
+LR: 0.00012500
+Train Loss: 0.058456
+Train Accuracy: 0.9759
+Val Loss: 0.084511
+Val Accuracy: 0.9860
+Val mIoU: 0.9240
+Person IoU: 0.8633
+Person Recall: 0.9708
+Person F1: 0.9266
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9860
+mIoU: 0.9240
+Macro Precision: 0.9417
+Macro Recall: 0.9792
+Macro F1: 0.9595
+
+Por clase:
+  background      | IoU: 0.9847 | Precision: 0.9971 | Recall: 0.9875 | F1: 0.9923
+  person          | IoU: 0.8633 | Precision: 0.8863 | Recall: 0.9708 | F1: 0.9266
+
+Matriz de confusión:
+[[882594  11127]
+ [  2606  86713]]
+
+
+======================================================================
+Epoch 052/100
+LR: 0.00006250
+Train Loss: 0.059397
+Train Accuracy: 0.9741
+Val Loss: 0.092432
+Val Accuracy: 0.9850
+Val mIoU: 0.9201
+Person IoU: 0.8568
+Person Recall: 0.9682
+Person F1: 0.9229
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9850
+mIoU: 0.9201
+Macro Precision: 0.9392
+Macro Recall: 0.9774
+Macro F1: 0.9573
+
+Por clase:
+  background      | IoU: 0.9835 | Precision: 0.9967 | Recall: 0.9867 | F1: 0.9917
+  person          | IoU: 0.8568 | Precision: 0.8816 | Recall: 0.9682 | F1: 0.9229
+
+Matriz de confusión:
+[[879972  11857]
+ [  2903  88308]]
+
+
+======================================================================
+Epoch 053/100
+LR: 0.00006250
+Train Loss: 0.059193
+Train Accuracy: 0.9735
+Val Loss: 0.099595
+Val Accuracy: 0.9854
+Val mIoU: 0.9226
+Person IoU: 0.8613
+Person Recall: 0.9633
+Person F1: 0.9255
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9226
+Macro Precision: 0.9433
+Macro Recall: 0.9755
+Macro F1: 0.9587
+
+Por clase:
+  background      | IoU: 0.9840 | Precision: 0.9962 | Recall: 0.9877 | F1: 0.9919
+  person          | IoU: 0.8613 | Precision: 0.8905 | Recall: 0.9633 | F1: 0.9255
+
+Matriz de confusión:
+[[879619  10954]
+ [  3393  89074]]
+
+
+======================================================================
+Epoch 054/100
+LR: 0.00006250
+Train Loss: 0.062753
+Train Accuracy: 0.9720
+Val Loss: 0.101513
+Val Accuracy: 0.9849
+Val mIoU: 0.9197
+Person IoU: 0.8560
+Person Recall: 0.9635
+Person F1: 0.9224
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9849
+mIoU: 0.9197
+Macro Precision: 0.9405
+Macro Recall: 0.9753
+Macro F1: 0.9570
+
+Por clase:
+  background      | IoU: 0.9835 | Precision: 0.9962 | Recall: 0.9871 | F1: 0.9917
+  person          | IoU: 0.8560 | Precision: 0.8847 | Recall: 0.9635 | F1: 0.9224
+
+Matriz de confusión:
+[[880255  11468]
+ [  3334  87983]]
+
+
+======================================================================
+Epoch 055/100
+LR: 0.00006250
+Train Loss: 0.060286
+Train Accuracy: 0.9724
+Val Loss: 0.096833
+Val Accuracy: 0.9854
+Val mIoU: 0.9212
+Person IoU: 0.8585
+Person Recall: 0.9624
+Person F1: 0.9239
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9212
+Macro Precision: 0.9422
+Macro Recall: 0.9750
+Macro F1: 0.9579
+
+Por clase:
+  background      | IoU: 0.9840 | Precision: 0.9961 | Recall: 0.9877 | F1: 0.9919
+  person          | IoU: 0.8585 | Precision: 0.8883 | Recall: 0.9624 | F1: 0.9239
+
+Matriz de confusión:
+[[881516  10956]
+ [  3408  87160]]
+
+
+======================================================================
+Epoch 056/100
+LR: 0.00006250
+Train Loss: 0.059932
+Train Accuracy: 0.9736
+Val Loss: 0.094940
+Val Accuracy: 0.9854
+Val mIoU: 0.9218
+Person IoU: 0.8597
+Person Recall: 0.9689
+Person F1: 0.9245
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9218
+Macro Precision: 0.9404
+Macro Recall: 0.9780
+Macro F1: 0.9582
+
+Por clase:
+  background      | IoU: 0.9840 | Precision: 0.9968 | Recall: 0.9871 | F1: 0.9919
+  person          | IoU: 0.8597 | Precision: 0.8840 | Recall: 0.9689 | F1: 0.9245
+
+Matriz de confusión:
+[[881031  11504]
+ [  2812  87693]]
+
+
+======================================================================
+Epoch 057/100
+LR: 0.00006250
+Train Loss: 0.060754
+Train Accuracy: 0.9739
+Val Loss: 0.112020
+Val Accuracy: 0.9846
+Val mIoU: 0.9193
+Person IoU: 0.8556
+Person Recall: 0.9616
+Person F1: 0.9222
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9846
+mIoU: 0.9193
+Macro Precision: 0.9409
+Macro Recall: 0.9743
+Macro F1: 0.9568
+
+Por clase:
+  background      | IoU: 0.9830 | Precision: 0.9959 | Recall: 0.9870 | F1: 0.9914
+  person          | IoU: 0.8556 | Precision: 0.8859 | Recall: 0.9616 | F1: 0.9222
+
+Matriz de confusión:
+[[878123  11565]
+ [  3586  89766]]
+
+
+======================================================================
+Epoch 058/100
+LR: 0.00003125
+Train Loss: 0.060398
+Train Accuracy: 0.9738
+Val Loss: 0.106059
+Val Accuracy: 0.9847
+Val mIoU: 0.9190
+Person IoU: 0.8548
+Person Recall: 0.9617
+Person F1: 0.9217
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9847
+mIoU: 0.9190
+Macro Precision: 0.9404
+Macro Recall: 0.9744
+Macro F1: 0.9566
+
+Por clase:
+  background      | IoU: 0.9832 | Precision: 0.9960 | Recall: 0.9871 | F1: 0.9915
+  person          | IoU: 0.8548 | Precision: 0.8849 | Recall: 0.9617 | F1: 0.9217
+
+Matriz de confusión:
+[[879545  11511]
+ [  3520  88464]]
+
+
+======================================================================
+Epoch 059/100
+LR: 0.00003125
+Train Loss: 0.059890
+Train Accuracy: 0.9757
+Val Loss: 0.107773
+Val Accuracy: 0.9842
+Val mIoU: 0.9188
+Person IoU: 0.8550
+Person Recall: 0.9589
+Person F1: 0.9218
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9842
+mIoU: 0.9188
+Macro Precision: 0.9415
+Macro Recall: 0.9729
+Macro F1: 0.9565
+
+Por clase:
+  background      | IoU: 0.9826 | Precision: 0.9955 | Recall: 0.9869 | F1: 0.9912
+  person          | IoU: 0.8550 | Precision: 0.8875 | Recall: 0.9589 | F1: 0.9218
+
+Matriz de confusión:
+[[876007  11600]
+ [  3918  91515]]
+
+
+======================================================================
+Epoch 060/100
+LR: 0.00003125
+Train Loss: 0.057606
+Train Accuracy: 0.9742
+Val Loss: 0.096611
+Val Accuracy: 0.9848
+Val mIoU: 0.9223
+Person IoU: 0.8614
+Person Recall: 0.9669
+Person F1: 0.9255
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9848
+mIoU: 0.9223
+Macro Precision: 0.9420
+Macro Recall: 0.9768
+Macro F1: 0.9585
+
+Por clase:
+  background      | IoU: 0.9832 | Precision: 0.9964 | Recall: 0.9867 | F1: 0.9915
+  person          | IoU: 0.8614 | Precision: 0.8875 | Recall: 0.9669 | F1: 0.9255
+
+Matriz de confusión:
+[[875335  11757]
+ [  3172  92776]]
+
+
+======================================================================
+Epoch 061/100
+LR: 0.00003125
+Train Loss: 0.059285
+Train Accuracy: 0.9739
+Val Loss: 0.099871
+Val Accuracy: 0.9854
+Val mIoU: 0.9230
+Person IoU: 0.8621
+Person Recall: 0.9620
+Person F1: 0.9259
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9230
+Macro Precision: 0.9442
+Macro Recall: 0.9749
+Macro F1: 0.9589
+
+Por clase:
+  background      | IoU: 0.9839 | Precision: 0.9960 | Recall: 0.9878 | F1: 0.9919
+  person          | IoU: 0.8621 | Precision: 0.8925 | Recall: 0.9620 | F1: 0.9259
+
+Matriz de confusión:
+[[878830  10824]
+ [  3547  89839]]
+
+
+======================================================================
+Epoch 062/100
+LR: 0.00003125
+Train Loss: 0.059946
+Train Accuracy: 0.9740
+Val Loss: 0.095301
+Val Accuracy: 0.9842
+Val mIoU: 0.9203
+Person IoU: 0.8581
+Person Recall: 0.9653
+Person F1: 0.9236
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9842
+mIoU: 0.9203
+Macro Precision: 0.9408
+Macro Recall: 0.9758
+Macro F1: 0.9574
+
+Por clase:
+  background      | IoU: 0.9825 | Precision: 0.9961 | Recall: 0.9863 | F1: 0.9912
+  person          | IoU: 0.8581 | Precision: 0.8855 | Recall: 0.9653 | F1: 0.9236
+
+Matriz de confusión:
+[[873496  12161]
+ [  3380  94003]]
+
+
+======================================================================
+Epoch 063/100
+LR: 0.00003125
+Train Loss: 0.057973
+Train Accuracy: 0.9741
+Val Loss: 0.085611
+Val Accuracy: 0.9858
+Val mIoU: 0.9270
+Person IoU: 0.8697
+Person Recall: 0.9708
+Person F1: 0.9303
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9858
+mIoU: 0.9270
+Macro Precision: 0.9450
+Macro Recall: 0.9791
+Macro F1: 0.9612
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9968 | Recall: 0.9874 | F1: 0.9921
+  person          | IoU: 0.8697 | Precision: 0.8931 | Recall: 0.9708 | F1: 0.9303
+
+Matriz de confusión:
+[[875549  11188]
+ [  2815  93488]]
+
+
+======================================================================
+Epoch 064/100
+LR: 0.00001563
+Train Loss: 0.062311
+Train Accuracy: 0.9739
+Val Loss: 0.087005
+Val Accuracy: 0.9862
+Val mIoU: 0.9258
+Person IoU: 0.8667
+Person Recall: 0.9654
+Person F1: 0.9286
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9258
+Macro Precision: 0.9455
+Macro Recall: 0.9769
+Macro F1: 0.9605
+
+Por clase:
+  background      | IoU: 0.9848 | Precision: 0.9964 | Recall: 0.9883 | F1: 0.9924
+  person          | IoU: 0.8667 | Precision: 0.8945 | Recall: 0.9654 | F1: 0.9286
+
+Matriz de confusión:
+[[881262  10407]
+ [  3157  88214]]
+================================================================================
+Inicio del entrenamiento
+================================================================================
+
+Dispositivo: cuda
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/group.py:79: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/upsampling.py:46: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:25: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, x, blocks, pos_embed=None, alpha=0., lambd=1., num_cached = 0):
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:60: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, dy):  # pragma: no cover
+
+Cargando checkpoint:
+pointnext-xl.pth
+/home/manuel/Documents/GitHub/LiDAR/finetunningPointnetxt.py:187: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(
+Pesos cargados: 350
+Pesos ignorados: 2
+train escenas: 58
+val escenas: 12
+
+Train samples: 1160
+Val samples: 240
+/home/manuel/Documents/GitHub/LiDAR/finetunningPointnetxt.py:832: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(
+/home/manuel/Documents/GitHub/LiDAR/finetunningPointnetxt.py:894: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/subsample.py:93: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  output = torch.cuda.IntTensor(B, npoint)
+
+
+======================================================================
+Epoch 001/100
+LR: 0.00100000
+Train Loss: 0.405014
+Train Accuracy: 0.8891
+Val Loss: 0.160155
+Val Accuracy: 0.9789
+Val mIoU: 0.8885
+Person IoU: 0.8001
+Person Recall: 0.9196
+Person F1: 0.8889
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.8885
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9789
+mIoU: 0.8885
+Macro Precision: 0.9260
+Macro Recall: 0.9522
+Macro F1: 0.9386
+
+Por clase:
+  background      | IoU: 0.9769 | Precision: 0.9918 | Recall: 0.9849 | F1: 0.9883
+  person          | IoU: 0.8001 | Precision: 0.8603 | Recall: 0.9196 | F1: 0.8889
+
+Matriz de confusión:
+[[879158  13501]
+ [  7267  83114]]
+
+
+======================================================================
+Epoch 002/100
+LR: 0.00100000
+Train Loss: 0.181990
+Train Accuracy: 0.9538
+Val Loss: 0.129015
+Val Accuracy: 0.9775
+Val mIoU: 0.8836
+Person IoU: 0.7918
+Person Recall: 0.9360
+Person F1: 0.8838
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9775
+mIoU: 0.8836
+Macro Precision: 0.9153
+Macro Recall: 0.9589
+Macro F1: 0.9357
+
+Por clase:
+  background      | IoU: 0.9754 | Precision: 0.9935 | Recall: 0.9817 | F1: 0.9876
+  person          | IoU: 0.7918 | Precision: 0.8371 | Recall: 0.9360 | F1: 0.8838
+
+Matriz de confusión:
+[[876873  16357]
+ [  5745  84065]]
+
+
+======================================================================
+Epoch 003/100
+LR: 0.00100000
+Train Loss: 0.148736
+Train Accuracy: 0.9567
+Val Loss: 0.133618
+Val Accuracy: 0.9810
+Val mIoU: 0.9016
+Person IoU: 0.8240
+Person Recall: 0.9396
+Person F1: 0.9035
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9016
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9810
+mIoU: 0.9016
+Macro Precision: 0.9319
+Macro Recall: 0.9625
+Macro F1: 0.9465
+
+Por clase:
+  background      | IoU: 0.9792 | Precision: 0.9936 | Recall: 0.9854 | F1: 0.9895
+  person          | IoU: 0.8240 | Precision: 0.8701 | Recall: 0.9396 | F1: 0.9035
+
+Matriz de confusión:
+[[877161  13029]
+ [  5606  87244]]
+
+
+======================================================================
+Epoch 004/100
+LR: 0.00100000
+Train Loss: 0.133548
+Train Accuracy: 0.9608
+Val Loss: 0.115524
+Val Accuracy: 0.9819
+Val mIoU: 0.9055
+Person IoU: 0.8309
+Person Recall: 0.9472
+Person F1: 0.9076
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9055
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9819
+mIoU: 0.9055
+Macro Precision: 0.9328
+Macro Recall: 0.9663
+Macro F1: 0.9488
+
+Por clase:
+  background      | IoU: 0.9801 | Precision: 0.9945 | Recall: 0.9855 | F1: 0.9900
+  person          | IoU: 0.8309 | Precision: 0.8712 | Recall: 0.9472 | F1: 0.9076
+
+Matriz de confusión:
+[[877693  12939]
+ [  4878  87530]]
+
+
+======================================================================
+Epoch 005/100
+LR: 0.00100000
+Train Loss: 0.130333
+Train Accuracy: 0.9596
+Val Loss: 0.103309
+Val Accuracy: 0.9835
+Val mIoU: 0.9073
+Person IoU: 0.8326
+Person Recall: 0.9502
+Person F1: 0.9087
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9073
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9835
+mIoU: 0.9073
+Macro Precision: 0.9329
+Macro Recall: 0.9685
+Macro F1: 0.9498
+
+Por clase:
+  background      | IoU: 0.9820 | Precision: 0.9953 | Recall: 0.9867 | F1: 0.9909
+  person          | IoU: 0.8326 | Precision: 0.8706 | Recall: 0.9502 | F1: 0.9087
+
+Matriz de confusión:
+[[886213  11985]
+ [  4221  80621]]
+
+
+======================================================================
+Epoch 006/100
+LR: 0.00100000
+Train Loss: 0.123166
+Train Accuracy: 0.9629
+Val Loss: 0.117629
+Val Accuracy: 0.9839
+Val mIoU: 0.9143
+Person IoU: 0.8463
+Person Recall: 0.9429
+Person F1: 0.9167
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9143
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9839
+mIoU: 0.9143
+Macro Precision: 0.9430
+Macro Recall: 0.9655
+Macro F1: 0.9539
+
+Por clase:
+  background      | IoU: 0.9823 | Precision: 0.9940 | Recall: 0.9882 | F1: 0.9911
+  person          | IoU: 0.8463 | Precision: 0.8919 | Recall: 0.9429 | F1: 0.9167
+
+Matriz de confusión:
+[[880104  10554]
+ [  5272  87110]]
+
+
+======================================================================
+Epoch 007/100
+LR: 0.00100000
+Train Loss: 0.114779
+Train Accuracy: 0.9639
+Val Loss: 0.111640
+Val Accuracy: 0.9820
+Val mIoU: 0.9088
+Person IoU: 0.8374
+Person Recall: 0.9618
+Person F1: 0.9115
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9820
+mIoU: 0.9088
+Macro Precision: 0.9311
+Macro Recall: 0.9730
+Macro F1: 0.9507
+
+Por clase:
+  background      | IoU: 0.9802 | Precision: 0.9959 | Recall: 0.9842 | F1: 0.9900
+  person          | IoU: 0.8374 | Precision: 0.8662 | Recall: 0.9618 | F1: 0.9115
+
+Matriz de confusión:
+[[874374  14053]
+ [  3618  90995]]
+
+
+======================================================================
+Epoch 008/100
+LR: 0.00100000
+Train Loss: 0.105631
+Train Accuracy: 0.9667
+Val Loss: 0.101302
+Val Accuracy: 0.9862
+Val mIoU: 0.9190
+Person IoU: 0.8529
+Person Recall: 0.9578
+Person F1: 0.9206
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9190
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9190
+Macro Precision: 0.9412
+Macro Recall: 0.9733
+Macro F1: 0.9565
+
+Por clase:
+  background      | IoU: 0.9850 | Precision: 0.9961 | Recall: 0.9888 | F1: 0.9924
+  person          | IoU: 0.8529 | Precision: 0.8862 | Recall: 0.9578 | F1: 0.9206
+
+Matriz de confusión:
+[[890598  10124]
+ [  3470  78848]]
+
+
+======================================================================
+Epoch 009/100
+LR: 0.00100000
+Train Loss: 0.106053
+Train Accuracy: 0.9653
+Val Loss: 0.094395
+Val Accuracy: 0.9843
+Val mIoU: 0.9159
+Person IoU: 0.8491
+Person Recall: 0.9664
+Person F1: 0.9184
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9843
+mIoU: 0.9159
+Macro Precision: 0.9358
+Macro Recall: 0.9762
+Macro F1: 0.9549
+
+Por clase:
+  background      | IoU: 0.9827 | Precision: 0.9966 | Recall: 0.9861 | F1: 0.9913
+  person          | IoU: 0.8491 | Precision: 0.8750 | Recall: 0.9664 | F1: 0.9184
+
+Matriz de confusión:
+[[880554  12437]
+ [  3024  87025]]
+
+
+======================================================================
+Epoch 010/100
+LR: 0.00100000
+Train Loss: 0.099601
+Train Accuracy: 0.9664
+Val Loss: 0.110567
+Val Accuracy: 0.9837
+Val mIoU: 0.9161
+Person IoU: 0.8502
+Person Recall: 0.9612
+Person F1: 0.9190
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9837
+mIoU: 0.9161
+Macro Precision: 0.9381
+Macro Recall: 0.9736
+Macro F1: 0.9550
+
+Por clase:
+  background      | IoU: 0.9820 | Precision: 0.9958 | Recall: 0.9861 | F1: 0.9909
+  person          | IoU: 0.8502 | Precision: 0.8804 | Recall: 0.9612 | F1: 0.9190
+
+Matriz de confusión:
+[[875774  12384]
+ [  3686  91196]]
+
+
+======================================================================
+Epoch 011/100
+LR: 0.00100000
+Train Loss: 0.097140
+Train Accuracy: 0.9668
+Val Loss: 0.088389
+Val Accuracy: 0.9863
+Val mIoU: 0.9186
+Person IoU: 0.8521
+Person Recall: 0.9665
+Person F1: 0.9202
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9863
+mIoU: 0.9186
+Macro Precision: 0.9375
+Macro Recall: 0.9773
+Macro F1: 0.9563
+
+Por clase:
+  background      | IoU: 0.9851 | Precision: 0.9970 | Recall: 0.9881 | F1: 0.9925
+  person          | IoU: 0.8521 | Precision: 0.8781 | Recall: 0.9665 | F1: 0.9202
+
+Matriz de confusión:
+[[891994  10774]
+ [  2689  77583]]
+
+
+======================================================================
+Epoch 012/100
+LR: 0.00100000
+Train Loss: 0.095604
+Train Accuracy: 0.9659
+Val Loss: 0.081654
+Val Accuracy: 0.9841
+Val mIoU: 0.9198
+Person IoU: 0.8571
+Person Recall: 0.9736
+Person F1: 0.9230
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9198
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9841
+mIoU: 0.9198
+Macro Precision: 0.9373
+Macro Recall: 0.9794
+Macro F1: 0.9571
+
+Por clase:
+  background      | IoU: 0.9824 | Precision: 0.9971 | Recall: 0.9852 | F1: 0.9911
+  person          | IoU: 0.8571 | Precision: 0.8774 | Recall: 0.9736 | F1: 0.9230
+
+Matriz de confusión:
+[[873764  13083]
+ [  2536  93657]]
+
+
+======================================================================
+Epoch 013/100
+LR: 0.00100000
+Train Loss: 0.091753
+Train Accuracy: 0.9681
+Val Loss: 0.094547
+Val Accuracy: 0.9851
+Val mIoU: 0.9232
+Person IoU: 0.8629
+Person Recall: 0.9788
+Person F1: 0.9264
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9232
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9851
+mIoU: 0.9232
+Macro Precision: 0.9385
+Macro Recall: 0.9823
+Macro F1: 0.9591
+
+Por clase:
+  background      | IoU: 0.9836 | Precision: 0.9977 | Recall: 0.9858 | F1: 0.9917
+  person          | IoU: 0.8629 | Precision: 0.8793 | Recall: 0.9788 | F1: 0.9264
+
+Matriz de confusión:
+[[876260  12646]
+ [  1991  92143]]
+
+
+======================================================================
+Epoch 014/100
+LR: 0.00100000
+Train Loss: 0.090047
+Train Accuracy: 0.9662
+Val Loss: 0.086226
+Val Accuracy: 0.9854
+Val mIoU: 0.9259
+Person IoU: 0.8679
+Person Recall: 0.9796
+Person F1: 0.9293
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9259
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9259
+Macro Precision: 0.9408
+Macro Recall: 0.9828
+Macro F1: 0.9606
+
+Por clase:
+  background      | IoU: 0.9838 | Precision: 0.9978 | Recall: 0.9860 | F1: 0.9919
+  person          | IoU: 0.8679 | Precision: 0.8839 | Recall: 0.9796 | F1: 0.9293
+
+Matriz de confusión:
+[[874309  12395]
+ [  1968  94368]]
+
+
+======================================================================
+Epoch 015/100
+LR: 0.00100000
+Train Loss: 0.088396
+Train Accuracy: 0.9680
+Val Loss: 0.080496
+Val Accuracy: 0.9853
+Val mIoU: 0.9220
+Person IoU: 0.8601
+Person Recall: 0.9772
+Person F1: 0.9248
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9853
+mIoU: 0.9220
+Macro Precision: 0.9377
+Macro Recall: 0.9817
+Macro F1: 0.9583
+
+Por clase:
+  background      | IoU: 0.9839 | Precision: 0.9977 | Recall: 0.9862 | F1: 0.9919
+  person          | IoU: 0.8601 | Precision: 0.8777 | Recall: 0.9772 | F1: 0.9248
+
+Matriz de confusión:
+[[880063  12343]
+ [  2064  88570]]
+
+
+======================================================================
+Epoch 016/100
+LR: 0.00100000
+Train Loss: 0.085613
+Train Accuracy: 0.9685
+Val Loss: 0.073782
+Val Accuracy: 0.9855
+Val mIoU: 0.9262
+Person IoU: 0.8684
+Person Recall: 0.9780
+Person F1: 0.9296
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9262
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9855
+mIoU: 0.9262
+Macro Precision: 0.9416
+Macro Recall: 0.9822
+Macro F1: 0.9607
+
+Por clase:
+  background      | IoU: 0.9840 | Precision: 0.9976 | Recall: 0.9863 | F1: 0.9919
+  person          | IoU: 0.8684 | Precision: 0.8857 | Recall: 0.9780 | F1: 0.9296
+
+Matriz de confusión:
+[[874884  12121]
+ [  2115  93920]]
+
+
+======================================================================
+Epoch 017/100
+LR: 0.00100000
+Train Loss: 0.082045
+Train Accuracy: 0.9705
+Val Loss: 0.098371
+Val Accuracy: 0.9853
+Val mIoU: 0.9178
+Person IoU: 0.8518
+Person Recall: 0.9580
+Person F1: 0.9200
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9853
+mIoU: 0.9178
+Macro Precision: 0.9404
+Macro Recall: 0.9730
+Macro F1: 0.9559
+
+Por clase:
+  background      | IoU: 0.9839 | Precision: 0.9959 | Recall: 0.9879 | F1: 0.9919
+  person          | IoU: 0.8518 | Precision: 0.8848 | Recall: 0.9580 | F1: 0.9200
+
+Matriz de confusión:
+[[885332  10834]
+ [  3647  83227]]
+
+
+======================================================================
+Epoch 018/100
+LR: 0.00100000
+Train Loss: 0.081709
+Train Accuracy: 0.9700
+Val Loss: 0.078984
+Val Accuracy: 0.9840
+Val mIoU: 0.9188
+Person IoU: 0.8552
+Person Recall: 0.9835
+Person F1: 0.9220
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9840
+mIoU: 0.9188
+Macro Precision: 0.9329
+Macro Recall: 0.9838
+Macro F1: 0.9565
+
+Por clase:
+  background      | IoU: 0.9824 | Precision: 0.9982 | Recall: 0.9841 | F1: 0.9911
+  person          | IoU: 0.8552 | Precision: 0.8677 | Recall: 0.9835 | F1: 0.9220
+
+Matriz de confusión:
+[[874558  14151]
+ [  1554  92777]]
+
+
+======================================================================
+Epoch 019/100
+LR: 0.00100000
+Train Loss: 0.080596
+Train Accuracy: 0.9700
+Val Loss: 0.080979
+Val Accuracy: 0.9859
+Val mIoU: 0.9225
+Person IoU: 0.8604
+Person Recall: 0.9711
+Person F1: 0.9250
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9859
+mIoU: 0.9225
+Macro Precision: 0.9401
+Macro Recall: 0.9792
+Macro F1: 0.9586
+
+Por clase:
+  background      | IoU: 0.9845 | Precision: 0.9971 | Recall: 0.9873 | F1: 0.9922
+  person          | IoU: 0.8604 | Precision: 0.8830 | Recall: 0.9711 | F1: 0.9250
+
+Matriz de confusión:
+[[883579  11335]
+ [  2546  85580]]
+
+
+======================================================================
+Epoch 020/100
+LR: 0.00100000
+Train Loss: 0.078261
+Train Accuracy: 0.9703
+Val Loss: 0.074543
+Val Accuracy: 0.9867
+Val mIoU: 0.9268
+Person IoU: 0.8681
+Person Recall: 0.9781
+Person F1: 0.9294
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9268
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9867
+mIoU: 0.9268
+Macro Precision: 0.9416
+Macro Recall: 0.9828
+Macro F1: 0.9610
+
+Por clase:
+  background      | IoU: 0.9854 | Precision: 0.9978 | Recall: 0.9876 | F1: 0.9927
+  person          | IoU: 0.8681 | Precision: 0.8853 | Recall: 0.9781 | F1: 0.9294
+
+Matriz de confusión:
+[[884082  11130]
+ [  1925  85903]]
+
+
+======================================================================
+Epoch 021/100
+LR: 0.00100000
+Train Loss: 0.075141
+Train Accuracy: 0.9702
+Val Loss: 0.064529
+Val Accuracy: 0.9852
+Val mIoU: 0.9188
+Person IoU: 0.8539
+Person Recall: 0.9848
+Person F1: 0.9212
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9852
+mIoU: 0.9188
+Macro Precision: 0.9319
+Macro Recall: 0.9850
+Macro F1: 0.9565
+
+Por clase:
+  background      | IoU: 0.9837 | Precision: 0.9985 | Recall: 0.9852 | F1: 0.9918
+  person          | IoU: 0.8539 | Precision: 0.8653 | Recall: 0.9848 | F1: 0.9212
+
+Matriz de confusión:
+[[883184  13277]
+ [  1314  85265]]
+
+
+======================================================================
+Epoch 022/100
+LR: 0.00100000
+Train Loss: 0.077572
+Train Accuracy: 0.9694
+Val Loss: 0.071187
+Val Accuracy: 0.9853
+Val mIoU: 0.9232
+Person IoU: 0.8626
+Person Recall: 0.9789
+Person F1: 0.9262
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9853
+mIoU: 0.9232
+Macro Precision: 0.9384
+Macro Recall: 0.9824
+Macro F1: 0.9590
+
+Por clase:
+  background      | IoU: 0.9838 | Precision: 0.9978 | Recall: 0.9860 | F1: 0.9919
+  person          | IoU: 0.8626 | Precision: 0.8790 | Recall: 0.9789 | F1: 0.9262
+
+Matriz de confusión:
+[[878133  12461]
+ [  1954  90492]]
+
+
+======================================================================
+Epoch 023/100
+LR: 0.00100000
+Train Loss: 0.074533
+Train Accuracy: 0.9703
+Val Loss: 0.101468
+Val Accuracy: 0.9840
+Val mIoU: 0.9196
+Person IoU: 0.8568
+Person Recall: 0.9669
+Person F1: 0.9229
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9840
+mIoU: 0.9196
+Macro Precision: 0.9395
+Macro Recall: 0.9764
+Macro F1: 0.9570
+
+Por clase:
+  background      | IoU: 0.9823 | Precision: 0.9963 | Recall: 0.9859 | F1: 0.9911
+  person          | IoU: 0.8568 | Precision: 0.8827 | Recall: 0.9669 | F1: 0.9229
+
+Matriz de confusión:
+[[873380  12491]
+ [  3212  93957]]
+
+
+======================================================================
+Epoch 024/100
+LR: 0.00100000
+Train Loss: 0.074006
+Train Accuracy: 0.9710
+Val Loss: 0.091909
+Val Accuracy: 0.9859
+Val mIoU: 0.9219
+Person IoU: 0.8592
+Person Recall: 0.9674
+Person F1: 0.9243
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9859
+mIoU: 0.9219
+Macro Precision: 0.9408
+Macro Recall: 0.9776
+Macro F1: 0.9582
+
+Por clase:
+  background      | IoU: 0.9846 | Precision: 0.9968 | Recall: 0.9877 | F1: 0.9922
+  person          | IoU: 0.8592 | Precision: 0.8848 | Recall: 0.9674 | F1: 0.9243
+
+Matriz de confusión:
+[[884671  11005]
+ [  2847  84517]]
+
+
+======================================================================
+Epoch 025/100
+LR: 0.00100000
+Train Loss: 0.069359
+Train Accuracy: 0.9723
+Val Loss: 0.101157
+Val Accuracy: 0.9858
+Val mIoU: 0.9239
+Person IoU: 0.8635
+Person Recall: 0.9683
+Person F1: 0.9268
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9858
+mIoU: 0.9239
+Macro Precision: 0.9427
+Macro Recall: 0.9779
+Macro F1: 0.9594
+
+Por clase:
+  background      | IoU: 0.9844 | Precision: 0.9967 | Recall: 0.9876 | F1: 0.9921
+  person          | IoU: 0.8635 | Precision: 0.8886 | Recall: 0.9683 | F1: 0.9268
+
+Matriz de confusión:
+[[880674  11081]
+ [  2892  88393]]
+
+
+======================================================================
+Epoch 026/100
+LR: 0.00100000
+Train Loss: 0.071315
+Train Accuracy: 0.9707
+Val Loss: 0.074569
+Val Accuracy: 0.9864
+Val mIoU: 0.9277
+Person IoU: 0.8703
+Person Recall: 0.9839
+Person F1: 0.9307
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9277
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9864
+mIoU: 0.9277
+Macro Precision: 0.9406
+Macro Recall: 0.9853
+Macro F1: 0.9616
+
+Por clase:
+  background      | IoU: 0.9850 | Precision: 0.9983 | Recall: 0.9866 | F1: 0.9925
+  person          | IoU: 0.8703 | Precision: 0.8829 | Recall: 0.9839 | F1: 0.9307
+
+Matriz de confusión:
+[[879880  11911]
+ [  1468  89781]]
+
+
+======================================================================
+Epoch 027/100
+LR: 0.00100000
+Train Loss: 0.070973
+Train Accuracy: 0.9709
+Val Loss: 0.110464
+Val Accuracy: 0.9805
+Val mIoU: 0.8988
+Person IoU: 0.8190
+Person Recall: 0.9702
+Person F1: 0.9005
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9805
+mIoU: 0.8988
+Macro Precision: 0.9186
+Macro Recall: 0.9759
+Macro F1: 0.9449
+
+Por clase:
+  background      | IoU: 0.9786 | Precision: 0.9970 | Recall: 0.9815 | F1: 0.9892
+  person          | IoU: 0.8190 | Precision: 0.8401 | Recall: 0.9702 | F1: 0.9005
+
+Matriz de confusión:
+[[877195  16494]
+ [  2661  86690]]
+
+
+======================================================================
+Epoch 028/100
+LR: 0.00100000
+Train Loss: 0.071717
+Train Accuracy: 0.9705
+Val Loss: 0.106387
+Val Accuracy: 0.9866
+Val mIoU: 0.9285
+Person IoU: 0.8717
+Person Recall: 0.9722
+Person F1: 0.9315
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9285
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9866
+mIoU: 0.9285
+Macro Precision: 0.9456
+Macro Recall: 0.9801
+Macro F1: 0.9620
+
+Por clase:
+  background      | IoU: 0.9852 | Precision: 0.9971 | Recall: 0.9881 | F1: 0.9926
+  person          | IoU: 0.8717 | Precision: 0.8940 | Recall: 0.9722 | F1: 0.9315
+
+Matriz de confusión:
+[[880166  10631]
+ [  2565  89678]]
+
+
+======================================================================
+Epoch 029/100
+LR: 0.00100000
+Train Loss: 0.066582
+Train Accuracy: 0.9721
+Val Loss: 0.085564
+Val Accuracy: 0.9862
+Val mIoU: 0.9249
+Person IoU: 0.8650
+Person Recall: 0.9711
+Person F1: 0.9276
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9249
+Macro Precision: 0.9425
+Macro Recall: 0.9794
+Macro F1: 0.9600
+
+Por clase:
+  background      | IoU: 0.9848 | Precision: 0.9971 | Recall: 0.9877 | F1: 0.9923
+  person          | IoU: 0.8650 | Precision: 0.8878 | Recall: 0.9711 | F1: 0.9276
+
+Matriz de confusión:
+[[882290  11008]
+ [  2597  87145]]
+
+
+======================================================================
+Epoch 030/100
+LR: 0.00100000
+Train Loss: 0.068104
+Train Accuracy: 0.9727
+Val Loss: 0.104548
+Val Accuracy: 0.9850
+Val mIoU: 0.9221
+Person IoU: 0.8608
+Person Recall: 0.9691
+Person F1: 0.9252
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9850
+mIoU: 0.9221
+Macro Precision: 0.9409
+Macro Recall: 0.9779
+Macro F1: 0.9584
+
+Por clase:
+  background      | IoU: 0.9834 | Precision: 0.9967 | Recall: 0.9866 | F1: 0.9916
+  person          | IoU: 0.8608 | Precision: 0.8850 | Recall: 0.9691 | F1: 0.9252
+
+Matriz de confusión:
+[[876879  11869]
+ [  2911  91381]]
+
+
+======================================================================
+Epoch 031/100
+LR: 0.00100000
+Train Loss: 0.064160
+Train Accuracy: 0.9735
+Val Loss: 0.096230
+Val Accuracy: 0.9863
+Val mIoU: 0.9238
+Person IoU: 0.8627
+Person Recall: 0.9679
+Person F1: 0.9263
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9863
+mIoU: 0.9238
+Macro Precision: 0.9425
+Macro Recall: 0.9780
+Macro F1: 0.9594
+
+Por clase:
+  background      | IoU: 0.9850 | Precision: 0.9968 | Recall: 0.9881 | F1: 0.9924
+  person          | IoU: 0.8627 | Precision: 0.8881 | Recall: 0.9679 | F1: 0.9263
+
+Matriz de confusión:
+[[884946  10664]
+ [  2806  84624]]
+
+
+======================================================================
+Epoch 032/100
+LR: 0.00100000
+Train Loss: 0.066540
+Train Accuracy: 0.9722
+Val Loss: 0.079001
+Val Accuracy: 0.9864
+Val mIoU: 0.9261
+Person IoU: 0.8671
+Person Recall: 0.9760
+Person F1: 0.9288
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9864
+mIoU: 0.9261
+Macro Precision: 0.9418
+Macro Recall: 0.9817
+Macro F1: 0.9607
+
+Por clase:
+  background      | IoU: 0.9851 | Precision: 0.9976 | Recall: 0.9874 | F1: 0.9925
+  person          | IoU: 0.8671 | Precision: 0.8860 | Recall: 0.9760 | F1: 0.9288
+
+Matriz de confusión:
+[[882429  11226]
+ [  2141  87244]]
+
+
+======================================================================
+Epoch 033/100
+LR: 0.00100000
+Train Loss: 0.063606
+Train Accuracy: 0.9721
+Val Loss: 0.082982
+Val Accuracy: 0.9868
+Val mIoU: 0.9278
+Person IoU: 0.8702
+Person Recall: 0.9709
+Person F1: 0.9306
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9868
+mIoU: 0.9278
+Macro Precision: 0.9453
+Macro Recall: 0.9796
+Macro F1: 0.9616
+
+Por clase:
+  background      | IoU: 0.9855 | Precision: 0.9971 | Recall: 0.9884 | F1: 0.9927
+  person          | IoU: 0.8702 | Precision: 0.8935 | Recall: 0.9709 | F1: 0.9306
+
+Matriz de confusión:
+[[883086  10367]
+ [  2609  86978]]
+
+
+======================================================================
+Epoch 034/100
+LR: 0.00050000
+Train Loss: 0.064379
+Train Accuracy: 0.9730
+Val Loss: 0.082496
+Val Accuracy: 0.9857
+Val mIoU: 0.9257
+Person IoU: 0.8672
+Person Recall: 0.9745
+Person F1: 0.9289
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9857
+mIoU: 0.9257
+Macro Precision: 0.9423
+Macro Recall: 0.9807
+Macro F1: 0.9605
+
+Por clase:
+  background      | IoU: 0.9842 | Precision: 0.9973 | Recall: 0.9869 | F1: 0.9920
+  person          | IoU: 0.8672 | Precision: 0.8873 | Recall: 0.9745 | F1: 0.9289
+
+Matriz de confusión:
+[[877008  11675]
+ [  2406  91951]]
+
+
+======================================================================
+Epoch 035/100
+LR: 0.00050000
+Train Loss: 0.061676
+Train Accuracy: 0.9722
+Val Loss: 0.086055
+Val Accuracy: 0.9860
+Val mIoU: 0.9281
+Person IoU: 0.8717
+Person Recall: 0.9761
+Person F1: 0.9314
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9860
+mIoU: 0.9281
+Macro Precision: 0.9440
+Macro Recall: 0.9816
+Macro F1: 0.9618
+
+Por clase:
+  background      | IoU: 0.9845 | Precision: 0.9974 | Recall: 0.9871 | F1: 0.9922
+  person          | IoU: 0.8717 | Precision: 0.8907 | Recall: 0.9761 | F1: 0.9314
+
+Matriz de confusión:
+[[875810  11472]
+ [  2289  93469]]
+
+
+======================================================================
+Epoch 036/100
+LR: 0.00050000
+Train Loss: 0.061371
+Train Accuracy: 0.9740
+Val Loss: 0.092593
+Val Accuracy: 0.9855
+Val mIoU: 0.9238
+Person IoU: 0.8636
+Person Recall: 0.9719
+Person F1: 0.9268
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9855
+mIoU: 0.9238
+Macro Precision: 0.9414
+Macro Recall: 0.9794
+Macro F1: 0.9594
+
+Por clase:
+  background      | IoU: 0.9841 | Precision: 0.9971 | Recall: 0.9870 | F1: 0.9920
+  person          | IoU: 0.8636 | Precision: 0.8857 | Recall: 0.9719 | F1: 0.9268
+
+Matriz de confusión:
+[[878914  11606]
+ [  2599  89921]]
+
+
+======================================================================
+Epoch 037/100
+LR: 0.00050000
+Train Loss: 0.058939
+Train Accuracy: 0.9745
+Val Loss: 0.086093
+Val Accuracy: 0.9863
+Val mIoU: 0.9293
+Person IoU: 0.8738
+Person Recall: 0.9748
+Person F1: 0.9326
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9293
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9863
+mIoU: 0.9293
+Macro Precision: 0.9456
+Macro Recall: 0.9812
+Macro F1: 0.9625
+
+Por clase:
+  background      | IoU: 0.9849 | Precision: 0.9973 | Recall: 0.9876 | F1: 0.9924
+  person          | IoU: 0.8738 | Precision: 0.8939 | Recall: 0.9748 | F1: 0.9326
+
+Matriz de confusión:
+[[876544  11040]
+ [  2403  93053]]
+
+
+======================================================================
+Epoch 038/100
+LR: 0.00050000
+Train Loss: 0.059819
+Train Accuracy: 0.9722
+Val Loss: 0.107556
+Val Accuracy: 0.9865
+Val mIoU: 0.9200
+Person IoU: 0.8547
+Person Recall: 0.9579
+Person F1: 0.9216
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9865
+mIoU: 0.9200
+Macro Precision: 0.9421
+Macro Recall: 0.9735
+Macro F1: 0.9571
+
+Por clase:
+  background      | IoU: 0.9853 | Precision: 0.9962 | Recall: 0.9891 | F1: 0.9926
+  person          | IoU: 0.8547 | Precision: 0.8881 | Recall: 0.9579 | F1: 0.9216
+
+Matriz de confusión:
+[[891641   9846]
+ [  3437  78116]]
+
+
+======================================================================
+Epoch 039/100
+LR: 0.00050000
+Train Loss: 0.058451
+Train Accuracy: 0.9744
+Val Loss: 0.112214
+Val Accuracy: 0.9855
+Val mIoU: 0.9247
+Person IoU: 0.8653
+Person Recall: 0.9656
+Person F1: 0.9278
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9855
+mIoU: 0.9247
+Macro Precision: 0.9446
+Macro Recall: 0.9766
+Macro F1: 0.9599
+
+Por clase:
+  background      | IoU: 0.9840 | Precision: 0.9963 | Recall: 0.9876 | F1: 0.9919
+  person          | IoU: 0.8653 | Precision: 0.8928 | Recall: 0.9656 | F1: 0.9278
+
+Matriz de confusión:
+[[877206  10991]
+ [  3265  91578]]
+
+
+======================================================================
+Epoch 040/100
+LR: 0.00050000
+Train Loss: 0.060079
+Train Accuracy: 0.9743
+Val Loss: 0.104330
+Val Accuracy: 0.9862
+Val mIoU: 0.9235
+Person IoU: 0.8621
+Person Recall: 0.9593
+Person F1: 0.9260
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9235
+Macro Precision: 0.9454
+Macro Recall: 0.9741
+Macro F1: 0.9592
+
+Por clase:
+  background      | IoU: 0.9850 | Precision: 0.9960 | Recall: 0.9889 | F1: 0.9924
+  person          | IoU: 0.8621 | Precision: 0.8949 | Recall: 0.9593 | F1: 0.9260
+
+Matriz de confusión:
+[[884988   9927]
+ [  3591  84534]]
+
+
+======================================================================
+Epoch 041/100
+LR: 0.00050000
+Train Loss: 0.058307
+Train Accuracy: 0.9735
+Val Loss: 0.088317
+Val Accuracy: 0.9864
+Val mIoU: 0.9283
+Person IoU: 0.8716
+Person Recall: 0.9683
+Person F1: 0.9314
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9864
+mIoU: 0.9283
+Macro Precision: 0.9469
+Macro Recall: 0.9783
+Macro F1: 0.9619
+
+Por clase:
+  background      | IoU: 0.9850 | Precision: 0.9966 | Recall: 0.9883 | F1: 0.9924
+  person          | IoU: 0.8716 | Precision: 0.8972 | Recall: 0.9683 | F1: 0.9314
+
+Matriz de confusión:
+[[878650  10420]
+ [  2983  90987]]
+
+
+======================================================================
+Epoch 042/100
+LR: 0.00050000
+Train Loss: 0.059954
+Train Accuracy: 0.9729
+Val Loss: 0.079917
+Val Accuracy: 0.9865
+Val mIoU: 0.9291
+Person IoU: 0.8731
+Person Recall: 0.9734
+Person F1: 0.9323
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9865
+mIoU: 0.9291
+Macro Precision: 0.9458
+Macro Recall: 0.9806
+Macro F1: 0.9624
+
+Por clase:
+  background      | IoU: 0.9852 | Precision: 0.9972 | Recall: 0.9879 | F1: 0.9925
+  person          | IoU: 0.8731 | Precision: 0.8945 | Recall: 0.9734 | F1: 0.9323
+
+Matriz de confusión:
+[[878653  10750]
+ [  2492  91145]]
+
+
+======================================================================
+Epoch 043/100
+LR: 0.00025000
+Train Loss: 0.056945
+Train Accuracy: 0.9757
+Val Loss: 0.084616
+Val Accuracy: 0.9857
+Val mIoU: 0.9243
+Person IoU: 0.8644
+Person Recall: 0.9702
+Person F1: 0.9273
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9857
+mIoU: 0.9243
+Macro Precision: 0.9424
+Macro Recall: 0.9788
+Macro F1: 0.9597
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9969 | Recall: 0.9873 | F1: 0.9921
+  person          | IoU: 0.8644 | Precision: 0.8880 | Recall: 0.9702 | F1: 0.9273
+
+Matriz de confusión:
+[[879535  11286]
+ [  2749  89470]]
+
+
+======================================================================
+Epoch 044/100
+LR: 0.00025000
+Train Loss: 0.058680
+Train Accuracy: 0.9737
+Val Loss: 0.094718
+Val Accuracy: 0.9857
+Val mIoU: 0.9268
+Person IoU: 0.8694
+Person Recall: 0.9705
+Person F1: 0.9302
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9857
+mIoU: 0.9268
+Macro Precision: 0.9449
+Macro Recall: 0.9789
+Macro F1: 0.9611
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9968 | Recall: 0.9874 | F1: 0.9921
+  person          | IoU: 0.8694 | Precision: 0.8931 | Recall: 0.9705 | F1: 0.9302
+
+Matriz de confusión:
+[[875746  11170]
+ [  2840  93284]]
+
+
+======================================================================
+Epoch 045/100
+LR: 0.00025000
+Train Loss: 0.057720
+Train Accuracy: 0.9732
+Val Loss: 0.106701
+Val Accuracy: 0.9866
+Val mIoU: 0.9272
+Person IoU: 0.8690
+Person Recall: 0.9641
+Person F1: 0.9299
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9866
+mIoU: 0.9272
+Macro Precision: 0.9472
+Macro Recall: 0.9765
+Macro F1: 0.9613
+
+Por clase:
+  background      | IoU: 0.9853 | Precision: 0.9963 | Recall: 0.9889 | F1: 0.9926
+  person          | IoU: 0.8690 | Precision: 0.8980 | Recall: 0.9641 | F1: 0.9299
+
+Matriz de confusión:
+[[882773   9895]
+ [  3240  87132]]
+
+
+======================================================================
+Epoch 046/100
+LR: 0.00025000
+Train Loss: 0.057154
+Train Accuracy: 0.9724
+Val Loss: 0.077849
+Val Accuracy: 0.9876
+Val mIoU: 0.9322
+Person IoU: 0.8780
+Person Recall: 0.9733
+Person F1: 0.9351
+
+NUEVO MEJOR MODELO
+Best mIoU: 0.9322
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9876
+mIoU: 0.9322
+Macro Precision: 0.9485
+Macro Recall: 0.9812
+Macro F1: 0.9641
+
+Por clase:
+  background      | IoU: 0.9864 | Precision: 0.9973 | Recall: 0.9890 | F1: 0.9931
+  person          | IoU: 0.8780 | Precision: 0.8997 | Recall: 0.9733 | F1: 0.9351
+
+Matriz de confusión:
+[[882929   9802]
+ [  2409  87900]]
+
+
+======================================================================
+Epoch 047/100
+LR: 0.00025000
+Train Loss: 0.056192
+Train Accuracy: 0.9749
+Val Loss: 0.083101
+Val Accuracy: 0.9858
+Val mIoU: 0.9278
+Person IoU: 0.8713
+Person Recall: 0.9759
+Person F1: 0.9312
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9858
+mIoU: 0.9278
+Macro Precision: 0.9439
+Macro Recall: 0.9814
+Macro F1: 0.9617
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9973 | Recall: 0.9869 | F1: 0.9921
+  person          | IoU: 0.8713 | Precision: 0.8905 | Recall: 0.9759 | F1: 0.9312
+
+Matriz de confusión:
+[[874566  11619]
+ [  2339  94516]]
+
+
+======================================================================
+Epoch 048/100
+LR: 0.00025000
+Train Loss: 0.054617
+Train Accuracy: 0.9747
+Val Loss: 0.092678
+Val Accuracy: 0.9861
+Val mIoU: 0.9245
+Person IoU: 0.8643
+Person Recall: 0.9669
+Person F1: 0.9272
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9861
+mIoU: 0.9245
+Macro Precision: 0.9436
+Macro Recall: 0.9775
+Macro F1: 0.9598
+
+Por clase:
+  background      | IoU: 0.9848 | Precision: 0.9966 | Recall: 0.9881 | F1: 0.9923
+  person          | IoU: 0.8643 | Precision: 0.8906 | Recall: 0.9669 | F1: 0.9272
+
+Matriz de confusión:
+[[882534  10668]
+ [  2971  86867]]
+
+
+======================================================================
+Epoch 049/100
+LR: 0.00025000
+Train Loss: 0.056178
+Train Accuracy: 0.9748
+Val Loss: 0.095897
+Val Accuracy: 0.9868
+Val mIoU: 0.9262
+Person IoU: 0.8669
+Person Recall: 0.9629
+Person F1: 0.9287
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9868
+mIoU: 0.9262
+Macro Precision: 0.9466
+Macro Recall: 0.9761
+Macro F1: 0.9607
+
+Por clase:
+  background      | IoU: 0.9856 | Precision: 0.9964 | Recall: 0.9892 | F1: 0.9928
+  person          | IoU: 0.8669 | Precision: 0.8968 | Recall: 0.9629 | F1: 0.9287
+
+Matriz de confusión:
+[[885908   9691]
+ [  3240  84201]]
+
+
+======================================================================
+Epoch 050/100
+LR: 0.00025000
+Train Loss: 0.056370
+Train Accuracy: 0.9742
+Val Loss: 0.103799
+Val Accuracy: 0.9863
+Val mIoU: 0.9262
+Person IoU: 0.8674
+Person Recall: 0.9622
+Person F1: 0.9290
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9863
+mIoU: 0.9262
+Macro Precision: 0.9470
+Macro Recall: 0.9755
+Macro F1: 0.9607
+
+Por clase:
+  background      | IoU: 0.9849 | Precision: 0.9961 | Recall: 0.9887 | F1: 0.9924
+  person          | IoU: 0.8674 | Precision: 0.8980 | Recall: 0.9622 | F1: 0.9290
+
+Matriz de confusión:
+[[881289  10029]
+ [  3463  88259]]
+
+
+======================================================================
+Epoch 051/100
+LR: 0.00025000
+Train Loss: 0.053683
+Train Accuracy: 0.9769
+Val Loss: 0.090453
+Val Accuracy: 0.9862
+Val mIoU: 0.9244
+Person IoU: 0.8639
+Person Recall: 0.9666
+Person F1: 0.9270
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9244
+Macro Precision: 0.9436
+Macro Recall: 0.9773
+Macro F1: 0.9597
+
+Por clase:
+  background      | IoU: 0.9848 | Precision: 0.9966 | Recall: 0.9881 | F1: 0.9924
+  person          | IoU: 0.8639 | Precision: 0.8906 | Recall: 0.9666 | F1: 0.9270
+
+Matriz de confusión:
+[[883112  10609]
+ [  2987  86332]]
+
+
+======================================================================
+Epoch 052/100
+LR: 0.00012500
+Train Loss: 0.055371
+Train Accuracy: 0.9754
+Val Loss: 0.079516
+Val Accuracy: 0.9865
+Val mIoU: 0.9276
+Person IoU: 0.8700
+Person Recall: 0.9718
+Person F1: 0.9305
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9865
+mIoU: 0.9276
+Macro Precision: 0.9448
+Macro Recall: 0.9799
+Macro F1: 0.9615
+
+Por clase:
+  background      | IoU: 0.9852 | Precision: 0.9971 | Recall: 0.9880 | F1: 0.9925
+  person          | IoU: 0.8700 | Precision: 0.8926 | Recall: 0.9718 | F1: 0.9305
+
+Matriz de confusión:
+[[881161  10668]
+ [  2573  88638]]
+
+
+======================================================================
+Epoch 053/100
+LR: 0.00012500
+Train Loss: 0.053964
+Train Accuracy: 0.9738
+Val Loss: 0.087490
+Val Accuracy: 0.9866
+Val mIoU: 0.9286
+Person IoU: 0.8719
+Person Recall: 0.9670
+Person F1: 0.9316
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9866
+mIoU: 0.9286
+Macro Precision: 0.9476
+Macro Recall: 0.9778
+Macro F1: 0.9621
+
+Por clase:
+  background      | IoU: 0.9853 | Precision: 0.9965 | Recall: 0.9887 | F1: 0.9926
+  person          | IoU: 0.8719 | Precision: 0.8987 | Recall: 0.9670 | F1: 0.9316
+
+Matriz de confusión:
+[[880493  10080]
+ [  3054  89413]]
+
+
+======================================================================
+Epoch 054/100
+LR: 0.00012500
+Train Loss: 0.057822
+Train Accuracy: 0.9736
+Val Loss: 0.100653
+Val Accuracy: 0.9862
+Val mIoU: 0.9259
+Person IoU: 0.8669
+Person Recall: 0.9667
+Person F1: 0.9287
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9259
+Macro Precision: 0.9451
+Macro Recall: 0.9775
+Macro F1: 0.9605
+
+Por clase:
+  background      | IoU: 0.9849 | Precision: 0.9966 | Recall: 0.9882 | F1: 0.9924
+  person          | IoU: 0.8669 | Precision: 0.8936 | Recall: 0.9667 | F1: 0.9287
+
+Matriz de confusión:
+[[881213  10510]
+ [  3039  88278]]
+
+
+======================================================================
+Epoch 055/100
+LR: 0.00012500
+Train Loss: 0.055057
+Train Accuracy: 0.9743
+Val Loss: 0.099197
+Val Accuracy: 0.9868
+Val mIoU: 0.9281
+Person IoU: 0.8707
+Person Recall: 0.9664
+Person F1: 0.9309
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9868
+mIoU: 0.9281
+Macro Precision: 0.9472
+Macro Recall: 0.9776
+Macro F1: 0.9618
+
+Por clase:
+  background      | IoU: 0.9855 | Precision: 0.9966 | Recall: 0.9888 | F1: 0.9927
+  person          | IoU: 0.8707 | Precision: 0.8979 | Recall: 0.9664 | F1: 0.9309
+
+Matriz de confusión:
+[[882519   9953]
+ [  3047  87521]]
+
+
+======================================================================
+Epoch 056/100
+LR: 0.00012500
+Train Loss: 0.054673
+Train Accuracy: 0.9746
+Val Loss: 0.102261
+Val Accuracy: 0.9862
+Val mIoU: 0.9253
+Person IoU: 0.8657
+Person Recall: 0.9641
+Person F1: 0.9280
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9253
+Macro Precision: 0.9454
+Macro Recall: 0.9763
+Macro F1: 0.9602
+
+Por clase:
+  background      | IoU: 0.9849 | Precision: 0.9963 | Recall: 0.9885 | F1: 0.9924
+  person          | IoU: 0.8657 | Precision: 0.8945 | Recall: 0.9641 | F1: 0.9280
+
+Matriz de confusión:
+[[882248  10287]
+ [  3253  87252]]
+
+
+======================================================================
+Epoch 057/100
+LR: 0.00012500
+Train Loss: 0.055658
+Train Accuracy: 0.9750
+Val Loss: 0.110740
+Val Accuracy: 0.9854
+Val mIoU: 0.9229
+Person IoU: 0.8620
+Person Recall: 0.9631
+Person F1: 0.9259
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9854
+mIoU: 0.9229
+Macro Precision: 0.9438
+Macro Recall: 0.9754
+Macro F1: 0.9589
+
+Por clase:
+  background      | IoU: 0.9839 | Precision: 0.9961 | Recall: 0.9877 | F1: 0.9919
+  person          | IoU: 0.8620 | Precision: 0.8914 | Recall: 0.9631 | F1: 0.9259
+
+Matriz de confusión:
+[[878738  10950]
+ [  3445  89907]]
+
+
+======================================================================
+Epoch 058/100
+LR: 0.00006250
+Train Loss: 0.055190
+Train Accuracy: 0.9750
+Val Loss: 0.120229
+Val Accuracy: 0.9851
+Val mIoU: 0.9203
+Person IoU: 0.8571
+Person Recall: 0.9576
+Person F1: 0.9230
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9851
+mIoU: 0.9203
+Macro Precision: 0.9432
+Macro Recall: 0.9728
+Macro F1: 0.9574
+
+Por clase:
+  background      | IoU: 0.9836 | Precision: 0.9956 | Recall: 0.9879 | F1: 0.9917
+  person          | IoU: 0.8571 | Precision: 0.8909 | Recall: 0.9576 | F1: 0.9230
+
+Matriz de confusión:
+[[880264  10792]
+ [  3897  88087]]
+
+
+======================================================================
+Epoch 059/100
+LR: 0.00006250
+Train Loss: 0.054263
+Train Accuracy: 0.9770
+Val Loss: 0.107857
+Val Accuracy: 0.9852
+Val mIoU: 0.9232
+Person IoU: 0.8628
+Person Recall: 0.9602
+Person F1: 0.9264
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9852
+mIoU: 0.9232
+Macro Precision: 0.9453
+Macro Recall: 0.9740
+Macro F1: 0.9591
+
+Por clase:
+  background      | IoU: 0.9837 | Precision: 0.9957 | Recall: 0.9879 | F1: 0.9918
+  person          | IoU: 0.8628 | Precision: 0.8948 | Recall: 0.9602 | F1: 0.9264
+
+Matriz de confusión:
+[[876835  10772]
+ [  3797  91636]]
+
+
+======================================================================
+Epoch 060/100
+LR: 0.00006250
+Train Loss: 0.053068
+Train Accuracy: 0.9756
+Val Loss: 0.091243
+Val Accuracy: 0.9858
+Val mIoU: 0.9268
+Person IoU: 0.8693
+Person Recall: 0.9701
+Person F1: 0.9301
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9858
+mIoU: 0.9268
+Macro Precision: 0.9450
+Macro Recall: 0.9788
+Macro F1: 0.9611
+
+Por clase:
+  background      | IoU: 0.9843 | Precision: 0.9967 | Recall: 0.9875 | F1: 0.9921
+  person          | IoU: 0.8693 | Precision: 0.8932 | Recall: 0.9701 | F1: 0.9301
+
+Matriz de confusión:
+[[875964  11128]
+ [  2870  93078]]
+
+
+======================================================================
+Epoch 061/100
+LR: 0.00006250
+Train Loss: 0.054302
+Train Accuracy: 0.9757
+Val Loss: 0.111130
+Val Accuracy: 0.9862
+Val mIoU: 0.9268
+Person IoU: 0.8687
+Person Recall: 0.9634
+Person F1: 0.9298
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9862
+mIoU: 0.9268
+Macro Precision: 0.9473
+Macro Recall: 0.9760
+Macro F1: 0.9610
+
+Por clase:
+  background      | IoU: 0.9848 | Precision: 0.9961 | Recall: 0.9886 | F1: 0.9923
+  person          | IoU: 0.8687 | Precision: 0.8984 | Recall: 0.9634 | F1: 0.9298
+
+Matriz de confusión:
+[[879480  10174]
+ [  3419  89967]]
+
+
+======================================================================
+Epoch 062/100
+LR: 0.00006250
+Train Loss: 0.055590
+Train Accuracy: 0.9754
+Val Loss: 0.097598
+Val Accuracy: 0.9852
+Val mIoU: 0.9247
+Person IoU: 0.8657
+Person Recall: 0.9658
+Person F1: 0.9280
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9852
+mIoU: 0.9247
+Macro Precision: 0.9447
+Macro Recall: 0.9765
+Macro F1: 0.9599
+
+Por clase:
+  background      | IoU: 0.9836 | Precision: 0.9962 | Recall: 0.9873 | F1: 0.9917
+  person          | IoU: 0.8657 | Precision: 0.8931 | Recall: 0.9658 | F1: 0.9280
+
+Matriz de confusión:
+[[874405  11252]
+ [  3333  94050]]
+
+
+======================================================================
+Epoch 063/100
+LR: 0.00006250
+Train Loss: 0.052171
+Train Accuracy: 0.9753
+Val Loss: 0.096812
+Val Accuracy: 0.9863
+Val mIoU: 0.9292
+Person IoU: 0.8736
+Person Recall: 0.9669
+Person F1: 0.9326
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9863
+mIoU: 0.9292
+Macro Precision: 0.9485
+Macro Recall: 0.9776
+Macro F1: 0.9625
+
+Por clase:
+  background      | IoU: 0.9849 | Precision: 0.9964 | Recall: 0.9884 | F1: 0.9924
+  person          | IoU: 0.8736 | Precision: 0.9006 | Recall: 0.9669 | F1: 0.9326
+
+Matriz de confusión:
+[[876461  10276]
+ [  3192  93111]]
+
+
+======================================================================
+Epoch 064/100
+LR: 0.00003125
+Train Loss: 0.056243
+Train Accuracy: 0.9753
+Val Loss: 0.106965
+Val Accuracy: 0.9866
+Val mIoU: 0.9275
+Person IoU: 0.8696
+Person Recall: 0.9627
+Person F1: 0.9303
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9866
+mIoU: 0.9275
+Macro Precision: 0.9481
+Macro Recall: 0.9759
+Macro F1: 0.9614
+
+Por clase:
+  background      | IoU: 0.9853 | Precision: 0.9961 | Recall: 0.9890 | F1: 0.9926
+  person          | IoU: 0.8696 | Precision: 0.9000 | Recall: 0.9627 | F1: 0.9303
+
+Matriz de confusión:
+[[881894   9775]
+ [  3411  87960]]
+
+
+======================================================================
+Epoch 065/100
+LR: 0.00003125
+Train Loss: 0.058581
+Train Accuracy: 0.9742
+Val Loss: 0.099631
+Val Accuracy: 0.9867
+Val mIoU: 0.9224
+Person IoU: 0.8593
+Person Recall: 0.9642
+Person F1: 0.9243
+
+==============================
+MÉTRICAS DE VALIDACIÓN
+==============================
+Accuracy: 0.9867
+mIoU: 0.9224
+Macro Precision: 0.9421
+Macro Recall: 0.9765
+Macro F1: 0.9585
+
+Por clase:
+  background      | IoU: 0.9855 | Precision: 0.9967 | Recall: 0.9887 | F1: 0.9927
+  person          | IoU: 0.8593 | Precision: 0.8876 | Recall: 0.9642 | F1: 0.9243
+
+Matriz de confusión:
+[[889767  10149]
+ [  2972  80152]]
+
+
+======================================================================
+Epoch 066/100
+LR: 0.00003125
+Train Loss: 0.055618
+Train Accuracy: 0.9748
+Val Loss: 0.110547
+Val Accuracy: 0.9861
+Val mIoU: 0.9216
+Person IoU: 0.8584
+Person Recall: 0.9609
+Person F1: 0.9238
+
+Early stopping.
+No mejora durante 20 épocas.
+
+Entrenamiento finalizado.
+Mejor mIoU: 0.9322

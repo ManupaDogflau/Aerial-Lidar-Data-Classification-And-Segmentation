@@ -1,8 +1,8 @@
 import os
 import sys
 import random
-import importlib
 import argparse
+import logging
 
 import numpy as np
 
@@ -45,9 +45,7 @@ parser.add_argument(
 parser.add_argument(
     '--checkpoint',
     default=(
-        '/home/manuel/Documents/GitHub/LiDAR/'
-        'checkpoints/TFM/sem_seg/pointnet_sem_seg/'
-        'checkpoints/best_model.pth'
+        'dgcnn.pth'
     ),
     type=str
 )
@@ -55,7 +53,7 @@ parser.add_argument(
 
 parser.add_argument(
     '--save_dir',
-    default='./checkpoints_person',
+    default='./checkpoints_person-pointvector',
     type=str
 )
 
@@ -76,7 +74,7 @@ parser.add_argument(
 
 parser.add_argument(
     '--lr',
-    default=1e-4,
+    default=1e-3,
     type=float
 )
 
@@ -165,14 +163,6 @@ def set_seed(seed):
 # UTILIDADES
 # ============================================================
 
-def inplace_relu(m):
-
-    classname = m.__class__.__name__
-
-    if classname.find('ReLU') != -1:
-        m.inplace = True
-
-
 def load_checkpoint(model, path):
 
     if not os.path.exists(path):
@@ -200,7 +190,9 @@ def load_checkpoint(model, path):
     )
 
 
-    if "model_state_dict" in checkpoint:
+    if "model" in checkpoint:
+        pretrained = checkpoint["model"]
+    elif "model_state_dict" in checkpoint:
 
         pretrained = checkpoint[
             "model_state_dict"
@@ -258,7 +250,6 @@ def load_checkpoint(model, path):
         model_dict
     )
 
-
     print(
         f"Pesos cargados: "
         f"{len(compatible)}"
@@ -267,7 +258,8 @@ def load_checkpoint(model, path):
 
     print(
         f"Pesos ignorados: "
-        f"{len(skipped)}"
+        f"{len(skipped)}",
+        skipped
     )
 
 
@@ -582,26 +574,36 @@ def validate(
         )
 
 
-        # B,N,C -> B,C,N
-        points = points.transpose(
-            2,
-            1
+        xyz = points[:, :, :3].contiguous()
+
+        
+        
+        # Canal constante
+        ones = torch.ones(
+            points.shape[0],
+            points.shape[1],
+            1,
+            device=points.device,
+            dtype=points.dtype
         )
 
+        # (B, N, 4)
+        points4 = torch.cat([points, ones], dim=2)
+        features = points.transpose(1,2).contiguous()
 
-        pred, trans_feat = classifier(
-            points
-        )
+        inputs = {
+            "pos": xyz,
+            "x": features
+        }
+
+        pred = classifier(inputs)
+        
+        pred = pred.transpose(1, 2).contiguous() 
+        pred = pred.reshape(-1, NUM_CLASSES)
 
 
-        # B,N,C -> B*N,C
-        pred = pred.reshape(
-            -1,
-            NUM_CLASSES
-        )
 
-
-        labels = labels.reshape(
+        labels = labels.view(
             -1
         )
 
@@ -700,25 +702,17 @@ def main():
     # MODELO
     # ========================================================
 
-    MODEL = importlib.import_module(
-        'models.pointnet_sem_seg'
-    )
+    import openpoints.models.backbone.pointvector
+    from openpoints.models import build_model_from_cfg
+    from openpoints.utils.config import EasyConfig
+    from openpoints.models.build import MODELS
 
+    cfg = EasyConfig()
+    cfg.load("pointvector.yaml")
 
-    classifier = MODEL.get_model(
-        NUM_CLASSES
-    )
+    classifier = build_model_from_cfg(cfg.model)
 
-
-    classifier.apply(
-        inplace_relu
-    )
-
-
-    classifier.to(
-        device
-    )
-
+    classifier.to(device)
 
     load_checkpoint(
         classifier,
@@ -887,11 +881,7 @@ def main():
             )
 
 
-            # B,N,C -> B,C,N
-            points = points.transpose(
-                2,
-                1
-            )
+
 
 
             optimizer.zero_grad(
@@ -903,22 +893,38 @@ def main():
                 enabled=torch.cuda.is_available()
             ):
 
+                xyz = points[:, :, :3].contiguous()
 
-                pred, trans_feat = classifier(
-                    points
+                
+                # Canal constante
+                ones = torch.ones(
+                    points.shape[0],
+                    points.shape[1],
+                    1,
+                    device=points.device,
+                    dtype=points.dtype
                 )
 
-
-                pred = pred.reshape(
-                    -1,
-                    NUM_CLASSES
-                )
+                # (B, N, 4)
+                points4 = torch.cat([points, ones], dim=2)
+                features = points.transpose(1,2).contiguous()
 
 
-                labels_flat = labels.reshape(
-                    -1
-                )
+                inputs = {
+                    "pos": xyz,
+                    "x": features
+                }
 
+                pred = classifier(inputs)
+
+                # (B, 2, N) -> (B, N, 2)
+                pred = pred.transpose(1, 2).contiguous()
+
+                # (B, N, 2) -> (B*N, 2)
+                pred = pred.view(-1, NUM_CLASSES)
+
+                # (B, N) -> (B*N)
+                labels_flat = labels.view(-1)
 
                 loss = criterion(
                     pred,
