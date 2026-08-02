@@ -3,79 +3,82 @@
 set -e
 
 echo "========================================="
-echo "  Instalación LiDAR Sender"
+echo " Instalación LiDAR Sender"
 echo "========================================="
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-echo "Proyecto: $PROJECT_DIR"
-
-#############################################
-# Buscar python del entorno
-#############################################
-
 PYTHON_BIN=$(which python)
 
-echo "Python: $PYTHON_BIN"
+echo "Proyecto: $PROJECT_DIR"
+echo "Python  : $PYTHON_BIN"
 
 #############################################
-# Configurar IP fija de eth0
+# Comprobar NetworkManager
 #############################################
 
-echo
-echo "[1/5] Configurando eth0..."
-
-if ! grep -q "interface eth0" /etc/dhcpcd.conf; then
-
-sudo tee -a /etc/dhcpcd.conf >/dev/null <<EOF
-
-interface eth0
-static ip_address=192.168.1.102/24
-
-EOF
-
+if ! systemctl is-active --quiet NetworkManager; then
+    echo "ERROR: NetworkManager no está activo."
+    exit 1
 fi
 
 #############################################
-# Servicio de ruta del LiDAR
+# Configurar eth0
 #############################################
 
 echo
-echo "[2/5] Creando ruta exclusiva para el LiDAR..."
+echo "[1/4] Configurando eth0..."
 
-cat >/tmp/lidar-route.service <<EOF
-[Unit]
-Description=Route LiDAR through eth0
-After=network-online.target
-Wants=network-online.target
+ETH_CONN=$(nmcli -t -f NAME,DEVICE connection show | awk -F: '$2=="eth0"{print $1}')
 
-[Service]
-Type=oneshot
-ExecStart=/sbin/ip route replace 192.168.1.200 dev eth0 src 192.168.1.102
-RemainAfterExit=yes
+if [ -z "$ETH_CONN" ]; then
+    echo "No se encontró la conexión de eth0."
+    exit 1
+fi
 
-[Install]
-WantedBy=multi-user.target
-EOF
-
-sudo mv /tmp/lidar-route.service /etc/systemd/system/
+sudo nmcli connection modify "$ETH_CONN" \
+    ipv4.method manual \
+    ipv4.addresses "192.168.1.102/24" \
+    ipv4.gateway "" \
+    ipv4.dns "" \
+    ipv4.routes "192.168.1.200/32"
 
 #############################################
-# Servicio principal
+# Configurar wlan0
 #############################################
 
 echo
-echo "[3/5] Creando servicio LiDAR..."
+echo "[2/4] Configurando wlan0..."
+
+WIFI_CONN=$(nmcli -t -f NAME,DEVICE connection show | awk -F: '$2=="wlan0"{print $1}')
+
+if [ -n "$WIFI_CONN" ]; then
+    sudo nmcli connection modify "$WIFI_CONN" \
+        ipv4.method auto
+fi
+
+echo "Aplicando configuración..."
+
+sudo nmcli connection up "$ETH_CONN"
+
+if [ -n "$WIFI_CONN" ]; then
+    sudo nmcli connection up "$WIFI_CONN"
+fi
+
+#############################################
+# Crear servicio
+#############################################
+
+echo
+echo "[3/4] Creando servicio systemd..."
 
 cat >/tmp/lidar.service <<EOF
 [Unit]
 Description=LiDAR Sender
-After=network-online.target lidar-route.service
+After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-
 User=root
 WorkingDirectory=$PROJECT_DIR
 ExecStart=$PYTHON_BIN $PROJECT_DIR/main.py
@@ -93,25 +96,14 @@ EOF
 sudo mv /tmp/lidar.service /etc/systemd/system/
 
 #############################################
-# Activar servicios
+# Activar servicio
 #############################################
 
 echo
-echo "[4/5] Activando servicios..."
+echo "[4/4] Activando servicio..."
 
 sudo systemctl daemon-reload
-
-sudo systemctl enable lidar-route.service
 sudo systemctl enable lidar.service
-
-#############################################
-# Reiniciar red
-#############################################
-
-echo
-echo "[5/5] Reiniciando red..."
-
-sudo systemctl restart dhcpcd || true
 
 echo
 echo "========================================="
@@ -121,10 +113,11 @@ echo "Reinicia la Raspberry:"
 echo
 echo "    sudo reboot"
 echo
-echo "Después puedes comprobar:"
+echo "Comprobar estado:"
 echo
 echo "    systemctl status lidar"
 echo
-echo "    journalctl -u lidar -f"
+echo "Ver el log:"
 echo
+echo "    journalctl -u lidar -f"
 echo "========================================="
