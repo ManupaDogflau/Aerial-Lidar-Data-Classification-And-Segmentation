@@ -94,6 +94,17 @@ class LivePointStreamer:
                 self.points = np.vstack((self.points, new_points))
                 self.colors = np.vstack((self.colors, new_colors))
                 self.timestamps = np.concatenate((self.timestamps, timestamps))
+                
+    def get_points(self):
+        with self.lock:
+            return np.copy(self.points).astype(np.float32)
 
     def stop(self):
         self.running = False
+        
+    def get_pointcloud(self):
+        with self.lock:
+            return (
+                np.copy(self.points),
+                np.copy(self.colors)
+            )

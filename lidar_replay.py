@@ -5,10 +5,12 @@ from scapy.all import rdpcap
 
 from capture import handle_packet, set_streamer
 from streamer import LivePointStreamer
-from pointcloud_saver import PointCloudSaver  
+from pointcloud_saver import PointCloudSaver
+from sender import PointCloudSender
+from config import RECEIVER_IP
 
 PACKET_FILE = "lidar_packets.pcap"
-PACKET_DELAY = 0.003  # segundos entre paquetes
+PACKET_DELAY = 0.003
 
 
 class PacketReplayer(threading.Thread):
@@ -42,11 +44,19 @@ if __name__ == "__main__":
 
     saver = PointCloudSaver(streamer, save_interval_ms=1000)
 
+    sender = PointCloudSender(               # <-- NUEVO
+        streamer,
+        receiver_ip=RECEIVER_IP,
+        receiver_port=5005,
+        interval=0.1
+    )
+
     # Inicia replayer
     replayer = PacketReplayer(PACKET_FILE, delay=PACKET_DELAY)
     replayer.start()
 
     saver.start()
+    sender.start()                           # <-- NUEVO
 
     try:
         # Inicia visualizador
@@ -55,5 +65,6 @@ if __name__ == "__main__":
         print("Interrupción por teclado. Deteniendo...")
     finally:
         saver.stop()
+        sender.stop()                        # <-- NUEVO
         replayer.stop()
         streamer.stop()
