@@ -54,6 +54,10 @@ WIFI_CONN=$(nmcli -t -f NAME,DEVICE connection show | awk -F: '$2=="wlan0"{print
 if [ -n "$WIFI_CONN" ]; then
     sudo nmcli connection modify "$WIFI_CONN" \
         ipv4.method auto
+
+    # Ruta permanente hacia el portátil
+    sudo nmcli connection modify "$WIFI_CONN" \
+        +ipv4.routes "192.168.1.143/32"
 fi
 
 echo "Aplicando configuración..."
@@ -120,4 +124,5 @@ echo
 echo "Ver el log:"
 echo
 echo "    journalctl -u lidar -f"
+echo
 echo "========================================="
