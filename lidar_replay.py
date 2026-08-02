@@ -8,6 +8,8 @@ from streamer import LivePointStreamer
 from pointcloud_saver import PointCloudSaver
 from sender import PointCloudSender
 from config import RECEIVER_IP
+from scapy.all import PcapReader
+
 
 PACKET_FILE = "lidar_packets.pcap"
 PACKET_DELAY = 0.003
@@ -21,15 +23,20 @@ class PacketReplayer(threading.Thread):
         self.running = False
 
     def run(self):
+
         print(f"=== Reproduciendo paquetes desde {self.pcap_file} ===")
-        packets = rdpcap(self.pcap_file)
+
         self.running = True
 
-        for pkt in packets:
-            if not self.running:
-                break
-            handle_packet(pkt)
-            time.sleep(self.delay)
+        with PcapReader(self.pcap_file) as packets:
+
+            for pkt in packets:
+
+                if not self.running:
+                    break
+
+                handle_packet(pkt)
+                time.sleep(self.delay)
 
         print("Reproducción de paquetes finalizada.")
 
