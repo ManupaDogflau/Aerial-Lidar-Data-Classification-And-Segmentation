@@ -8,7 +8,8 @@ POINT_TTL = 1
 
 
 class LivePointStreamer:
-    def __init__(self):
+    def __init__(self,visualize=False):
+        self.visualize = visualize
         self.points = np.empty((0, 3), dtype=np.float64)
         self.colors = np.empty((0, 3), dtype=np.float64)
         self.timestamps = np.empty((0,), dtype=np.float64)
@@ -26,6 +27,13 @@ class LivePointStreamer:
         )
 
     def start(self):
+
+        if not self.visualize:
+            while self.running:
+                self.cleanup_old_points()
+                time.sleep(0.03)
+            return
+
         self.vis.create_window(
             window_name="Live LiDAR Stream",
             width=1280,
@@ -36,30 +44,22 @@ class LivePointStreamer:
 
         while self.running:
             with self.lock:
+                self.cleanup_old_points()
+
                 if self.points.shape[0] > 0:
-                    now = time.time()
+                    self.pcd.points = o3d.utility.Vector3dVector(self.points)
+                    self.pcd.colors = o3d.utility.Vector3dVector(self.colors)
 
-                    # 🔥 FILTRADO VECTORIAL POR TTL
-                    mask = (now - self.timestamps) <= POINT_TTL
+                    if not self.geometry_added:
+                        self.vis.add_geometry(self.pcd)
+                        ctr = self.vis.get_view_control()
 
-                    self.points = self.points[mask]
-                    self.colors = self.colors[mask]
-                    self.timestamps = self.timestamps[mask]
+                        ctr.set_lookat([0, 0, 0])
+                        ctr.set_front([0, 0, 1])
+                        ctr.set_up([0, 1, 0])
+                        ctr.set_zoom(0.7)
 
-                    if self.points.shape[0] > 0:
-                        self.pcd.points = o3d.utility.Vector3dVector(self.points)
-                        self.pcd.colors = o3d.utility.Vector3dVector(self.colors)
-
-                        if not self.geometry_added:
-                            self.vis.add_geometry(self.pcd)
-                            ctr = self.vis.get_view_control()
-
-                            ctr.set_lookat([0, 0, 0])
-                            ctr.set_front([0, 0, 1])
-                            ctr.set_up([0, 1, 0])
-                            ctr.set_zoom(0.7)
-
-                            self.geometry_added = True
+                        self.geometry_added = True
 
             if self.geometry_added:
                 self.vis.update_geometry(self.pcd)
@@ -98,6 +98,20 @@ class LivePointStreamer:
     def get_points(self):
         with self.lock:
             return np.copy(self.points).astype(np.float32)
+        
+    def cleanup_old_points(self):
+        with self.lock:
+
+            if self.points.shape[0] == 0:
+                return
+
+            now = time.time()
+
+            mask = (now - self.timestamps) <= POINT_TTL
+
+            self.points = self.points[mask]
+            self.colors = self.colors[mask]
+            self.timestamps = self.timestamps[mask]
 
     def stop(self):
         self.running = False
