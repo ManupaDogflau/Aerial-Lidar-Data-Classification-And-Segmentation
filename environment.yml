@@ -1,0 +1,4 @@
+name: pointnet2
+dependencies:
+  - python=3.10
+prefix: /home/manuel/miniconda3/envs/pointnet2

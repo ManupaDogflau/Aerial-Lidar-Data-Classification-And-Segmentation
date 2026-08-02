@@ -589,7 +589,7 @@ def validate(
 
         # (B, N, 4)
         points4 = torch.cat([points, ones], dim=2)
-        features = points.transpose(1,2).contiguous()
+        features = points4.transpose(1,2).contiguous()
 
         inputs = {
             "pos": xyz,
@@ -907,7 +907,7 @@ def main():
 
                 # (B, N, 4)
                 points4 = torch.cat([points, ones], dim=2)
-                features = points.transpose(1,2).contiguous()
+                features = points4.transpose(1,2).contiguous()
 
 
                 inputs = {
