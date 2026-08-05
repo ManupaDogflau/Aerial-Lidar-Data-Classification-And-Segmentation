@@ -16,15 +16,16 @@ class LivePointStreamer:
 
         self.lock = threading.Lock()
         self.running = True
+        
+        if self.visualize:
+            self.pcd = o3d.geometry.PointCloud()
+            self.vis = o3d.visualization.Visualizer()
+            self.geometry_added = False
 
-        self.pcd = o3d.geometry.PointCloud()
-        self.vis = o3d.visualization.Visualizer()
-        self.geometry_added = False
-
-        self.axes = o3d.geometry.TriangleMesh.create_coordinate_frame(
-            size=0.5,
-            origin=[0, 0, 0]
-        )
+            self.axes = o3d.geometry.TriangleMesh.create_coordinate_frame(
+                size=0.5,
+                origin=[0, 0, 0]
+            )
 
     def start(self):
 

@@ -7,10 +7,8 @@ echo " Instalación LiDAR Sender"
 echo "========================================="
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PYTHON_BIN=$(which python)
 
 echo "Proyecto: $PROJECT_DIR"
-echo "Python  : $PYTHON_BIN"
 
 #############################################
 # Comprobar NetworkManager
@@ -85,7 +83,7 @@ Wants=network-online.target
 Type=simple
 User=root
 WorkingDirectory=$PROJECT_DIR
-ExecStart=$PYTHON_BIN $PROJECT_DIR/main.py
+ExecStart=$PROJECT_DIR/start.sh
 
 Restart=always
 RestartSec=5

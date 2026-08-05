@@ -5,7 +5,7 @@ from benchmark import Benchmark
 
 from inference_engine import InferenceEngine
 
-from pointnet2_model import PointNet2Model
+from pointnet_model import PointNetModel
 
 from pcd_dataset import PCDDataset
 
@@ -52,7 +52,7 @@ def main():
     args = parse_args()
     dataset = PCDDataset(args.dataset)
 
-    model = PointNet2Model(
+    model = PointNetModel(
         checkpoint=args.checkpoint,
         pointnet_root=args.pointnet,
         device=args.device
