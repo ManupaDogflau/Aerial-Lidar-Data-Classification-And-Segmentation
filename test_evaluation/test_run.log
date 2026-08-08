@@ -34,15 +34,15 @@ test escenas: 8
 
 RESULT
 --------------------------------------------------
-Accuracy:       0.9783
-mIoU:           0.8722
-Person IoU:     0.7678
-Person Prec.:   0.7873
-Person Recall:  0.9689
-Person F1:      0.8687
-TN: 594055  FP: 12720  FN: 1513  TP: 47072
-Inference:      0.7999 s
-Throughput:     819,326 points/s
+Accuracy:       0.9751
+mIoU:           0.8673
+Person IoU:     0.7616
+Person Prec.:   0.7760
+Person Recall:  0.9763
+Person F1:      0.8647
+TN: 586944  FP: 15041  FN: 1266  TP: 52109
+Inference:      0.8150 s
+Throughput:     804,121 points/s
 
 ==========================================================================================
 EVALUATING: PointNet++
@@ -54,15 +54,15 @@ test escenas: 8
 
 RESULT
 --------------------------------------------------
-Accuracy:       0.9789
-mIoU:           0.8722
-Person IoU:     0.7671
-Person Prec.:   0.8085
-Person Recall:  0.9375
-Person F1:      0.8682
-TN: 595983  FP: 10792  FN: 3036  TP: 45549
-Inference:      4.1954 s
-Throughput:     156,210 points/s
+Accuracy:       0.9725
+mIoU:           0.8554
+Person IoU:     0.7407
+Person Prec.:   0.7606
+Person Recall:  0.9659
+Person F1:      0.8510
+TN: 585761  FP: 16224  FN: 1822  TP: 51553
+Inference:      4.2360 s
+Throughput:     154,711 points/s
 
 ==========================================================================================
 EVALUATING: DGCNN
@@ -74,15 +74,15 @@ test escenas: 8
 
 RESULT
 --------------------------------------------------
-Accuracy:       0.9800
-mIoU:           0.8676
-Person IoU:     0.7565
-Person Prec.:   0.8837
-Person Recall:  0.8402
-Person F1:      0.8614
-TN: 601401  FP: 5374  FN: 7763  TP: 40822
-Inference:      5.6673 s
-Throughput:     115,639 points/s
+Accuracy:       0.9769
+mIoU:           0.8745
+Person IoU:     0.7740
+Person Prec.:   0.7928
+Person Recall:  0.9703
+Person F1:      0.8726
+TN: 588450  FP: 13535  FN: 1586  TP: 51789
+Inference:      5.6994 s
+Throughput:     114,988 points/s
 
 ==========================================================================================
 EVALUATING: PointNeXt-S
@@ -94,15 +94,15 @@ test escenas: 8
 
 RESULT
 --------------------------------------------------
-Accuracy:       0.9729
-mIoU:           0.8203
-Person IoU:     0.6694
-Person Prec.:   0.8732
-Person Recall:  0.7415
-Person F1:      0.8020
-TN: 601544  FP: 5231  FN: 12560  TP: 36025
-Inference:      0.2765 s
-Throughput:     2,370,308 points/s
+Accuracy:       0.9824
+mIoU:           0.8992
+Person IoU:     0.8174
+Person Prec.:   0.8397
+Person Recall:  0.9686
+Person F1:      0.8996
+TN: 592113  FP: 9872  FN: 1674  TP: 51701
+Inference:      0.2748 s
+Throughput:     2,384,924 points/s
 
 ==========================================================================================
 EVALUATING: PointNeXt-XL
@@ -114,15 +114,15 @@ test escenas: 8
 
 RESULT
 --------------------------------------------------
-Accuracy:       0.9903
-mIoU:           0.9358
-Person IoU:     0.8821
-Person Prec.:   0.8975
-Person Recall:  0.9809
-Person F1:      0.9374
-TN: 601334  FP: 5441  FN: 926  TP: 47659
-Inference:      2.3493 s
-Throughput:     278,960 points/s
+Accuracy:       0.9896
+mIoU:           0.9377
+Person IoU:     0.8866
+Person Prec.:   0.8906
+Person Recall:  0.9949
+Person F1:      0.9399
+TN: 595462  FP: 6523  FN: 270  TP: 53105
+Inference:      2.3552 s
+Throughput:     278,265 points/s
 
 ==========================================================================================
 EVALUATING: PointVector
@@ -134,36 +134,36 @@ test escenas: 8
 
 RESULT
 --------------------------------------------------
-Accuracy:       0.9900
-mIoU:           0.9336
-Person IoU:     0.8780
-Person Prec.:   0.8980
-Person Recall:  0.9753
-Person F1:      0.9351
-TN: 601390  FP: 5385  FN: 1198  TP: 47387
-Inference:      2.3294 s
-Throughput:     281,348 points/s
+Accuracy:       0.9879
+mIoU:           0.9282
+Person IoU:     0.8697
+Person Prec.:   0.8730
+Person Recall:  0.9957
+Person F1:      0.9303
+TN: 594253  FP: 7732  FN: 230  TP: 53145
+Inference:      2.3581 s
+Throughput:     277,920 points/s
 
 
 ==========================================================================================
 FINAL TEST RESULTS
 ==========================================================================================
        Model  Accuracy   mIoU  Person IoU  Person Precision  Person Recall  Person F1
-PointNeXt-XL    0.9903 0.9358      0.8821            0.8975         0.9809     0.9374
- PointVector    0.9900 0.9336      0.8780            0.8980         0.9753     0.9351
-    PointNet    0.9783 0.8722      0.7678            0.7873         0.9689     0.8687
-  PointNet++    0.9789 0.8722      0.7671            0.8085         0.9375     0.8682
-       DGCNN    0.9800 0.8676      0.7565            0.8837         0.8402     0.8614
- PointNeXt-S    0.9729 0.8203      0.6694            0.8732         0.7415     0.8020
+PointNeXt-XL    0.9896 0.9377      0.8866            0.8906         0.9949     0.9399
+ PointVector    0.9879 0.9282      0.8697            0.8730         0.9957     0.9303
+ PointNeXt-S    0.9824 0.8992      0.8174            0.8397         0.9686     0.8996
+       DGCNN    0.9769 0.8745      0.7740            0.7928         0.9703     0.8726
+    PointNet    0.9751 0.8673      0.7616            0.7760         0.9763     0.8647
+  PointNet++    0.9725 0.8554      0.7407            0.7606         0.9659     0.8510
 
 ==========================================================================================
 BEST TEST MODEL
 ==========================================================================================
 Model:          PointNeXt-XL
-Accuracy:       0.9903
-mIoU:           0.9358
-Person IoU:     0.8821
-Person F1:      0.9374
+Accuracy:       0.9896
+mIoU:           0.9377
+Person IoU:     0.8866
+Person F1:      0.9399
 
 ==========================================================================================
 FILES FOR THE TFM

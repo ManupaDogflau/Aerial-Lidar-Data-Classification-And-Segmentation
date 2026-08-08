@@ -19,9 +19,9 @@
   "models_evaluated": [
     "PointNeXt-XL",
     "PointVector",
-    "PointNet",
-    "PointNet++",
+    "PointNeXt-S",
     "DGCNN",
-    "PointNeXt-S"
+    "PointNet",
+    "PointNet++"
   ]
 }

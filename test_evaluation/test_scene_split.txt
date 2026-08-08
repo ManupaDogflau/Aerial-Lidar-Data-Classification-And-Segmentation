@@ -4,11 +4,11 @@ Number of scenes: 8
 Number of samples: 160
 Samples per scene: 20
 
-01: position2_tpose_bottom-barrier_center_90.pcd
-02: position1_tpose_0.pcd
-03: position2_all-barrier.pcd
-04: position2_sitting_270.pcd
-05: position2_sitting_bottom-barrier_center_180.pcd
-06: position2_sitting_bottom-barrier_left_180.pcd
-07: position1_lying_90.pcd
-08: position1_tpose_180.pcd
+01: position2_standing_top-barrier_right.pcd
+02: position2_standing_bottom-barrier_right_90.pcd
+03: position2_tpose_180.pcd
+04: position1_tpose_270.pcd
+05: position2_sitting_bottom-barrier_center_270.pcd
+06: position1_standing_0.pcd
+07: position2_tpose_bottom-barrier_left_270.pcd
+08: position2_all-barrier.pcd
