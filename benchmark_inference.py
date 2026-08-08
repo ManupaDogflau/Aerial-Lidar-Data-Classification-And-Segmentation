@@ -2,6 +2,7 @@
 
 import argparse
 import csv
+import gc
 import importlib
 import os
 import sys
@@ -14,13 +15,14 @@ import torch
 
 
 # ============================================================================
-# Paths
+# PATHS
 # ============================================================================
 
 ROOT = Path(__file__).resolve().parent
 
-INFERENCE_DIR = ROOT / "inference"
 DATASET_DIR = ROOT / "lidar_database" / "clean"
+INFERENCE_DIR = ROOT / "inference"
+OPENPOINTS_DIR = ROOT / "openpoints"
 
 CHECKPOINT_DIRS = {
     "PointNet": ROOT / "checkpoints_person",
@@ -38,9 +40,7 @@ CONFIG_FILES = {
     "PointVector": ROOT / "pointvector.yaml",
 }
 
-NUM_POINTS = 4096
-
-MODEL_ORDER = [
+MODELS = [
     "PointNet",
     "PointNet++",
     "DGCNN",
@@ -49,17 +49,12 @@ MODEL_ORDER = [
     "PointVector",
 ]
 
+NUM_POINTS = 4096
+
 
 # ============================================================================
-# Utilities
+# GENERAL UTILITIES
 # ============================================================================
-
-def select_device(device):
-    if device == "auto":
-        return "cuda" if torch.cuda.is_available() else "cpu"
-
-    return device
-
 
 def find_checkpoint(directory):
 
@@ -73,68 +68,64 @@ def find_checkpoint(directory):
     ]:
         candidates.extend(directory.glob(pattern))
 
-    candidates = sorted(
-        set(candidates),
-        key=lambda p: str(p)
-    )
+    candidates = sorted(set(candidates))
 
     if not candidates:
         raise FileNotFoundError(
-            f"No best_model checkpoint found in {directory}"
+            f"No best_model checkpoint found in:\n{directory}"
         )
 
     return candidates[-1]
 
 
-def load_point_cloud(path):
+def load_cloud(path):
 
     pcd = o3d.io.read_point_cloud(str(path))
 
-    cloud = np.asarray(
+    points = np.asarray(
         pcd.points,
         dtype=np.float32
     )
 
-    if cloud.ndim != 2 or cloud.shape[1] < 3:
-        raise ValueError(
+    if points.ndim != 2 or points.shape[1] < 3:
+        raise RuntimeError(
             f"Invalid point cloud: {path}"
         )
 
-    return cloud[:, :3]
+    return points[:, :3]
 
 
-def create_patches(cloud, num_points=4096):
+def create_patches(points):
 
     patches = []
 
-    for start in range(0, len(cloud), num_points):
+    for start in range(
+        0,
+        len(points),
+        NUM_POINTS
+    ):
 
-        end = min(
-            start + num_points,
-            len(cloud)
-        )
+        patch = points[
+            start:start + NUM_POINTS
+        ]
 
-        patch = cloud[start:end]
-
-        valid_size = len(patch)
-
-        if valid_size == 0:
+        if len(patch) == 0:
             continue
 
-        if valid_size < num_points:
+        # Last patch is padded only if necessary.
+        if len(patch) < NUM_POINTS:
 
-            rng = np.random.default_rng(42)
-
-            padding_indices = rng.choice(
-                valid_size,
-                num_points - valid_size,
+            indices = np.random.choice(
+                len(patch),
+                NUM_POINTS - len(patch),
                 replace=True
             )
 
-            padding = patch[padding_indices]
-
             patch = np.concatenate(
-                [patch, padding],
+                [
+                    patch,
+                    patch[indices]
+                ],
                 axis=0
             )
 
@@ -145,119 +136,145 @@ def create_patches(cloud, num_points=4096):
     return patches
 
 
+def synchronize(device):
+
+    if device == "cuda":
+        torch.cuda.synchronize()
+
+
+def cleanup_gpu():
+
+    gc.collect()
+
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+        try:
+            torch.cuda.ipc_collect()
+        except Exception:
+            pass
+
+
 # ============================================================================
-# PointNet / PointNet++
+# POINTNET / POINTNET++
 # ============================================================================
 
-def import_inference_wrappers():
+def import_pointnet_wrappers():
 
-    inference_dir = str(
+    inference_path = str(
         INFERENCE_DIR.resolve()
     )
 
-    if inference_dir not in sys.path:
+    if inference_path not in sys.path:
         sys.path.insert(
             0,
-            inference_dir
+            inference_path
         )
 
     from pointnet_model import PointNetModel
     from pointnet2_model import PointNet2Model
 
-    return PointNetModel, PointNet2Model
+    return (
+        PointNetModel,
+        PointNet2Model
+    )
 
 
 def load_pointnet(
+    model_name,
     checkpoint,
     pointnet_root,
-    pointnet2,
     device
 ):
 
     PointNetModel, PointNet2Model = (
-        import_inference_wrappers()
+        import_pointnet_wrappers()
     )
 
-    if pointnet2:
+    if model_name == "PointNet++":
 
-        return PointNet2Model(
+        model = PointNet2Model(
             checkpoint=str(checkpoint),
             pointnet_root=str(pointnet_root),
             device=device,
         )
 
-    return PointNetModel(
-        checkpoint=str(checkpoint),
-        pointnet_root=str(pointnet_root),
-        device=device,
-    )
+    else:
 
-
-def predict_pointnet(model, patch):
-
-    labels = model.predict(patch)
-
-    labels = np.asarray(
-        labels
-    ).reshape(-1)
-
-    if len(labels) != len(patch):
-
-        raise RuntimeError(
-            f"{model.name} produced "
-            f"{len(labels)} predictions for "
-            f"{len(patch)} points."
+        model = PointNetModel(
+            checkpoint=str(checkpoint),
+            pointnet_root=str(pointnet_root),
+            device=device,
         )
 
-    return labels
+    return model
 
 
-# ============================================================================
-# OpenPoints
-# ============================================================================
-
-def load_openpoints_model(
-    checkpoint,
-    config,
-    openpoints_root,
-    device
+def predict_pointnet(
+    model,
+    patch
 ):
 
-    openpoints_root = str(
-        Path(openpoints_root).resolve()
+    prediction = model.predict(
+        patch
     )
 
-    if openpoints_root not in sys.path:
-        sys.path.insert(
-            0,
-            openpoints_root
+    prediction = np.asarray(
+        prediction
+    ).reshape(-1)
+
+    if len(prediction) != NUM_POINTS:
+
+        raise RuntimeError(
+            f"PointNet wrapper returned "
+            f"{len(prediction)} predictions "
+            f"for {NUM_POINTS} points."
         )
 
-    models_path = os.path.join(
-        openpoints_root,
-        "models"
+    return prediction
+
+
+# ============================================================================
+# OPENPOINTS
+# ============================================================================
+
+def prepare_openpoints():
+
+    root = str(
+        OPENPOINTS_DIR.resolve()
     )
 
-    if models_path not in sys.path:
+    if root not in sys.path:
         sys.path.insert(
             0,
-            models_path
+            root
         )
 
     imports = [
+        "openpoints.models",
         "openpoints.models.backbone.dgcnn",
-        "openpoints.models.backbone.pointvector",
         "openpoints.models.backbone.pointnext",
+        "openpoints.models.backbone.pointvector",
     ]
 
-    for module_name in imports:
+    for module in imports:
 
         try:
             importlib.import_module(
-                module_name
+                module
             )
         except ImportError:
             pass
+
+
+def load_openpoints_model(
+    model_name,
+    checkpoint,
+    config,
+    device
+):
+
+    prepare_openpoints()
 
     from openpoints.models import (
         build_model_from_cfg
@@ -278,7 +295,7 @@ def load_openpoints_model(
     )
 
     checkpoint_data = torch.load(
-        checkpoint,
+        str(checkpoint),
         map_location=device
     )
 
@@ -290,16 +307,18 @@ def load_openpoints_model(
             ]
         )
 
+    elif "state_dict" in checkpoint_data:
+
+        state_dict = (
+            checkpoint_data[
+                "state_dict"
+            ]
+        )
+
     elif "model" in checkpoint_data:
 
         state_dict = (
             checkpoint_data["model"]
-        )
-
-    elif "state_dict" in checkpoint_data:
-
-        state_dict = (
-            checkpoint_data["state_dict"]
         )
 
     else:
@@ -311,6 +330,7 @@ def load_openpoints_model(
     )
 
     model.to(device)
+
     model.eval()
 
     return model
@@ -322,273 +342,475 @@ def predict_openpoints(
     device
 ):
 
-    tensor = torch.from_numpy(
-        patch.astype(np.float32)
-    ).unsqueeze(0).to(device)
+    points = torch.from_numpy(
+        patch
+    ).unsqueeze(0).to(
+        device,
+        non_blocking=True
+    )
 
-    xyz = tensor[:, :, :3].contiguous()
+    xyz = points[:, :, :3].contiguous()
 
+    # XYZ + dummy feature channel.
     ones = torch.ones(
-        tensor.shape[0],
-        tensor.shape[1],
+        points.shape[0],
+        points.shape[1],
         1,
         device=device
     )
 
-    cloud4 = torch.cat(
+    features = torch.cat(
         [
-            tensor,
+            points,
             ones
         ],
         dim=2
     )
 
-    features = cloud4.transpose(
+    features = features.transpose(
         1,
         2
     ).contiguous()
 
-    inputs = {
+    data = {
         "pos": xyz,
-        "x": features
+        "x": features,
     }
 
     with torch.no_grad():
 
-        output = model(inputs)
+        output = model(
+            data
+        )
 
     if isinstance(output, dict):
 
         if "logits" in output:
             output = output["logits"]
 
-        elif "pred" in output:
-            output = output["pred"]
-
         elif "cls_logits" in output:
             output = output["cls_logits"]
+
+        elif "pred" in output:
+            output = output["pred"]
 
         else:
 
             raise RuntimeError(
-                "Unable to identify logits "
-                "in model output."
+                "Could not find prediction "
+                "tensor in OpenPoints output."
             )
 
-    if output.shape[1] == 2:
+    # Common OpenPoints output:
+    # [B, N, C]
+    if output.ndim == 3:
 
-        labels = output.argmax(
-            dim=1
-        )
+        if output.shape[-1] == 2:
 
-    elif output.shape[2] == 2:
+            prediction = output.argmax(
+                dim=-1
+            )
 
-        labels = output.argmax(
-            dim=2
-        )
+        elif output.shape[1] == 2:
+
+            prediction = output.argmax(
+                dim=1
+            )
+
+        else:
+
+            raise RuntimeError(
+                f"Unexpected output shape: "
+                f"{tuple(output.shape)}"
+            )
 
     else:
 
         raise RuntimeError(
-            "Unexpected output shape: "
+            f"Unexpected output dimensions: "
             f"{tuple(output.shape)}"
         )
 
-    return labels.squeeze(
-        0
+    return prediction.reshape(
+        -1
     ).cpu().numpy()
 
 
 # ============================================================================
-# Inference
+# MODEL LOADING
 # ============================================================================
 
-def run_model_on_dataset(
-    name,
+def load_model(
+    model_name,
+    pointnet_root,
+    device
+):
+
+    checkpoint = find_checkpoint(
+        CHECKPOINT_DIRS[model_name]
+    )
+
+    print()
+    print(
+        f"Model:       {model_name}"
+    )
+
+    print(
+        f"Checkpoint:  {checkpoint}"
+    )
+
+    if model_name in [
+        "PointNet",
+        "PointNet++"
+    ]:
+
+        model = load_pointnet(
+            model_name,
+            checkpoint,
+            pointnet_root,
+            device
+        )
+
+    else:
+
+        config = CONFIG_FILES[
+            model_name
+        ]
+
+        print(
+            f"Config:      {config}"
+        )
+
+        model = load_openpoints_model(
+            model_name,
+            checkpoint,
+            config,
+            device
+        )
+
+    return model
+
+
+# ============================================================================
+# SINGLE PATCH
+# ============================================================================
+
+def run_patch(
+    model_name,
     model,
-    clouds,
-    device,
-    is_pointnet
+    patch,
+    device
+):
+
+    if model_name in [
+        "PointNet",
+        "PointNet++"
+    ]:
+
+        return predict_pointnet(
+            model,
+            patch
+        )
+
+    return predict_openpoints(
+        model,
+        patch,
+        device
+    )
+
+
+# ============================================================================
+# WARM-UP
+# ============================================================================
+
+def warmup(
+    model_name,
+    model,
+    patch,
+    device
 ):
 
     print()
-    print("=" * 70)
-    print(f"MODEL: {name}")
-    print("=" * 70)
+    print(
+        f"Warming up {model_name}..."
+    )
 
+    for _ in range(2):
+
+        run_patch(
+            model_name,
+            model,
+            patch,
+            device
+        )
+
+    synchronize(
+        device
+    )
+
+    print(
+        "Warm-up completed."
+    )
+
+
+# ============================================================================
+# BENCHMARK
+# ============================================================================
+
+def benchmark_dataset(
+    model_name,
+    model,
+    cloud_files,
+    device
+):
+
+    print()
+    print("=" * 80)
+    print(
+        f"RUNNING FULL DATASET: {model_name}"
+    )
+    print("=" * 80)
+
+    total_inference_time = 0.0
     total_points = 0
     total_patches = 0
-    total_time = 0.0
 
-    cloud_times = []
+    cloud_results = []
 
-    for index, cloud_path in enumerate(
-        clouds,
+    for index, cloud_file in enumerate(
+        cloud_files,
         start=1
     ):
 
-        cloud = load_point_cloud(
-            cloud_path
+        # ------------------------------------------------------------
+        # Loading is deliberately outside the timing.
+        # ------------------------------------------------------------
+
+        points = load_cloud(
+            cloud_file
         )
 
         patches = create_patches(
-            cloud,
-            NUM_POINTS
+            points
+        )
+
+        total_points += len(points)
+        total_patches += len(patches)
+
+        # ------------------------------------------------------------
+        # Synchronize before timing so that previous CUDA work
+        # cannot contaminate the measurement.
+        # ------------------------------------------------------------
+
+        synchronize(
+            device
         )
 
         start = time.perf_counter()
 
         for patch in patches:
 
-            if is_pointnet:
+            run_patch(
+                model_name,
+                model,
+                patch,
+                device
+            )
 
-                predict_pointnet(
-                    model,
-                    patch
-                )
-
-            else:
-
-                predict_openpoints(
-                    model,
-                    patch,
-                    device
-                )
-
-        if device == "cuda":
-            torch.cuda.synchronize()
+        synchronize(
+            device
+        )
 
         elapsed = (
             time.perf_counter()
             - start
         )
 
-        total_time += elapsed
+        total_inference_time += elapsed
 
-        total_points += len(cloud)
-        total_patches += len(patches)
-
-        cloud_times.append(
-            elapsed
+        cloud_results.append(
+            {
+                "file": cloud_file.name,
+                "points": len(points),
+                "patches": len(patches),
+                "inference_time_s": elapsed,
+                "points_per_second":
+                    len(points) / elapsed,
+            }
         )
 
         print(
-            f"[{index:3d}/{len(clouds):3d}] "
-            f"{cloud_path.name:<40} "
-            f"{len(cloud):6d} points | "
+            f"[{index:3d}/{len(cloud_files):3d}] "
+            f"{cloud_file.name:<42} "
+            f"{len(points):6d} pts | "
             f"{len(patches):2d} patches | "
             f"{elapsed:.4f} s"
         )
 
+    # ----------------------------------------------------------------
+    # Summary
+    # ----------------------------------------------------------------
+
     mean_cloud_time = (
-        total_time / len(clouds)
+        total_inference_time
+        / len(cloud_files)
     )
 
     points_per_second = (
-        total_points / total_time
+        total_points
+        / total_inference_time
     )
 
     patches_per_second = (
-        total_patches / total_time
-    )
-
-    mean_points_per_cloud = (
-        total_points / len(clouds)
-    )
-
-    mean_patches_per_cloud = (
-        total_patches / len(clouds)
-    )
-
-    print()
-    print(
-        f"Total clouds:          {len(clouds)}"
-    )
-
-    print(
-        f"Total original points: {total_points}"
-    )
-
-    print(
-        f"Total patches:         {total_patches}"
-    )
-
-    print(
-        f"Total inference time:  "
-        f"{total_time:.4f} s"
-    )
-
-    print(
-        f"Mean cloud time:       "
-        f"{mean_cloud_time:.4f} s"
-    )
-
-    print(
-        f"Points per second:     "
-        f"{points_per_second:.2f}"
-    )
-
-    print(
-        f"Patches per second:    "
-        f"{patches_per_second:.2f}"
+        total_patches
+        / total_inference_time
     )
 
     return {
-        "model": name,
-        "clouds": len(clouds),
+        "model": model_name,
+        "clouds": len(cloud_files),
         "total_points": total_points,
         "total_patches": total_patches,
-        "total_time_s": total_time,
-        "mean_cloud_time_s": mean_cloud_time,
-        "mean_points_per_cloud": mean_points_per_cloud,
-        "mean_patches_per_cloud": mean_patches_per_cloud,
-        "points_per_second": points_per_second,
-        "patches_per_second": patches_per_second,
+        "total_inference_time_s":
+            total_inference_time,
+        "mean_inference_time_per_cloud_s":
+            mean_cloud_time,
+        "points_per_second":
+            points_per_second,
+        "patches_per_second":
+            patches_per_second,
+        "cloud_results": cloud_results,
     }
 
 
 # ============================================================================
-# Main
+# SAVE RESULTS
+# ============================================================================
+
+def save_results(
+    summary,
+    output_file
+):
+
+    output_file = Path(
+        output_file
+    )
+
+    with open(
+        output_file,
+        "w",
+        newline=""
+    ) as f:
+
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "model",
+                "clouds",
+                "total_points",
+                "total_patches",
+                "total_inference_time_s",
+                "mean_inference_time_per_cloud_s",
+                "points_per_second",
+                "patches_per_second",
+            ]
+        )
+
+        writer.writeheader()
+
+        writer.writerow(
+            {
+                key: value
+                for key, value in summary.items()
+                if key != "cloud_results"
+            }
+        )
+
+    detailed_file = (
+        output_file.parent
+        / (
+            output_file.stem
+            + "_per_cloud.csv"
+        )
+    )
+
+    with open(
+        detailed_file,
+        "w",
+        newline=""
+    ) as f:
+
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "file",
+                "points",
+                "patches",
+                "inference_time_s",
+                "points_per_second",
+            ]
+        )
+
+        writer.writeheader()
+
+        writer.writerows(
+            summary["cloud_results"]
+        )
+
+    print()
+    print(
+        f"Summary saved to: "
+        f"{output_file}"
+    )
+
+    print(
+        f"Per-cloud results saved to: "
+        f"{detailed_file}"
+    )
+
+
+# ============================================================================
+# MAIN
 # ============================================================================
 
 def main():
 
     parser = argparse.ArgumentParser(
         description=(
-            "Run inference over the complete "
-            "LiDAR dataset using all trained models."
+            "Standalone-style inference benchmark "
+            "over the complete LiDAR dataset."
         )
+    )
+
+    parser.add_argument(
+        "--model",
+        required=True,
+        choices=MODELS,
+        help="Model to benchmark."
     )
 
     parser.add_argument(
         "--pointnet-root",
         required=True,
         help=(
-            "Path to the PointNet/PointNet++ "
-            "repository root."
-        )
-    )
-
-    parser.add_argument(
-        "--openpoints-root",
-        default=None,
-        help=(
-            "Path to OpenPoints. "
-            "Defaults to ./openpoints"
+            "Root directory of the "
+            "PointNet/PointNet++ implementation."
         )
     )
 
     parser.add_argument(
         "--dataset",
         default=str(DATASET_DIR),
-        help="Directory containing .pcd files."
+        help=(
+            "Directory containing the "
+            "clean .pcd point clouds."
+        )
     )
 
     parser.add_argument(
         "--device",
-        default="auto",
+        default="cuda",
         choices=[
-            "auto",
             "cuda",
             "cpu"
         ]
@@ -596,283 +818,207 @@ def main():
 
     parser.add_argument(
         "--output",
-        default="full_dataset_inference.csv"
+        default=None,
+        help="Output CSV file."
     )
 
     args = parser.parse_args()
 
-    device = select_device(
-        args.device
+    # ----------------------------------------------------------------
+    # Device
+    # ----------------------------------------------------------------
+
+    if args.device == "cuda":
+
+        if not torch.cuda.is_available():
+
+            raise RuntimeError(
+                "CUDA was requested but is not available."
+            )
+
+        device = "cuda"
+
+    else:
+
+        device = "cpu"
+
+    print("=" * 80)
+    print(
+        "STANDALONE-STYLE FULL DATASET INFERENCE"
+    )
+    print("=" * 80)
+
+    print(
+        f"Model:    {args.model}"
     )
 
-    print("=" * 70)
     print(
-        "FULL DATASET INFERENCE BENCHMARK"
+        f"Device:   {device}"
     )
-    print("=" * 70)
 
     print(
-        f"Device: {device}"
+        f"Dataset:  {args.dataset}"
     )
+
+    # ----------------------------------------------------------------
+    # Dataset
+    # ----------------------------------------------------------------
 
     dataset_dir = Path(
         args.dataset
     )
 
-    if not dataset_dir.exists():
-
-        raise FileNotFoundError(
-            f"Dataset directory not found: "
-            f"{dataset_dir}"
-        )
-
-    # ------------------------------------------------------------
-    # Find all point clouds
-    # ------------------------------------------------------------
-
-    clouds = sorted(
+    cloud_files = sorted(
         dataset_dir.glob("*.pcd")
     )
 
-    if not clouds:
+    if not cloud_files:
 
-        raise FileNotFoundError(
+        raise RuntimeError(
             f"No .pcd files found in "
             f"{dataset_dir}"
         )
 
     print(
-        f"Dataset: {dataset_dir}"
+        f"Point clouds: {len(cloud_files)}"
     )
 
-    print(
-        f"Point clouds found: "
-        f"{len(clouds)}"
-    )
+    # ----------------------------------------------------------------
+    # Load one cloud for warm-up
+    # ----------------------------------------------------------------
 
-    # ------------------------------------------------------------
-    # OpenPoints path
-    # ------------------------------------------------------------
-
-    if args.openpoints_root is None:
-
-        openpoints_root = (
-            ROOT / "openpoints"
-        )
-
-    else:
-
-        openpoints_root = Path(
-            args.openpoints_root
-        )
-
-    # ------------------------------------------------------------
-    # Find checkpoints
-    # ------------------------------------------------------------
-
-    print()
-    print("Searching checkpoints...")
-
-    checkpoints = {}
-
-    for name, directory in (
-        CHECKPOINT_DIRS.items()
-    ):
-
-        checkpoint = find_checkpoint(
-            directory
-        )
-
-        checkpoints[name] = checkpoint
-
-        print(
-            f"{name:<15}: {checkpoint}"
-        )
-
-    # ------------------------------------------------------------
-    # Load models
-    # ------------------------------------------------------------
-
-    models = {}
-
-    print()
-    print("Loading models...")
-
-    print(
-        "Loading PointNet..."
-    )
-
-    models["PointNet"] = load_pointnet(
-        checkpoints["PointNet"],
-        args.pointnet_root,
-        False,
-        device
-    )
-
-    print(
-        "Loading PointNet++..."
-    )
-
-    models["PointNet++"] = load_pointnet(
-        checkpoints["PointNet++"],
-        args.pointnet_root,
-        True,
-        device
-    )
-
-    for name in [
-        "DGCNN",
-        "PointNeXt-S",
-        "PointNeXt-XL",
-        "PointVector"
-    ]:
-
-        print(
-            f"Loading {name}..."
-        )
-
-        models[name] = (
-            load_openpoints_model(
-                checkpoints[name],
-                CONFIG_FILES[name],
-                openpoints_root,
-                device
-            )
-        )
-
-    # ------------------------------------------------------------
-    # Warm-up
-    # ------------------------------------------------------------
-
-    print()
-    print("Running one warm-up inference...")
-
-    warmup_cloud = load_point_cloud(
-        clouds[0]
+    warmup_cloud = load_cloud(
+        cloud_files[0]
     )
 
     warmup_patches = create_patches(
-        warmup_cloud,
-        NUM_POINTS
+        warmup_cloud
     )
 
     warmup_patch = warmup_patches[0]
 
-    for name in MODEL_ORDER:
+    # ----------------------------------------------------------------
+    # Load ONLY the requested model
+    # ----------------------------------------------------------------
 
-        print(
-            f"Warm-up: {name}"
-        )
-
-        if name in [
-            "PointNet",
-            "PointNet++"
-        ]:
-
-            predict_pointnet(
-                models[name],
-                warmup_patch
-            )
-
-        else:
-
-            predict_openpoints(
-                models[name],
-                warmup_patch,
-                device
-            )
-
-    if device == "cuda":
-        torch.cuda.synchronize()
-
-    # ------------------------------------------------------------
-    # Full dataset inference
-    # ------------------------------------------------------------
-
-    results = []
-
-    for name in MODEL_ORDER:
-
-        is_pointnet = name in [
-            "PointNet",
-            "PointNet++"
-        ]
-
-        result = run_model_on_dataset(
-            name=name,
-            model=models[name],
-            clouds=clouds,
-            device=device,
-            is_pointnet=is_pointnet
-        )
-
-        results.append(
-            result
-        )
-
-    # ------------------------------------------------------------
-    # Save CSV
-    # ------------------------------------------------------------
-
-    output_path = Path(
-        args.output
+    model = load_model(
+        args.model,
+        args.pointnet_root,
+        device
     )
 
-    with open(
-        output_path,
-        "w",
-        newline=""
-    ) as f:
+    # ----------------------------------------------------------------
+    # Warm-up
+    # ----------------------------------------------------------------
 
-        writer = csv.DictWriter(
-            f,
-            fieldnames=results[0].keys()
+    warmup(
+        args.model,
+        model,
+        warmup_patch,
+        device
+    )
+
+    # ----------------------------------------------------------------
+    # Benchmark
+    # ----------------------------------------------------------------
+
+    summary = benchmark_dataset(
+        args.model,
+        model,
+        cloud_files,
+        device
+    )
+
+    # ----------------------------------------------------------------
+    # Save
+    # ----------------------------------------------------------------
+
+    if args.output is None:
+
+        safe_name = (
+            args.model
+            .lower()
+            .replace(
+                "++",
+                "pp"
+            )
+            .replace(
+                "-",
+                "_"
+            )
         )
 
-        writer.writeheader()
-
-        writer.writerows(
-            results
+        output = (
+            ROOT
+            / f"inference_{safe_name}.csv"
         )
 
-    # ------------------------------------------------------------
-    # Final summary
-    # ------------------------------------------------------------
+    else:
+
+        output = Path(
+            args.output
+        )
+
+    save_results(
+        summary,
+        output
+    )
+
+    # ----------------------------------------------------------------
+    # Print final result
+    # ----------------------------------------------------------------
 
     print()
-    print("=" * 90)
-    print("FINAL RESULTS")
-    print("=" * 90)
+    print("=" * 80)
+    print(
+        f"RESULTS: {args.model}"
+    )
+    print("=" * 80)
 
     print(
-        f"{'Model':<15}"
-        f"{'Clouds':>8}"
-        f"{'Patches':>10}"
-        f"{'Total (s)':>12}"
-        f"{'Mean/cloud':>14}"
-        f"{'Points/s':>15}"
+        f"Clouds:             "
+        f"{summary['clouds']}"
     )
 
-    print("-" * 90)
-
-    for result in results:
-
-        print(
-            f"{result['model']:<15}"
-            f"{result['clouds']:>8}"
-            f"{result['total_patches']:>10}"
-            f"{result['total_time_s']:>12.3f}"
-            f"{result['mean_cloud_time_s']:>14.4f}"
-            f"{result['points_per_second']:>15.1f}"
-        )
-
-    print("=" * 90)
-
-    print()
     print(
-        f"Results saved to: "
-        f"{output_path.resolve()}"
+        f"Total points:       "
+        f"{summary['total_points']}"
     )
+
+    print(
+        f"Total patches:      "
+        f"{summary['total_patches']}"
+    )
+
+    print(
+        f"Total inference:    "
+        f"{summary['total_inference_time_s']:.4f} s"
+    )
+
+    print(
+        f"Mean cloud:         "
+        f"{summary['mean_inference_time_per_cloud_s']:.4f} s"
+    )
+
+    print(
+        f"Points/s:            "
+        f"{summary['points_per_second']:.2f}"
+    )
+
+    print(
+        f"Patches/s:           "
+        f"{summary['patches_per_second']:.2f}"
+    )
+
+    print("=" * 80)
+
+    # ----------------------------------------------------------------
+    # Explicit GPU cleanup
+    # ----------------------------------------------------------------
+
+    del model
+
+    cleanup_gpu()
 
 
 if __name__ == "__main__":
