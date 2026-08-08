@@ -573,15 +573,53 @@ def plot_point_cloud(
         fontsize=8,
     )
 
+def load_ground_truth(cloud_path, cloud):
+    """
+    Load ground-truth semantic labels associated with the input PCD.
+
+    The repository stores labels using the naming convention:
+        <cloud_name>_labels.npy
+
+    Returns one label per point in the original point cloud.
+    """
+
+    labels_path = cloud_path.with_name(
+        cloud_path.stem + "_labels.npy"
+    )
+
+    if not labels_path.exists():
+        raise FileNotFoundError(
+            f"Ground-truth labels not found: {labels_path}"
+        )
+
+    labels = np.load(labels_path)
+    labels = np.asarray(labels).reshape(-1)
+
+    if len(labels) != len(cloud):
+        raise RuntimeError(
+            f"Ground truth contains {len(labels)} labels "
+            f"for {len(cloud)} points."
+        )
+
+    return labels.astype(np.uint8)
+
 
 def save_figure(
     cloud,
     predictions,
+    ground_truth,
     output_path,
     input_name,
 ):
     """
-    Generate and save a 2x3 qualitative comparison.
+    Generate and save a qualitative comparison including:
+        - Ground Truth
+        - PointNet
+        - PointNet++
+        - DGCNN
+        - PointNeXt-S
+        - PointNeXt-XL
+        - PointVector
     """
 
     model_names = [
@@ -594,15 +632,37 @@ def save_figure(
     ]
 
     fig = plt.figure(
-        figsize=(16, 10)
+        figsize=(18, 10)
     )
+
+    # ------------------------------------------------------------------
+    # Ground Truth
+    # ------------------------------------------------------------------
+
+    ax = fig.add_subplot(
+        2,
+        4,
+        1,
+        projection="3d",
+    )
+
+    plot_point_cloud(
+        ax,
+        cloud,
+        ground_truth,
+        "Ground Truth",
+    )
+
+    # ------------------------------------------------------------------
+    # Model predictions
+    # ------------------------------------------------------------------
 
     for i, model_name in enumerate(model_names):
 
         ax = fig.add_subplot(
             2,
-            3,
-            i + 1,
+            4,
+            i + 2,
             projection="3d",
         )
 
@@ -632,7 +692,6 @@ def save_figure(
     )
 
     plt.close(fig)
-
 
 # -------------------------------------------------------------------------
 # Main
@@ -707,9 +766,18 @@ def main():
         )
 
     cloud = load_point_cloud(cloud_path)
-
+    
     print(f"Input cloud: {cloud_path}")
     print(f"Original points: {len(cloud)}")
+    
+    ground_truth = load_ground_truth(
+        cloud_path,
+        cloud,
+    )
+    
+    print(
+        f"Ground-truth labels: {len(ground_truth)}"
+    )
 
     # -------------------------------------------------------------
     # Create complete-cloud patches
@@ -886,6 +954,7 @@ def main():
     save_figure(
         cloud=cloud,
         predictions=predictions,
+        ground_truth=ground_truth,
         output_path=output_path,
         input_name=args.cloud,
     )
