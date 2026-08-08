@@ -1,0 +1,2 @@
+model,clouds,total_points,total_patches,total_inference_time_s,mean_inference_time_per_cloud_s,points_per_second,patches_per_second
+PointNet,78,3631106,931,3.019051881999914,0.038705793358973256,1202730.5730150759,308.3749588904966

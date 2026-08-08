@@ -1,0 +1,2 @@
+model,clouds,total_points,total_patches,total_inference_time_s,mean_inference_time_per_cloud_s,points_per_second,patches_per_second
+PointNeXt-XL,78,3631106,931,14.531651409999824,0.18630322320512596,249875.6608971013,64.06704742169502

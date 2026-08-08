@@ -1,0 +1,2 @@
+model,clouds,total_points,total_patches,total_inference_time_s,mean_inference_time_per_cloud_s,points_per_second,patches_per_second
+PointVector,78,3631106,931,11.318903522000028,0.1451141477179491,320800.1546211952,82.25178332781603
