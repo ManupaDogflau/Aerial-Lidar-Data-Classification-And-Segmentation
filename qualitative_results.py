@@ -1,3 +1,4 @@
+```python
 #!/usr/bin/env python3
 
 """
@@ -12,47 +13,29 @@ Models:
     - PointNeXt-XL
     - PointVector
 
-The same 4096-point subset is used for all models to make the qualitative
-comparison visually consistent.
+The same 4096-point subset is used for all models so that the qualitative
+comparison is visually consistent.
 
-Expected repository structure:
-
-Aerial-Lidar-Data-Classification-And-Segmentation/
-├── inference/
-├── lidar_database/
-│   └── clean/
-├── checkpoints_person/
-├── checkpoints-pointnet2/
-├── checkpoints_person-dgcnn/
-├── checkpoints_person-pointnext-s/
-├── checkpoints_person-pointnext-xl/
-├── checkpoints_person-pointvector/
-├── dgcnn.yaml
-├── pointnext-s.yaml
-├── pointnext-xl.yaml
-└── pointvector.yaml
-
-External dependencies:
-    - PointNet/PointNet++ PyTorch repository
-    - OpenPoints repository
+The PointNet and PointNet++ models are loaded through the inference wrappers
+already used by the repository. The OpenPoints-based models are loaded directly
+from their corresponding YAML configurations and checkpoints.
 """
 
 import argparse
-import glob
 import importlib
 import os
 import sys
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 import open3d as o3d
 import torch
-import matplotlib.pyplot as plt
 
 
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 # Paths
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
 ROOT = Path(__file__).resolve().parent
 
@@ -75,13 +58,12 @@ CONFIG_FILES = {
     "PointVector": ROOT / "pointvector.yaml",
 }
 
-
 NUM_POINTS = 4096
 
 
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 # Utility functions
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
 def find_checkpoint(directory):
     """
@@ -103,10 +85,9 @@ def find_checkpoint(directory):
     ]:
         candidates.extend(directory.glob(pattern))
 
-    # Remove duplicates
     candidates = sorted(
         set(candidates),
-        key=lambda p: str(p)
+        key=lambda p: str(p),
     )
 
     if not candidates:
@@ -132,7 +113,7 @@ def load_point_cloud(path):
 
     cloud = np.asarray(
         pcd.points,
-        dtype=np.float32
+        dtype=np.float32,
     )
 
     if cloud.ndim != 2 or cloud.shape[1] < 3:
@@ -147,8 +128,7 @@ def sample_cloud(cloud, num_points=NUM_POINTS, seed=42):
     """
     Select exactly num_points from the cloud.
 
-    The same random seed is used for all models so that the
-    qualitative comparison uses the same points.
+    The same indices are used for every model.
     """
 
     rng = np.random.default_rng(seed)
@@ -159,13 +139,13 @@ def sample_cloud(cloud, num_points=NUM_POINTS, seed=42):
         indices = rng.choice(
             n,
             num_points,
-            replace=False
+            replace=False,
         )
     else:
         indices = rng.choice(
             n,
             num_points,
-            replace=True
+            replace=True,
         )
 
     return cloud[indices]
@@ -178,147 +158,113 @@ def select_device(device):
     return device
 
 
-# ---------------------------------------------------------------------
-# PointNet / PointNet++
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
+# Existing inference wrappers
+# -------------------------------------------------------------------------
 
-def load_pointnet_model(
+def import_inference_wrappers():
+    """
+    Import the existing PointNet and PointNet++ inference wrappers from
+    the repository's inference directory.
+    """
+
+    inference_dir = str(INFERENCE_DIR.resolve())
+
+    if inference_dir not in sys.path:
+        sys.path.insert(0, inference_dir)
+
+    from pointnet_model import PointNetModel
+    from pointnet2_model import PointNet2Model
+
+    return PointNetModel, PointNet2Model
+
+
+def load_pointnet_wrapper(
     checkpoint,
     pointnet_root,
     pointnet2=False,
-    device="cuda"
+    device="cuda",
 ):
     """
-    Load the existing PointNet/PointNet++ implementation.
+    Load PointNet or PointNet++ using the same inference wrapper used by
+    the repository's normal inference pipeline.
     """
 
-    pointnet_root = str(Path(pointnet_root).resolve())
-
-    sys.path.insert(0, pointnet_root)
-    sys.path.insert(
-        0,
-        os.path.join(
-            pointnet_root,
-            "models"
-        )
-    )
+    PointNetModel, PointNet2Model = import_inference_wrappers()
 
     if pointnet2:
-        module_name = "models.pointnet2_sem_seg"
+        model = PointNet2Model(
+            checkpoint=str(checkpoint),
+            pointnet_root=str(pointnet_root),
+            device=device,
+        )
     else:
-        module_name = "models.pointnet_sem_seg"
-
-    model_module = importlib.import_module(module_name)
-
-    model = model_module.get_model(2)
-
-    checkpoint_data = torch.load(
-        checkpoint,
-        map_location=device
-    )
-
-    if "model_state_dict" in checkpoint_data:
-        state_dict = checkpoint_data["model_state_dict"]
-    elif "state_dict" in checkpoint_data:
-        state_dict = checkpoint_data["state_dict"]
-    else:
-        state_dict = checkpoint_data
-
-    model.load_state_dict(
-        state_dict,
-        strict=False
-    )
-
-    model.to(device)
-    model.eval()
+        model = PointNetModel(
+            checkpoint=str(checkpoint),
+            pointnet_root=str(pointnet_root),
+            device=device,
+        )
 
     return model
 
 
-def predict_pointnet(model, cloud, device):
+def predict_pointnet_wrapper(model, cloud):
     """
-    PointNet / PointNet++ prediction.
+    Run prediction through the existing BaseSegmentationModel API.
+
+    The wrapper performs:
+        preprocess -> forward -> postprocess
+
+    and returns one semantic label per input point.
     """
 
-    tensor = torch.from_numpy(
-        cloud.astype(np.float32)
-    )
+    labels = model.predict(cloud)
 
-    tensor = (
-        tensor
-        .unsqueeze(0)
-        .transpose(2, 1)
-        .contiguous()
-        .to(device)
-    )
+    labels = np.asarray(labels).reshape(-1)
 
-    with torch.no_grad():
-
-        prediction, _ = model(tensor)
-
-        labels = prediction.argmax(
-            dim=1
+    if len(labels) != len(cloud):
+        raise RuntimeError(
+            f"{model.name} produced {len(labels)} predictions "
+            f"for {len(cloud)} points."
         )
 
-    return (
-        labels
-        .squeeze(0)
-        .cpu()
-        .numpy()
-        .astype(np.uint8)
-    )
+    return labels.astype(np.uint8)
 
 
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 # OpenPoints models
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
 def load_openpoints_model(
     checkpoint,
     config,
     openpoints_root,
-    device
+    device,
 ):
     """
-    Generic loader for OpenPoints-based segmentation models.
-
-    This is used for:
-        - DGCNN
-        - PointNeXt-S
-        - PointNeXt-XL
-        - PointVector
+    Load an OpenPoints segmentation model from its YAML configuration.
     """
 
     openpoints_root = str(
         Path(openpoints_root).resolve()
     )
 
-    sys.path.insert(
-        0,
-        openpoints_root
+    if openpoints_root not in sys.path:
+        sys.path.insert(0, openpoints_root)
+
+    models_path = os.path.join(
+        openpoints_root,
+        "models",
     )
 
-    sys.path.insert(
-        0,
-        os.path.join(
-            openpoints_root,
-            "models"
-        )
-    )
+    if models_path not in sys.path:
+        sys.path.insert(0, models_path)
 
-    # Import the OpenPoints backbones used by the configurations.
     imports = [
         "openpoints.models.backbone.dgcnn",
         "openpoints.models.backbone.pointvector",
+        "openpoints.models.backbone.pointnext",
     ]
-
-    # PointNeXt is required for PointNeXt configurations.
-    try:
-        imports.append(
-            "openpoints.models.backbone.pointnext"
-        )
-    except Exception:
-        pass
 
     for module_name in imports:
         try:
@@ -332,29 +278,26 @@ def load_openpoints_model(
     cfg = EasyConfig()
     cfg.load(str(config))
 
-    model = build_model_from_cfg(
-        cfg.model
-    )
+    model = build_model_from_cfg(cfg.model)
 
     checkpoint_data = torch.load(
         checkpoint,
-        map_location=device
+        map_location=device,
     )
 
     if "model_state_dict" in checkpoint_data:
-        state_dict = checkpoint_data[
-            "model_state_dict"
-        ]
+        state_dict = checkpoint_data["model_state_dict"]
+
     elif "model" in checkpoint_data:
-        state_dict = checkpoint_data[
-            "model"
-        ]
+        state_dict = checkpoint_data["model"]
+
+    elif "state_dict" in checkpoint_data:
+        state_dict = checkpoint_data["state_dict"]
+
     else:
         state_dict = checkpoint_data
 
-    model.load_state_dict(
-        state_dict
-    )
+    model.load_state_dict(state_dict)
 
     model.to(device)
     model.eval()
@@ -362,21 +305,15 @@ def load_openpoints_model(
     return model
 
 
-def predict_openpoints(
-    model,
-    cloud,
-    device
-):
+def predict_openpoints(model, cloud, device):
     """
     Run inference using the same XYZ + constant fourth feature
-    representation used by the repository inference wrappers.
+    representation used by the repository's OpenPoints inference wrappers.
     """
 
     tensor = torch.from_numpy(
         cloud.astype(np.float32)
-    ).unsqueeze(0)
-
-    tensor = tensor.to(device)
+    ).unsqueeze(0).to(device)
 
     xyz = tensor[:, :, :3].contiguous()
 
@@ -384,124 +321,158 @@ def predict_openpoints(
         tensor.shape[0],
         tensor.shape[1],
         1,
-        device=device
+        device=device,
     )
 
     cloud4 = torch.cat(
         [
             tensor,
-            ones
+            ones,
         ],
-        dim=2
+        dim=2,
     )
 
     features = cloud4.transpose(
         1,
-        2
+        2,
     ).contiguous()
 
     inputs = {
         "pos": xyz,
-        "x": features
+        "x": features,
     }
 
     with torch.no_grad():
+        output = model(inputs)
 
-        prediction = model(
-            inputs
+    if isinstance(output, dict):
+        if "logits" in output:
+            output = output["logits"]
+
+        elif "pred" in output:
+            output = output["pred"]
+
+        elif "cls_logits" in output:
+            output = output["cls_logits"]
+
+        else:
+            raise RuntimeError(
+                "Unable to identify logits in OpenPoints output. "
+                f"Available keys: {list(output.keys())}"
+            )
+
+    if not torch.is_tensor(output):
+        raise RuntimeError(
+            f"Unexpected OpenPoints output type: {type(output)}"
         )
 
-        prediction = prediction.transpose(
-            1,
-            2
+    # Typical OpenPoints segmentation output:
+    # [B, C, N]
+    #
+    # Some configurations may return:
+    # [B, N, C]
+    if output.ndim != 3:
+        raise RuntimeError(
+            f"Unexpected OpenPoints output shape: {tuple(output.shape)}"
         )
 
-        labels = torch.argmax(
-            prediction,
-            dim=-1
+    if output.shape[1] == 2 and output.shape[2] == len(cloud):
+        labels = output.argmax(dim=1)
+
+    elif output.shape[2] == 2 and output.shape[1] == len(cloud):
+        labels = output.argmax(dim=2)
+
+    else:
+        raise RuntimeError(
+            "OpenPoints output does not match the expected "
+            f"binary segmentation shape for {len(cloud)} points: "
+            f"{tuple(output.shape)}"
         )
 
-    return (
-        labels
-        .squeeze(0)
+    labels = (
+        labels.squeeze(0)
         .cpu()
         .numpy()
         .astype(np.uint8)
     )
 
+    if len(labels) != len(cloud):
+        raise RuntimeError(
+            f"OpenPoints model produced {len(labels)} predictions "
+            f"for {len(cloud)} points."
+        )
 
-# ---------------------------------------------------------------------
+    return labels
+
+
+# -------------------------------------------------------------------------
 # Visualization
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
-def plot_prediction(
+def plot_point_cloud(
     ax,
     cloud,
     labels,
-    title
+    title,
 ):
     """
-    Plot a binary segmentation result.
+    Plot a segmented point cloud.
 
-    Background:
-        label 0
-
-    Human:
-        label 1
+    Class 0 = background
+    Class 1 = human
     """
 
     background = labels == 0
     human = labels == 1
 
-    ax.scatter(
-        cloud[background, 0],
-        cloud[background, 1],
-        cloud[background, 2],
-        s=1,
-        alpha=0.20
-    )
+    if np.any(background):
+        ax.scatter(
+            cloud[background, 0],
+            cloud[background, 1],
+            cloud[background, 2],
+            s=2,
+            alpha=0.25,
+            label="Background",
+        )
 
-    ax.scatter(
-        cloud[human, 0],
-        cloud[human, 1],
-        cloud[human, 2],
-        s=3,
-        alpha=0.90
-    )
+    if np.any(human):
+        ax.scatter(
+            cloud[human, 0],
+            cloud[human, 1],
+            cloud[human, 2],
+            s=5,
+            alpha=0.9,
+            label="Human",
+        )
 
-    ax.set_title(
-        title,
-        fontsize=11
-    )
+    ax.set_title(title)
 
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
 
-    # Equal aspect ratio
-    try:
-        ax.set_box_aspect(
-            (
-                np.ptp(cloud[:, 0]),
-                np.ptp(cloud[:, 1]),
-                np.ptp(cloud[:, 2])
-            )
-        )
-    except Exception:
-        pass
+    ax.view_init(
+        elev=20,
+        azim=-60,
+    )
+
+    ax.legend(
+        loc="upper right",
+        fontsize=8,
+    )
 
 
-def generate_figure(
+def save_figure(
     cloud,
     predictions,
     output_path,
-    cloud_name
+    input_name,
 ):
     """
-    Generate a single 2x3 figure containing all six models.
+    Generate and save a 2x3 qualitative comparison.
     """
 
-    model_order = [
+    model_names = [
         "PointNet",
         "PointNet++",
         "DGCNN",
@@ -511,191 +482,172 @@ def generate_figure(
     ]
 
     fig = plt.figure(
-        figsize=(15, 9)
+        figsize=(16, 10)
     )
 
-    for i, model_name in enumerate(
-        model_order,
-        start=1
-    ):
-
+    for i, model_name in enumerate(model_names):
         ax = fig.add_subplot(
             2,
             3,
-            i,
-            projection="3d"
+            i + 1,
+            projection="3d",
         )
 
-        plot_prediction(
+        plot_point_cloud(
             ax,
             cloud,
             predictions[model_name],
-            model_name
-        )
-
-        ax.view_init(
-            elev=20,
-            azim=-60
+            model_name,
         )
 
     fig.suptitle(
-        f"Qualitative semantic segmentation: {cloud_name}",
-        fontsize=14
+        f"Qualitative semantic segmentation\n{input_name}",
+        fontsize=16,
     )
 
-    plt.tight_layout()
+    fig.tight_layout()
+
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     fig.savefig(
         output_path,
         dpi=300,
-        bbox_inches="tight"
+        bbox_inches="tight",
     )
 
     plt.close(fig)
 
 
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
 def main():
 
     parser = argparse.ArgumentParser(
         description=(
-            "Generate qualitative segmentation "
-            "results for all evaluated models."
+            "Generate qualitative semantic segmentation "
+            "results for the six evaluated models."
         )
     )
 
     parser.add_argument(
-        "--pcd",
-        required=True,
-        help="Input PCD file."
+        "--cloud",
+        default="position2_standing_0.pcd",
+        help=(
+            "PCD filename located in lidar_database/clean/"
+        ),
+    )
+
+    parser.add_argument(
+        "--output",
+        default="qualitative_results.png",
+        help="Output figure path.",
+    )
+
+    parser.add_argument(
+        "--openpoints-root",
+        default=None,
+        help=(
+            "Path to the OpenPoints repository. "
+            "If omitted, tries ROOT/openpoints."
+        ),
     )
 
     parser.add_argument(
         "--pointnet-root",
         required=True,
         help=(
-            "Root directory of the PointNet/"
-            "PointNet++ PyTorch implementation."
-        )
-    )
-
-    parser.add_argument(
-        "--openpoints-root",
-        required=True,
-        help=(
-            "Root directory of the OpenPoints/"
-            "PointNeXt repository."
-        )
-    )
-
-    parser.add_argument(
-        "--output-dir",
-        default="qualitative_results",
-        help="Output directory."
+            "Path to the PointNet/PointNet++ PyTorch repository "
+            "containing models/."
+        ),
     )
 
     parser.add_argument(
         "--device",
         default="auto",
-        help="Device: auto, cpu or cuda."
+        help="Device: cuda, cpu, or auto.",
     )
 
     parser.add_argument(
         "--seed",
         type=int,
-        default=42
+        default=42,
+        help="Random seed used for the common point sampling.",
     )
 
     args = parser.parse_args()
 
-    device = select_device(
-        args.device
-    )
+    device = select_device(args.device)
 
-    print("=" * 60)
+    print("=" * 70)
     print("QUALITATIVE SEGMENTATION")
-    print("=" * 60)
+    print("=" * 70)
     print(f"Device: {device}")
 
-    # -------------------------------------------------------------
-    # Input
-    # -------------------------------------------------------------
+    if args.openpoints_root is None:
+        openpoints_root = ROOT / "openpoints"
+    else:
+        openpoints_root = Path(args.openpoints_root)
 
-    pcd_path = Path(args.pcd)
+    cloud_path = DATASET_DIR / args.cloud
 
-    if not pcd_path.exists():
+    if not cloud_path.exists():
         raise FileNotFoundError(
-            f"PCD file not found: {pcd_path}"
+            f"Point cloud not found: {cloud_path}"
         )
 
-    cloud_original = load_point_cloud(
-        pcd_path
-    )
+    cloud = load_point_cloud(cloud_path)
 
-    cloud = sample_cloud(
-        cloud_original,
+    print(f"Input cloud: {cloud_path}")
+    print(f"Original points: {len(cloud)}")
+
+    sampled_cloud = sample_cloud(
+        cloud,
         NUM_POINTS,
-        args.seed
-    )
-
-    print(
-        f"Input cloud: {pcd_path}"
-    )
-
-    print(
-        f"Original points: "
-        f"{len(cloud_original)}"
+        seed=args.seed,
     )
 
     print(
         f"Points used for visualization: "
-        f"{len(cloud)}"
+        f"{len(sampled_cloud)}"
     )
 
     # -------------------------------------------------------------
     # Checkpoints
     # -------------------------------------------------------------
 
-    checkpoints = {}
+    checkpoints = {
+        name: find_checkpoint(directory)
+        for name, directory in CHECKPOINT_DIRS.items()
+    }
 
-    for model_name, directory in CHECKPOINT_DIRS.items():
-
-        checkpoints[model_name] = find_checkpoint(
-            directory
-        )
-
-        print(
-            f"{model_name:15s}: "
-            f"{checkpoints[model_name]}"
-        )
+    for name, checkpoint in checkpoints.items():
+        print(f"{name:<15}: {checkpoint}")
 
     # -------------------------------------------------------------
-    # Load PointNet
+    # Load PointNet / PointNet++
     # -------------------------------------------------------------
 
     print("\nLoading PointNet...")
 
-    pointnet = load_pointnet_model(
-        checkpoints["PointNet"],
-        args.pointnet_root,
+    pointnet = load_pointnet_wrapper(
+        checkpoint=checkpoints["PointNet"],
+        pointnet_root=args.pointnet_root,
         pointnet2=False,
-        device=device
+        device=device,
     )
-
-    # -------------------------------------------------------------
-    # Load PointNet++
-    # -------------------------------------------------------------
 
     print("Loading PointNet++...")
 
-    pointnet2 = load_pointnet_model(
-        checkpoints["PointNet++"],
-        args.pointnet_root,
+    pointnet2 = load_pointnet_wrapper(
+        checkpoint=checkpoints["PointNet++"],
+        pointnet_root=args.pointnet_root,
         pointnet2=True,
-        device=device
+        device=device,
     )
 
     # -------------------------------------------------------------
@@ -711,16 +663,21 @@ def main():
         "PointVector",
     ]:
 
-        print(
-            f"Loading {model_name}..."
-        )
+        print(f"Loading {model_name}...")
+
+        config = CONFIG_FILES[model_name]
+
+        if not config.exists():
+            raise FileNotFoundError(
+                f"Configuration file not found: {config}"
+            )
 
         openpoints_models[model_name] = (
             load_openpoints_model(
-                checkpoints[model_name],
-                CONFIG_FILES[model_name],
-                args.openpoints_root,
-                device
+                checkpoint=checkpoints[model_name],
+                config=config,
+                openpoints_root=openpoints_root,
+                device=device,
             )
         )
 
@@ -728,22 +685,20 @@ def main():
     # Inference
     # -------------------------------------------------------------
 
-    predictions = {}
-
     print("\nRunning inference...")
 
-    print("  PointNet")
-    predictions["PointNet"] = predict_pointnet(
+    predictions = {}
+
+    print("PointNet")
+    predictions["PointNet"] = predict_pointnet_wrapper(
         pointnet,
-        cloud,
-        device
+        sampled_cloud,
     )
 
-    print("  PointNet++")
-    predictions["PointNet++"] = predict_pointnet(
+    print("PointNet++")
+    predictions["PointNet++"] = predict_pointnet_wrapper(
         pointnet2,
-        cloud,
-        device
+        sampled_cloud,
     )
 
     for model_name in [
@@ -753,62 +708,55 @@ def main():
         "PointVector",
     ]:
 
-        print(
-            f"  {model_name}"
-        )
+        print(model_name)
 
-        predictions[model_name] = (
-            predict_openpoints(
-                openpoints_models[model_name],
-                cloud,
-                device
-            )
+        predictions[model_name] = predict_openpoints(
+            openpoints_models[model_name],
+            sampled_cloud,
+            device,
         )
 
     # -------------------------------------------------------------
-    # Validate output
+    # Print prediction statistics
     # -------------------------------------------------------------
+
+    print("\nPrediction statistics:")
 
     for model_name, labels in predictions.items():
 
-        if len(labels) != len(cloud):
+        human_points = int(
+            np.sum(labels == 1)
+        )
 
-            raise RuntimeError(
-                f"{model_name} produced "
-                f"{len(labels)} predictions for "
-                f"{len(cloud)} points."
-            )
+        background_points = int(
+            np.sum(labels == 0)
+        )
+
+        print(
+            f"{model_name:<15}: "
+            f"human={human_points:4d}, "
+            f"background={background_points:4d}"
+        )
 
     # -------------------------------------------------------------
-    # Output
+    # Visualization
     # -------------------------------------------------------------
 
-    output_dir = Path(
-        args.output_dir
+    output_path = Path(args.output)
+
+    save_figure(
+        cloud=sampled_cloud,
+        predictions=predictions,
+        output_path=output_path,
+        input_name=args.cloud,
     )
 
-    output_dir.mkdir(
-        parents=True,
-        exist_ok=True
-    )
-
-    output_path = (
-        output_dir
-        / f"{pcd_path.stem}_qualitative.png"
-    )
-
-    generate_figure(
-        cloud,
-        predictions,
-        output_path,
-        pcd_path.name
-    )
+    print("\nFigure saved to:")
+    print(output_path.resolve())
 
     print("\nDone.")
-    print(
-        f"Figure saved to: {output_path}"
-    )
 
 
 if __name__ == "__main__":
     main()
+```
