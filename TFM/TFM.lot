@@ -1,0 +1,24 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Comparison between outdoor and indoor UAV LiDAR perception scenarios.}}{6}{table.caption.9}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Comparison of representative point cloud segmentation architectures.}}{9}{table.caption.10}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces Representative datasets for point cloud semantic segmentation.}}{12}{table.caption.12}%
+\contentsline {table}{\numberline {2.4}{\ignorespaces Identified research gaps and corresponding objectives of this work.}}{14}{table.caption.13}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Summary of the main components of the proposed system.}}{17}{table.caption.15}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Main specifications of the LSLiDAR C16 V4 sensor.}}{18}{table.caption.16}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Deep learning architectures selected for evaluation.}}{29}{table.caption.22}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces Training environment used in this work.}}{32}{table.caption.24}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces Training configuration used for all fine-tuning experiments.}}{36}{table.caption.26}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Quantitative validation results obtained by the evaluated segmentation models.}}{38}{table.caption.27}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Class-specific validation performance for the evaluated models.}}{39}{table.caption.28}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Quantitative test-set performance of the evaluated semantic segmentation models.}}{39}{table.caption.29}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Inference performance over the complete custom LiDAR dataset.}}{44}{table.caption.33}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Summary of test-set performance and computational cost.}}{52}{table.caption.34}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {B.1}{\ignorespaces PointNet training configuration.}}{73}{table.caption.38}%
+\contentsline {table}{\numberline {B.2}{\ignorespaces PointNet++ training configuration.}}{74}{table.caption.39}%
+\contentsline {table}{\numberline {B.3}{\ignorespaces Summary of model-specific training configurations.}}{76}{table.caption.40}%

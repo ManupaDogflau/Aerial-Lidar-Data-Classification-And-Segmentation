@@ -1,0 +1,99 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Motivation}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Objectives}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Report structure}{3}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Related Work}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}LiDAR for Indoor UAV Perception}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Point Cloud Classification and Semantic Segmentation}{6}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Deep Learning Architectures for Point Cloud Segmentation}{7}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Point-Based Networks}{7}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Other Deep Learning Architectures}{8}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Comparison of Representative Architectures}{8}{subsection.2.3.3}%
+\contentsline {section}{\numberline {2.4}Human Detection in LiDAR Point Clouds}{9}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Transfer Learning and Domain Adaptation}{10}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Datasets and Evaluation Metrics}{11}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Existing Indoor LiDAR Datasets}{11}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Limitations of Current Datasets}{12}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Evaluation Metrics}{13}{subsection.2.6.3}%
+\contentsline {section}{\numberline {2.7}Research Gap and Motivation}{13}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Design and Development}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}System Overview}{15}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Hardware Integration}{17}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}LiDAR Sensor}{17}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Power Supply Design}{18}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}UAV Integration}{19}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Data Acquisition System}{20}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}System Architecture}{20}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Packet Capture and Parsing}{21}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Geometric Reconstruction}{22}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Real-Time Point Cloud Streaming}{22}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.5}Point Cloud Storage}{22}{subsection.3.3.5}%
+\contentsline {subsection}{\numberline {3.3.6}Packet Capture and Replay System}{22}{subsection.3.3.6}%
+\contentsline {subsection}{\numberline {3.3.7}Modular Design}{23}{subsection.3.3.7}%
+\contentsline {section}{\numberline {3.4}Custom Indoor UAV Dataset Creation}{23}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Dataset Acquisition Protocol}{23}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Point Cloud Preprocessing}{24}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Point Cloud Annotation}{25}{subsection.3.4.3}%
+\contentsline {section}{\numberline {3.5}Deep Learning Framework}{27}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Selected Architectures}{28}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Deployment Architecture}{29}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Point Cloud Reception and Inference}{31}{subsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.5.4}Training Environment}{31}{subsection.3.5.4}%
+\contentsline {section}{\numberline {3.6}Transfer Learning Strategy}{32}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Pretraining on S3DIS}{32}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Fine-Tuning on the Custom UAV Dataset}{33}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}Training Configuration}{34}{subsection.3.6.3}%
+\contentsline {chapter}{\numberline {4}Evaluation}{37}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Experimental Setup}{37}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Quantitative Evaluation of the Segmentation Models}{38}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Validation Results}{38}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Held-Out Test Results}{39}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Qualitative Results}{40}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Computational Performance}{43}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Discussion}{45}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Conclusions and future work}{49}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusions}{49}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Work}{52}{section.5.2}%
+\contentsline {chapter}{Bibliography}{55}{chapter*.35}%
+\contentsline {chapter}{Appendix}{61}{section*.36}%
+\contentsline {chapter}{\numberline {A}Software Implementation and Repository Structure}{61}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Repository Organization}{61}{appendix.A.1}%
+\contentsline {section}{\numberline {A.2}LiDAR Data Acquisition Software}{62}{appendix.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}Application Entry Point}{63}{subsection.A.2.1}%
+\contentsline {subsection}{\numberline {A.2.2}Packet Parsing}{63}{subsection.A.2.2}%
+\contentsline {subsection}{\numberline {A.2.3}Geometric Reconstruction}{63}{subsection.A.2.3}%
+\contentsline {subsection}{\numberline {A.2.4}Real-Time Streaming and Visualization}{63}{subsection.A.2.4}%
+\contentsline {subsection}{\numberline {A.2.5}Point Cloud Storage}{64}{subsection.A.2.5}%
+\contentsline {section}{\numberline {A.3}Packet Capture and Replay}{64}{appendix.A.3}%
+\contentsline {section}{\numberline {A.4}Communication Between Acquisition and Inference}{64}{appendix.A.4}%
+\contentsline {subsection}{\numberline {A.4.1}Point Cloud Sender}{64}{subsection.A.4.1}%
+\contentsline {subsection}{\numberline {A.4.2}Point Cloud Receiver}{65}{subsection.A.4.2}%
+\contentsline {subsection}{\numberline {A.4.3}Autonomous Startup}{65}{subsection.A.4.3}%
+\contentsline {section}{\numberline {A.5}Dataset Annotation and Data Management}{65}{appendix.A.5}%
+\contentsline {section}{\numberline {A.6}Inference Software}{66}{appendix.A.6}%
+\contentsline {subsection}{\numberline {A.6.1}Inference Engine}{66}{subsection.A.6.1}%
+\contentsline {subsection}{\numberline {A.6.2}Model Wrappers}{66}{subsection.A.6.2}%
+\contentsline {subsection}{\numberline {A.6.3}Point Cloud Input Processing}{67}{subsection.A.6.3}%
+\contentsline {subsection}{\numberline {A.6.4}Evaluation and Benchmarking}{67}{subsection.A.6.4}%
+\contentsline {section}{\numberline {A.7}Model Training and Fine-Tuning}{67}{appendix.A.7}%
+\contentsline {subsection}{\numberline {A.7.1}PointNet and PointNet++ Training}{67}{subsection.A.7.1}%
+\contentsline {subsection}{\numberline {A.7.2}OpenPoints-Based Training}{67}{subsection.A.7.2}%
+\contentsline {subsection}{\numberline {A.7.3}Transfer Learning Adaptation}{68}{subsection.A.7.3}%
+\contentsline {subsection}{\numberline {A.7.4}Training Outputs}{68}{subsection.A.7.4}%
+\contentsline {section}{\numberline {A.8}Relationship Between Software Components}{68}{appendix.A.8}%
+\contentsline {section}{\numberline {A.9}Reproducibility}{69}{appendix.A.9}%
+\contentsline {chapter}{\numberline {B}Detailed Training Configuration}{71}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Training Software and Execution Environment}{71}{appendix.B.1}%
+\contentsline {section}{\numberline {B.2}Dataset Split and Sampling}{71}{appendix.B.2}%
+\contentsline {section}{\numberline {B.3}Data Augmentation}{72}{appendix.B.3}%
+\contentsline {section}{\numberline {B.4}Common Optimization Configuration}{72}{appendix.B.4}%
+\contentsline {section}{\numberline {B.5}PointNet Configuration}{73}{appendix.B.5}%
+\contentsline {section}{\numberline {B.6}PointNet++ Configuration}{74}{appendix.B.6}%
+\contentsline {section}{\numberline {B.7}OpenPoints-Based Architectures}{74}{appendix.B.7}%
+\contentsline {subsection}{\numberline {B.7.1}PointNeXt-S}{75}{subsection.B.7.1}%
+\contentsline {subsection}{\numberline {B.7.2}PointNeXt-XL}{75}{subsection.B.7.2}%
+\contentsline {subsection}{\numberline {B.7.3}DGCNN}{75}{subsection.B.7.3}%
+\contentsline {subsection}{\numberline {B.7.4}PointVector}{75}{subsection.B.7.4}%
+\contentsline {section}{\numberline {B.8}Summary of Model-Specific Parameters}{76}{appendix.B.8}%
+\contentsline {section}{\numberline {B.9}Checkpointing and Model Selection}{76}{appendix.B.9}%
+\contentsline {section}{\numberline {B.10}Evaluation Metrics}{76}{appendix.B.10}%

@@ -1,0 +1,20 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Example of a semantically annotated scene from the S3DIS dataset \cite {Armeni2016S3DIS}.}}{12}{figure.caption.11}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Overview of the proposed indoor UAV LiDAR perception pipeline.}}{16}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Power supply architecture of the proposed sensing system.}}{19}{figure.caption.17}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Integrated sensing platform based on the Holybro X500 V2 UAV. The LSLiDAR C16 V4 is mounted on the front of the vehicle using a custom 3D-printed bracket attached to the frame tubes, while the Raspberry Pi is installed underneath the frame on the opposite side to improve weight distribution.}}{20}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Online and offline LiDAR data acquisition pipeline with packet capture and replay capability.}}{21}{figure.caption.19}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Organization of the indoor human detection dataset and the acquisition factors considered during data collection.}}{25}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Semi-automatic annotation pipeline developed for this work. Human labels are generated through interactive seed selection followed by either OBB-based or DBSCAN-based segmentation and subsequently refined through visual inspection and manual correction.}}{27}{figure.caption.21}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Deployment architecture adopted in this work. LiDAR measurements are transmitted via Ethernet to the Raspberry Pi, where point clouds are reconstructed and subsequently sent through Wi-Fi to an external GPU-equipped workstation for semantic segmentation.}}{30}{figure.caption.23}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Transfer learning strategy adopted in this work. The pretrained models are adapted by modifying the input layer and segmentation head, while all compatible pretrained weights are retained. The complete network is then fine-tuned on the proposed UAV dataset.}}{34}{figure.caption.25}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Qualitative segmentation results for a representative indoor scene with a clearly visible human subject. The ground-truth annotation is compared with the predictions produced by the evaluated architectures. PointNet exhibits a comparatively large number of false positive human predictions.}}{41}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Qualitative segmentation results for a heavily occluded human subject. The reduced amount of visible human geometry increases the number of false positive predictions, particularly for the less accurate models.}}{42}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Qualitative segmentation results for an indoor scene without a human subject. Although the ground truth contains no human points, all evaluated models produce false positive human predictions.}}{43}{figure.caption.32}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Relationship between the main software components developed for LiDAR acquisition, dataset generation, model training, and semantic segmentation inference.}}{69}{figure.caption.37}%
+\addvspace {10\p@ }

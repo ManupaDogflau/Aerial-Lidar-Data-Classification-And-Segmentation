@@ -1,0 +1,149 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\citation{LSLiDARC16V4}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Design and Development}{15}{chapter.3}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{cha:design-development}{{3}{15}{Design and Development}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}System Overview}{15}{section.3.1}\protected@file@percent }
+\newlabel{sec:system_overview}{{3.1}{15}{System Overview}{section.3.1}{}}
+\@writefile{brf}{\backcite{LSLiDARC16V4}{{15}{3.1}{section.3.1}}}
+\citation{github_lidar}
+\@writefile{brf}{\backcite{github_lidar}{{16}{3.1}{section.3.1}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Overview of the proposed indoor UAV LiDAR perception pipeline.}}{16}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:system_overview}{{3.1}{16}{Overview of the proposed indoor UAV LiDAR perception pipeline}{figure.caption.14}{}}
+\citation{LSLiDARC16V4}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Hardware Integration}{17}{section.3.2}\protected@file@percent }
+\newlabel{sec:hardware_integration}{{3.2}{17}{Hardware Integration}{section.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}LiDAR Sensor}{17}{subsection.3.2.1}\protected@file@percent }
+\newlabel{subsec:lidar_sensor}{{3.2.1}{17}{LiDAR Sensor}{subsection.3.2.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Summary of the main components of the proposed system.}}{17}{table.caption.15}\protected@file@percent }
+\newlabel{tab:system_summary}{{3.1}{17}{Summary of the main components of the proposed system}{table.caption.15}{}}
+\@writefile{brf}{\backcite{LSLiDARC16V4}{{17}{3.2.1}{table.caption.15}}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Main specifications of the LSLiDAR C16 V4 sensor.}}{18}{table.caption.16}\protected@file@percent }
+\newlabel{tab:c16_specs}{{3.2}{18}{Main specifications of the LSLiDAR C16 V4 sensor}{table.caption.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Power Supply Design}{18}{subsection.3.2.2}\protected@file@percent }
+\newlabel{subsec:power_supply}{{3.2.2}{18}{Power Supply Design}{subsection.3.2.2}{}}
+\citation{HolybroX500V2}
+\citation{RaspberryPiDocs}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Power supply architecture of the proposed sensing system.}}{19}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:power_architecture}{{3.2}{19}{Power supply architecture of the proposed sensing system}{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}UAV Integration}{19}{subsection.3.2.3}\protected@file@percent }
+\newlabel{subsec:uav_integration}{{3.2.3}{19}{UAV Integration}{subsection.3.2.3}{}}
+\@writefile{brf}{\backcite{HolybroX500V2}{{19}{3.2.3}{subsection.3.2.3}}}
+\@writefile{brf}{\backcite{RaspberryPiDocs}{{19}{3.2.3}{subsection.3.2.3}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Integrated sensing platform based on the Holybro X500 V2 UAV. The LSLiDAR C16 V4 is mounted on the front of the vehicle using a custom 3D-printed bracket attached to the frame tubes, while the Raspberry Pi is installed underneath the frame on the opposite side to improve weight distribution.}}{20}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:uav_integration}{{3.3}{20}{Integrated sensing platform based on the Holybro X500 V2 UAV. The LSLiDAR C16 V4 is mounted on the front of the vehicle using a custom 3D-printed bracket attached to the frame tubes, while the Raspberry Pi is installed underneath the frame on the opposite side to improve weight distribution}{figure.caption.18}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Data Acquisition System}{20}{section.3.3}\protected@file@percent }
+\newlabel{sec:data_acquisition}{{3.3}{20}{Data Acquisition System}{section.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}System Architecture}{20}{subsection.3.3.1}\protected@file@percent }
+\newlabel{subsec:system_architecture}{{3.3.1}{20}{System Architecture}{subsection.3.3.1}{}}
+\citation{scapy}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Online and offline LiDAR data acquisition pipeline with packet capture and replay capability.}}{21}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:acquisition_pipeline}{{3.4}{21}{Online and offline LiDAR data acquisition pipeline with packet capture and replay capability}{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Packet Capture and Parsing}{21}{subsection.3.3.2}\protected@file@percent }
+\newlabel{subsec:packet_capture}{{3.3.2}{21}{Packet Capture and Parsing}{subsection.3.3.2}{}}
+\@writefile{brf}{\backcite{scapy}{{21}{3.3.2}{subsection.3.3.2}}}
+\citation{Zhou2018Open3D}
+\citation{PCDFormat}
+\citation{pcap_format}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Geometric Reconstruction}{22}{subsection.3.3.3}\protected@file@percent }
+\newlabel{subsec:geometric_reconstruction}{{3.3.3}{22}{Geometric Reconstruction}{subsection.3.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}Real-Time Point Cloud Streaming}{22}{subsection.3.3.4}\protected@file@percent }
+\newlabel{subsec:streaming}{{3.3.4}{22}{Real-Time Point Cloud Streaming}{subsection.3.3.4}{}}
+\@writefile{brf}{\backcite{Zhou2018Open3D}{{22}{3.3.4}{subsection.3.3.4}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.5}Point Cloud Storage}{22}{subsection.3.3.5}\protected@file@percent }
+\newlabel{subsec:storage}{{3.3.5}{22}{Point Cloud Storage}{subsection.3.3.5}{}}
+\@writefile{brf}{\backcite{PCDFormat}{{22}{3.3.5}{subsection.3.3.5}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.6}Packet Capture and Replay System}{22}{subsection.3.3.6}\protected@file@percent }
+\newlabel{subsec:packet_capture_replay}{{3.3.6}{22}{Packet Capture and Replay System}{subsection.3.3.6}{}}
+\@writefile{brf}{\backcite{pcap_format}{{23}{3.3.6}{subsection.3.3.6}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.7}Modular Design}{23}{subsection.3.3.7}\protected@file@percent }
+\newlabel{subsec:modular_design}{{3.3.7}{23}{Modular Design}{subsection.3.3.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Custom Indoor UAV Dataset Creation}{23}{section.3.4}\protected@file@percent }
+\newlabel{sec:dataset_creation}{{3.4}{23}{Custom Indoor UAV Dataset Creation}{section.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Dataset Acquisition Protocol}{23}{subsection.3.4.1}\protected@file@percent }
+\newlabel{subsec:acquisition_protocol}{{3.4.1}{23}{Dataset Acquisition Protocol}{subsection.3.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Point Cloud Preprocessing}{24}{subsection.3.4.2}\protected@file@percent }
+\newlabel{subsec:pointcloud_preprocessing}{{3.4.2}{24}{Point Cloud Preprocessing}{subsection.3.4.2}{}}
+\citation{Zhou2018Open3D}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Organization of the indoor human detection dataset and the acquisition factors considered during data collection.}}{25}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:dataset_factors}{{3.5}{25}{Organization of the indoor human detection dataset and the acquisition factors considered during data collection}{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Point Cloud Annotation}{25}{subsection.3.4.3}\protected@file@percent }
+\newlabel{subsec:annotation}{{3.4.3}{25}{Point Cloud Annotation}{subsection.3.4.3}{}}
+\@writefile{brf}{\backcite{Zhou2018Open3D}{{26}{3.4.3}{subsection.3.4.3}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Semi-automatic annotation pipeline developed for this work. Human labels are generated through interactive seed selection followed by either OBB-based or DBSCAN-based segmentation and subsequently refined through visual inspection and manual correction.}}{27}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:annotation_pipeline}{{3.6}{27}{Semi-automatic annotation pipeline developed for this work. Human labels are generated through interactive seed selection followed by either OBB-based or DBSCAN-based segmentation and subsequently refined through visual inspection and manual correction}{figure.caption.21}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Deep Learning Framework}{27}{section.3.5}\protected@file@percent }
+\newlabel{sec:deep_learning_framework}{{3.5}{27}{Deep Learning Framework}{section.3.5}{}}
+\citation{Qi2017PointNet}
+\citation{Qi2017PointNetPP}
+\citation{Wang2019DGCNN}
+\citation{PointNeXt}
+\citation{PointVector}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Selected Architectures}{28}{subsection.3.5.1}\protected@file@percent }
+\newlabel{subsec:selected_architectures}{{3.5.1}{28}{Selected Architectures}{subsection.3.5.1}{}}
+\@writefile{brf}{\backcite{Qi2017PointNet}{{28}{3.5.1}{subsection.3.5.1}}}
+\@writefile{brf}{\backcite{Qi2017PointNetPP}{{28}{3.5.1}{subsection.3.5.1}}}
+\@writefile{brf}{\backcite{Wang2019DGCNN}{{28}{3.5.1}{subsection.3.5.1}}}
+\@writefile{brf}{\backcite{PointNeXt}{{28}{3.5.1}{subsection.3.5.1}}}
+\@writefile{brf}{\backcite{PointVector}{{28}{3.5.1}{subsection.3.5.1}}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Deep learning architectures selected for evaluation.}}{29}{table.caption.22}\protected@file@percent }
+\newlabel{tab:selected_models}{{3.3}{29}{Deep learning architectures selected for evaluation}{table.caption.22}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Deployment Architecture}{29}{subsection.3.5.2}\protected@file@percent }
+\newlabel{subsec:deployment_architecture}{{3.5.2}{29}{Deployment Architecture}{subsection.3.5.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces Deployment architecture adopted in this work. LiDAR measurements are transmitted via Ethernet to the Raspberry Pi, where point clouds are reconstructed and subsequently sent through Wi-Fi to an external GPU-equipped workstation for semantic segmentation.}}{30}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:deployment_architecture}{{3.7}{30}{Deployment architecture adopted in this work. LiDAR measurements are transmitted via Ethernet to the Raspberry Pi, where point clouds are reconstructed and subsequently sent through Wi-Fi to an external GPU-equipped workstation for semantic segmentation}{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Point Cloud Reception and Inference}{31}{subsection.3.5.3}\protected@file@percent }
+\newlabel{subsec:receiver_inference}{{3.5.3}{31}{Point Cloud Reception and Inference}{subsection.3.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.4}Training Environment}{31}{subsection.3.5.4}\protected@file@percent }
+\newlabel{subsec:training_environment}{{3.5.4}{31}{Training Environment}{subsection.3.5.4}{}}
+\citation{Armeni2016S3DIS}
+\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces Training environment used in this work.}}{32}{table.caption.24}\protected@file@percent }
+\newlabel{tab:training_environment}{{3.4}{32}{Training environment used in this work}{table.caption.24}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Transfer Learning Strategy}{32}{section.3.6}\protected@file@percent }
+\newlabel{sec:transfer_learning}{{3.6}{32}{Transfer Learning Strategy}{section.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.1}Pretraining on S3DIS}{32}{subsection.3.6.1}\protected@file@percent }
+\newlabel{subsec:pretraining_s3dis}{{3.6.1}{32}{Pretraining on S3DIS}{subsection.3.6.1}{}}
+\@writefile{brf}{\backcite{Armeni2016S3DIS}{{32}{3.6.1}{subsection.3.6.1}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.2}Fine-Tuning on the Custom UAV Dataset}{33}{subsection.3.6.2}\protected@file@percent }
+\newlabel{subsec:fine_tuning}{{3.6.2}{33}{Fine-Tuning on the Custom UAV Dataset}{subsection.3.6.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Transfer learning strategy adopted in this work. The pretrained models are adapted by modifying the input layer and segmentation head, while all compatible pretrained weights are retained. The complete network is then fine-tuned on the proposed UAV dataset.}}{34}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:transfer_learning_strategy}{{3.8}{34}{Transfer learning strategy adopted in this work. The pretrained models are adapted by modifying the input layer and segmentation head, while all compatible pretrained weights are retained. The complete network is then fine-tuned on the proposed UAV dataset}{figure.caption.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.3}Training Configuration}{34}{subsection.3.6.3}\protected@file@percent }
+\newlabel{subsec:training_configuration}{{3.6.3}{34}{Training Configuration}{subsection.3.6.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces Training configuration used for all fine-tuning experiments.}}{36}{table.caption.26}\protected@file@percent }
+\newlabel{tab:training_configuration}{{3.5}{36}{Training configuration used for all fine-tuning experiments}{table.caption.26}{}}
+\@setckpt{3.Design}{
+\setcounter{page}{37}
+\setcounter{equation}{0}
+\setcounter{enumi}{4}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{3}
+\setcounter{section}{6}
+\setcounter{subsection}{3}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{8}
+\setcounter{table}{5}
+\setcounter{section@level}{2}
+\setcounter{Item}{4}
+\setcounter{Hfootnote}{0}
+\setcounter{bookmark@seq@number}{45}
+\setcounter{@pps}{0}
+\setcounter{@ppsavesec}{0}
+\setcounter{@ppsaveapp}{0}
+\setcounter{caption@flags}{2}
+\setcounter{continuedfloat}{0}
+\setcounter{subfigure}{0}
+\setcounter{subtable}{0}
+\setcounter{parentequation}{0}
+\setcounter{float@type}{4}
+\setcounter{nlinenum}{0}
+}

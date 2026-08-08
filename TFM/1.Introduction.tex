@@ -1,0 +1,55 @@
+%%%%%%%%%%%% INTRODUCCION / INTRODUCTION CHAPTER %%%%%%%%%%%%%%%%
+
+\chapter{Introduction}
+\label{cha:intro}
+
+\section{Motivation}
+
+The increasing use of Unmanned Aerial Vehicles (UAVs) for autonomous inspection and perception has created a growing need for reliable three-dimensional sensing and scene understanding in indoor environments. LiDAR sensors provide accurate geometric information and are particularly attractive for this type of application because they directly measure depth and can provide robust three-dimensional representations of the surrounding environment. LiDAR-based point clouds have consequently become an important representation for a wide range of perception and semantic understanding tasks, both in outdoor and indoor scenarios \cite{Varney2020DALES,Behley2019SemanticKITTI,Tan2021Toronto3D}. However, indoor UAV perception presents several challenges that distinguish it from conventional terrestrial or outdoor LiDAR applications. UAV-mounted sensors acquire point clouds from changing aerial viewpoints and under platform motion, resulting in variations in point density, partial observations, and significant changes in the observed geometry.
+
+A major limitation in this field is the limited availability of datasets specifically acquired using UAV-mounted LiDAR sensors in indoor environments. Several widely used datasets for indoor point cloud understanding, such as S3DIS and 3DSES, provide valuable benchmarks for semantic segmentation, but their acquisition settings do not specifically target indoor UAV perception \cite{Armeni2016S3DIS,Merizette2025ThreeDSES}. In contrast, aerial LiDAR datasets such as DALES demonstrate the availability of large-scale datasets for aerial point cloud semantic segmentation, although they primarily represent outdoor environments \cite{Varney2020DALES}. Consequently, there remains a gap between existing benchmark datasets and the characteristics of LiDAR data acquired from an indoor UAV, particularly regarding aerial viewpoints, platform motion, and variations in point density.
+
+This limitation is particularly relevant for human perception. Reliable detection and semantic segmentation of people can support applications such as collision avoidance, human-aware navigation, inspection, and safety monitoring in environments where UAVs and people may operate simultaneously. Nevertheless, human segmentation in indoor UAV LiDAR data remains challenging because people may be partially occluded by furniture or other structures, while changes in posture, viewpoint, and sensor position can substantially modify their geometric representation. Although LiDAR-based pedestrian detection and 3D point cloud understanding have been extensively investigated, these studies do not necessarily address the specific characteristics of human perception from an indoor UAV platform \cite{Ferreira2023PedestrianLiDAR,Lorente2021PedestrianPointNet}.
+
+Deep learning provides a promising approach to address these limitations. Modern point cloud architectures can learn geometric representations directly from raw point sets, reducing the dependence on manually designed features. PointNet introduced a direct deep learning approach for processing unordered point sets, while PointNet++ extended this idea by learning hierarchical local and global geometric representations \cite{Qi2017PointNet,Qi2017PointNetPP}. Subsequent architectures, including DGCNN, KPConv, RandLA-Net, and Point Transformer, have further improved the ability of neural networks to model local geometric relationships and efficiently process large-scale point clouds \cite{Wang2019DGCNN,Thomas2019KPConv,Hu2020RandLANet,Zhao2021PointTransformer}. These developments have established deep learning as an effective approach for 3D point cloud classification and semantic segmentation \cite{Guo2020DeepLearningSurvey}.
+
+However, training these models from scratch requires substantial amounts of annotated data, while point-wise annotation of LiDAR data is costly and time-consuming. This problem becomes particularly relevant in the indoor UAV scenario, where representative datasets are scarce. Transfer learning provides a practical alternative by allowing knowledge learned from a source domain to be reused when solving a related target-domain problem \cite{pan2010survey}. In the context of 3D point cloud segmentation, pretrained models can therefore be adapted to a smaller UAV-specific dataset through fine-tuning, potentially reducing the amount of task-specific data required while mitigating the effects of the domain shift between benchmark datasets and real UAV acquisitions.
+
+Motivated by these limitations, this Master's Thesis focuses on the development and evaluation of an end-to-end LiDAR-based perception pipeline for human semantic segmentation in indoor UAV environments. The work combines the development of a UAV-mounted LiDAR sensing platform, the acquisition and annotation of a custom indoor UAV dataset, and the adaptation of pretrained point cloud segmentation architectures through transfer learning and fine-tuning. The resulting framework is used to investigate the suitability and generalization capability of deep learning models when applied to real UAV-acquired LiDAR data.
+
+\section{Objectives}
+
+The main objective of this Master's Thesis is to develop and evaluate a deep learning framework for human semantic segmentation in indoor environments using LiDAR data acquired from a UAV. To achieve this objective, the work is structured around the following specific objectives:
+
+\begin{itemize}
+\item \textbf{Development of a representative indoor UAV LiDAR dataset.}
+Design and implement the acquisition pipeline required to collect and process LiDAR point clouds from a UAV platform, and generate a dataset representative of indoor human perception scenarios, including different poses and visibility conditions.
+
+\item \textbf{Evaluation of transfer learning and fine-tuning strategies.}
+Adapt pretrained point cloud semantic segmentation architectures to the indoor UAV domain using transfer learning and fine-tuning techniques, with the aim of exploiting previously learned geometric representations while reducing the amount of task-specific annotated data required.
+
+\item \textbf{Evaluation of human semantic segmentation performance.}
+Assess the ability of the evaluated architectures to distinguish human points from the surrounding environment in indoor UAV LiDAR point clouds, with particular attention to the performance of the person class.
+
+\item \textbf{Analysis of model generalization under domain shift.}
+Investigate how models pretrained on existing indoor point cloud benchmarks perform when applied to UAV-acquired LiDAR data, and analyze the effect of adapting these models to the target domain.
+
+\item \textbf{Comparison of representative point cloud architectures.}
+Compare several deep learning architectures for point cloud semantic segmentation in terms of their segmentation performance and suitability for adaptation to the proposed indoor UAV scenario.
+
+\end{itemize}
+
+Overall, these objectives address the main limitations identified in the literature: the scarcity of representative indoor UAV LiDAR datasets, the limited understanding of pretrained model adaptation to UAV-acquired data, the insufficient evaluation of human segmentation in this scenario, and the need for comparative analysis of fine-tuning strategies \cite{Armeni2016S3DIS,Merizette2025ThreeDSES,pan2010survey,Guo2020DeepLearningSurvey}.
+
+
+\section{Report structure}
+This report has the following chapters
+
+\begin{itemize}
+\item \autoref{cha:intro} Introduction. 
+\item \autoref{cha:related-work} Related work. 
+\item \autoref{cha:design-development} Design and development. 
+\item \autoref{cha:evaluation} Evaluation.
+\item \autoref{cha:conclusions} Conclusions and future work.
+\end{itemize}
+

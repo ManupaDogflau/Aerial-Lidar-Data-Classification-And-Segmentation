@@ -1,0 +1,93 @@
+%%%%%%%%%%%%%%%%%%%% CONCLUSIONES Y TRABAJO FUTURO / CONCLUSIONS AND FUTURE WORK CHAPTER %%%%%%%%%%%%%%%%%%%%%%
+\chapter{Conclusions and future work}
+\label{cha:conclusions}
+
+\section{Conclusions}
+
+This Master's Thesis has presented the development and evaluation of a LiDAR-based semantic segmentation framework for human perception in indoor UAV environments. The work addressed the limitations identified in the literature regarding the scarcity of representative indoor UAV LiDAR datasets and the limited evaluation of pretrained point cloud segmentation models on data acquired from aerial platforms. To this end, a complete perception pipeline was developed, covering LiDAR acquisition, point cloud reconstruction, dataset generation and annotation, transfer learning, semantic segmentation, and model evaluation.
+
+A custom indoor UAV LiDAR dataset was successfully acquired using the developed sensing platform. The final dataset contains 78 valid point clouds, with approximately 50,000 points per acquisition before sampling. The dataset includes different human poses, subject orientations, partial occlusions, and LiDAR viewpoints, providing a representative set of conditions for evaluating human segmentation in an indoor aerial scenario. The point clouds were manually verified and annotated using the developed annotation framework, enabling their use for supervised training and quantitative evaluation.
+
+Six point-based semantic segmentation architectures were evaluated: PointNet, PointNet++, DGCNN, PointNeXt-S, PointNeXt-XL, and PointVector. All models were adapted to the binary segmentation problem between human and background classes and fine-tuned using pretrained weights. This experimental setup allowed the comparison of architectures with different levels of representational capacity while maintaining a common input representation and training methodology.
+
+The quantitative results demonstrate that all evaluated architectures are capable of achieving high segmentation accuracy on the proposed dataset. On the validation set, overall accuracy ranged from 0.9800 for PointNet++ to 0.9894 for PointVector. However, the differences between the models become more significant when considering the metrics associated with the human class, which is the minority class and the main target of the proposed application. The held-out test evaluation provides the main basis for assessing performance on previously unseen scenes and therefore for evaluating the generalization capability of the models.
+
+The two PointNet-based architectures provided strong baseline results on the validation set, with mIoU values of 0.9016 and 0.9015 for PointNet and PointNet++, respectively. PointNet++ achieved a slightly higher person IoU, recall, and F1-score than PointNet, indicating that hierarchical local feature aggregation provides a modest benefit for human segmentation. Nevertheless, the difference between the two architectures was relatively limited for the proposed dataset.
+
+DGCNN and PointNeXt-S achieved a clear improvement over the PointNet-based baselines. Their validation mIoU values were 0.9126 and 0.9129, respectively, while their person IoU values reached 0.8422 and 0.8431. PointNeXt-XL provided a further improvement, achieving a validation mIoU of 0.9322 and a person IoU of 0.8780. Its person F1-score reached 0.9351, while person recall increased to 0.9733. These results indicate that increasing the representational capacity of the PointNeXt architecture provides a measurable benefit for the segmentation of human points.
+
+On the validation set, PointVector obtained the highest segmentation performance. This model achieved an accuracy of 0.9894 and an mIoU of 0.9426. For the person class, it obtained an IoU of 0.8969, a precision of 0.9068, a recall of 0.9880, and an F1-score of 0.9457. Compared with PointNet, PointVector improved the person IoU by approximately 7.5 percentage points and increased the person F1-score from 0.9026 to 0.9457. These results demonstrate that the improvement obtained by the more recent architectures is not limited to background segmentation, but also translates into better identification of the human class.
+
+However, the held-out test results provide a different ranking of the architectures. PointNeXt-XL achieved the best overall performance on the unseen test scenes, obtaining an accuracy of 0.9896, an mIoU of 0.9377, a person IoU of 0.8866, a person precision of 0.8906, a person recall of 0.9949, and a person F1-score of 0.9399. PointVector obtained the second-best overall results, with an accuracy of 0.9879, an mIoU of 0.9282, a person IoU of 0.8697, a person precision of 0.8730, a person recall of 0.9957, and a person F1-score of 0.9303. Although PointVector achieved a slightly higher person recall, PointNeXt-XL outperformed it across the remaining main metrics. These results indicate that PointNeXt-XL provides the most robust segmentation performance on previously unseen UAV LiDAR scenes and is therefore selected as the reference architecture in terms of segmentation quality and generalization.
+
+The comparison between validation and test performance further highlights the importance of evaluating the models on unseen data. PointVector achieved the highest validation mIoU, increasing to 0.9426, but its performance decreased to 0.9282 on the held-out test set. Its person IoU similarly decreased from 0.8969 to 0.8697. In contrast, PointNeXt-XL maintained highly consistent performance, with its mIoU changing from 0.9322 on validation to 0.9377 on test, while its person IoU increased from 0.8780 to 0.8866. Its person F1-score also remained stable, changing from 0.9351 to 0.9399. This consistency suggests that PointNeXt-XL provides a more robust representation for generalization to unseen scenes.
+
+The confusion-matrix analysis on the validation set further supports the strong performance of PointVector during model development. PointVector correctly classified 90,781 human points and produced only 1,100 false-negative predictions, representing the highest number of correctly detected human points and the lowest number of false negatives among the evaluated architectures. This result is particularly relevant for human-centered perception, where missing points belonging to a person can be more critical than small errors in the dominant background class. Nevertheless, the held-out test results show that high validation performance does not necessarily translate directly into the best generalization to unseen scenes.
+
+Despite the strong quantitative results, the qualitative evaluation showed that segmentation errors remain in geometrically ambiguous situations. Heavy occlusions and scenes without a visible human were particularly challenging, with the evaluated models producing false-positive predictions when background structures exhibited geometric characteristics similar to those of human points. This indicates that high aggregate segmentation metrics do not necessarily imply robust performance in every individual scene, and that generalization to unseen environments and viewpoints remains an important challenge for indoor UAV perception.
+
+From a computational perspective, the results reveal an important trade-off between segmentation quality and inference cost. PointNet achieved the lowest measured inference time, processing the complete dataset in 3.02~s, while PointNeXt-S required 3.71~s and achieved a throughput of approximately 980,000 points/s. PointVector required 11.32~s for the same experiment, while PointNeXt-XL and DGCNN required 14.53~s and 37.97~s, respectively. These results show that the architectures providing stronger segmentation performance generally require a higher computational cost.
+
+Considering segmentation performance, qualitative robustness, and computational requirements together, PointNeXt-S represents the most favorable configuration for the intended UAV perception system. Although PointNeXt-XL provides the best performance on the held-out test set and PointVector achieves the highest validation performance, PointNeXt-S achieves competitive segmentation results while maintaining an inference cost close to that of the lightweight PointNet architecture. It therefore provides a more favorable compromise between representational capability and computational efficiency for the proposed application.
+
+Finally, the work demonstrates the feasibility of adapting pretrained point cloud segmentation architectures to the proposed indoor UAV LiDAR domain through transfer learning and fine-tuning. The obtained results show that modern point-based architectures can effectively exploit the geometric information provided by the LiDAR sensor and achieve strong performance even with the relatively limited size of the custom dataset. Nevertheless, the experiments also highlight that reliable deployment in a real UAV perception system requires further attention to generalization, computational efficiency, and robustness to occlusions and geometrically ambiguous backgrounds.
+
+Overall, the results demonstrate that LiDAR-based deep learning can provide an effective solution for human semantic segmentation in indoor UAV environments. The developed dataset, acquisition pipeline, annotation framework, and comparative evaluation establish a foundation for further research into robust and computationally efficient 3D perception for autonomous indoor UAV systems. The results also highlight the importance of evaluating segmentation models on independent unseen data: while PointVector provided the strongest validation performance, PointNeXt-XL achieved the best generalization on the held-out test set, whereas PointNeXt-S provided the most favorable balance between segmentation performance and computational efficiency for the intended UAV application.
+
+\begin{table}[H]
+    \centering
+    \caption{Summary of test-set performance and computational cost.}
+    \label{tab:conclusion_results}
+    \begin{tabular}{lcccc}
+        \hline
+        \textbf{Model} & \textbf{Test mIoU} & \textbf{Person IoU} & 
+        \textbf{Person F1} & \textbf{Inference Time (s)} \\
+        \hline
+        PointNet     & 0.8673 & 0.7616 & 0.8647 & 3.02 \\
+        PointNet++   & 0.8554 & 0.7407 & 0.8510 & 112.50 \\
+        DGCNN        & 0.8745 & 0.7740 & 0.8726 & 37.97 \\
+        PointNeXt-S  & 0.8992 & 0.8174 & 0.8996 & \textbf{3.71} \\
+        PointNeXt-XL & \textbf{0.9377} & \textbf{0.8866} & 
+        \textbf{0.9399} & 14.53 \\
+        PointVector  & 0.9282 & 0.8697 & 0.9303 & 11.32 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\section{Future Work}
+
+Several directions can be explored to extend the work presented in this Master's Thesis and improve the robustness, usability, and practical applicability of the proposed LiDAR-based UAV perception system. The main future research and development directions are the following:
+
+\begin{itemize}
+
+
+\item \textbf{Dataset expansion and diversification.}
+
+The proposed dataset should be expanded in both size and diversity. The current dataset contains a limited number of indoor acquisitions and therefore does not cover the full variability that can be expected in real deployment scenarios. Future data collection should include a larger number of subjects, poses, viewpoints, distances, and indoor environments. Particular attention should also be given to partial occlusions and scenes without visible people, as these configurations were identified as challenging cases during the qualitative evaluation. A larger and more diverse dataset would provide a stronger basis for evaluating model generalization.
+
+\item \textbf{Robustness to occlusions and false positives.}
+
+Future work should investigate strategies specifically aimed at improving robustness to partial occlusions and reducing false-positive predictions. The qualitative evaluation showed that the evaluated networks may incorrectly classify background structures as human points when only a small portion of the person is visible or when no person is present. Additional negative examples, targeted data augmentation, and training strategies focused on hard examples could therefore be investigated to improve the reliability of the segmentation model in ambiguous scenes.
+
+\item \textbf{Transfer learning and domain adaptation.}
+
+A more systematic study of transfer learning and domain adaptation should be conducted. The experiments presented in this work demonstrate that pretrained point cloud segmentation architectures can be successfully adapted to the indoor UAV domain. However, the domain shift between conventional indoor datasets and UAV-acquired LiDAR data remains an important challenge. Future experiments could compare different fine-tuning strategies, including different proportions of frozen and trainable layers, alternative pretrained models, and domain adaptation techniques. Self-supervised pretraining on larger collections of UAV LiDAR data could also be investigated as a way of learning representations that are more closely aligned with the target domain.
+
+\item \textbf{Efficient onboard inference.}
+
+Future work should focus on achieving reliable onboard inference. The current computational evaluation measures the inference time of the neural network component but does not include the complete end-to-end perception pipeline. In addition, the experiments showed that the computational resources available on the embedded platform limit the execution of the more demanding segmentation architectures. Model optimization techniques such as quantization, pruning, knowledge distillation, or hardware-oriented inference optimization could therefore be explored. The objective would be to deploy a sufficiently accurate model directly on the UAV and evaluate the complete latency from LiDAR acquisition to semantic segmentation output.
+
+\item \textbf{Web-based system configuration and monitoring.}
+
+Another relevant direction is to improve the usability and configurability of the developed LiDAR sensing system. The current setup requires configuration and management through the underlying software and hardware components, which can make experimental operation less accessible and less flexible. A lightweight web server running directly on the embedded computer connected to the LiDAR sensor could provide a user-friendly interface for configuring and monitoring the system.
+
+Such an interface could allow the operator to configure acquisition parameters, network and communication settings, point cloud recording options, synchronization parameters, and other system-level settings without requiring direct access to the underlying software. The web interface could also provide real-time system status information, including sensor connectivity, acquisition state, recording status, packet reception rate, available storage, and basic diagnostic information. In addition, experimental sessions could be managed through the interface, allowing the configuration associated with each acquisition to be stored together with the recorded data. This would facilitate repeated experiments, improve reproducibility, reduce configuration errors, and make the sensing platform easier to operate.
+
+\item \textbf{Integration into an autonomous UAV system.}
+
+Finally, the proposed segmentation system could be integrated into a complete autonomous UAV perception and navigation framework. Human segmentation could provide information for human-aware navigation, collision avoidance, safety monitoring, or person tracking in indoor environments. Such integration would allow the system to be evaluated not only according to conventional semantic segmentation metrics, but also according to application-level criteria such as end-to-end latency, robustness to unseen environments, detection reliability, and safe operation around people.
+
+
+\end{itemize}
+
+Overall, future development should therefore move from improving the segmentation model in isolation towards increasing the diversity of the acquired data, improving robustness to difficult geometric configurations, reducing the domain gap, enabling efficient onboard inference, and improving the usability and configurability of the sensing platform. These improvements would provide a path from the current experimental framework towards a fully integrated, reproducible, and potentially real-time LiDAR perception system for autonomous indoor UAV applications.

@@ -1,0 +1,50 @@
+\section{Inference Performance}
+\label{sec:inference_performance}
+
+In addition to the segmentation accuracy, the computational cost of the evaluated architectures was assessed by performing a standalone-style inference experiment over the complete custom dataset. The objective of this experiment was to characterize the practical inference performance of each model under the same hardware and software conditions and to evaluate its suitability for the intended UAV perception pipeline.
+
+The benchmark was performed on the complete set of 78 point clouds contained in the cleaned dataset. Since the point clouds contain a substantially larger number of points than the fixed input size used by the networks, each cloud was divided into 4096-point patches. The predictions obtained for the individual patches were processed sequentially to cover the complete point cloud. In total, the 78 acquisitions contained 3,631,106 points and resulted in 931 patches across the complete dataset. The same inference procedure was applied to all six evaluated architectures.
+The benchmark was executed using the NVIDIA GeForce RTX 4050 GPU employed throughout the training and evaluation process. The models were loaded from their final \texttt{best\_model} checkpoints and inference was performed using the same implementations employed during model development. A warm-up stage was performed before processing the dataset in order to reduce the influence of the initial CUDA execution overhead. The reported inference time therefore corresponds to the processing of the dataset after model initialization and warm-up.
+
+Table~\ref{tab:inference_performance} summarizes the resulting computational performance.
+
+\begin{table}[H]
+\centering
+\caption{Inference performance over the complete custom UAV dataset.}
+\label{tab:inference_performance}
+\begin{tabular}{|l|r|r|r|r|}
+\hline
+\textbf{Model} &
+\textbf{Total Inference (s)} &
+\textbf{Mean Cloud (s)} &
+\textbf{Points/s} &
+\textbf{Patches/s} \\
+\hline
+PointNet & 3.0191 & 0.0387 & 1,202,730.57 & 308.37 \\
+\hline
+PointNet++ & 112.4955 & 1.4422 & 32,277.80 & 8.28 \\
+\hline
+DGCNN & 37.9691 & 0.4868 & 95,633.24 & 24.52 \\
+\hline
+PointNeXt-S & 3.7066 & 0.0475 & 979,620.09 & 251.17 \\
+\hline
+PointNeXt-XL & 14.5317 & 0.1863 & 249,875.66 & 64.07 \\
+\hline
+PointVector & 11.3189 & 0.1451 & 320,800.15 & 82.25 \\
+\hline
+\end{tabular}
+\end{table}
+
+The results show substantial differences in computational requirements between the evaluated architectures. PointNet achieved the lowest total inference time, requiring only 3.02~s to process the complete dataset, with an average processing time of 38.7~ms per point cloud. Its throughput reached approximately 1.20 million points per second. PointNeXt-S exhibited very similar behavior, requiring 3.71~s for the complete dataset and processing approximately 980,000 points per second. These results confirm the computational advantage of lightweight point-based architectures.
+
+DGCNN required 37.97~s to process the complete dataset, corresponding to an average of 486.8~ms per point cloud. Its throughput was approximately 95,633 points per second, substantially lower than that of PointNet and PointNeXt-S. This difference is consistent with the additional computational cost associated with dynamically constructing and processing local feature relationships.
+
+The larger PointNeXt-XL model required 14.53~s for the complete dataset, while PointVector required 11.32~s. Their average processing times were 186.3~ms and 145.1~ms per point cloud, respectively. Although both architectures are considerably more computationally demanding than PointNet and PointNeXt-S, their inference requirements remain substantially lower than those observed for PointNet++ in the evaluated configuration.
+
+PointNet++ exhibited the highest computational cost among the evaluated models by a significant margin. Processing the complete dataset required 112.50~s, corresponding to an average of 1.44~s per point cloud and a throughput of approximately 32,278 points per second. This result illustrates that the computational complexity of a model can differ considerably even between architectures derived from the same general point-based paradigm.
+
+It is important to note that these measurements represent model inference over already reconstructed point clouds and therefore do not include LiDAR acquisition, packet decoding, point cloud generation, Wi-Fi transmission, or other system-level processing stages. Consequently, the reported values should be interpreted as the computational component of the semantic segmentation stage rather than as an end-to-end UAV perception latency.
+
+Nevertheless, the results provide a useful comparison of the computational requirements of the evaluated architectures. In particular, PointNet and PointNeXt-S provide the most favorable inference performance, while PointNet++ represents the most computationally demanding configuration. This comparison is especially relevant to the deployment strategy adopted in this work, where deep learning inference is performed on an external GPU-equipped workstation rather than directly on the Raspberry Pi. The benchmark therefore characterizes the computational cost of the models under the intended external inference configuration while providing a reference for future optimization and edge deployment studies.
+
+

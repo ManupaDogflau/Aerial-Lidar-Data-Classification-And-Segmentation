@@ -1,0 +1,69 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: TFM.aux
+Reallocating 'name_of_file' (item size: 1) to 15 items.
+A level-1 auxiliary file: 0.Abstract.aux
+Reallocating 'name_of_file' (item size: 1) to 19 items.
+A level-1 auxiliary file: 1.Introduction.aux
+Reallocating 'name_of_file' (item size: 1) to 18 items.
+A level-1 auxiliary file: 2.RelatedWork.aux
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+A level-1 auxiliary file: 3.Design.aux
+Reallocating 'name_of_file' (item size: 1) to 17 items.
+A level-1 auxiliary file: 4.Evaluation.aux
+Reallocating 'name_of_file' (item size: 1) to 18 items.
+A level-1 auxiliary file: 5.Conclusions.aux
+Reallocating 'name_of_file' (item size: 1) to 7 items.
+The style file: ieeetr.bst
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+Reallocating 'name_of_file' (item size: 1) to 15 items.
+A level-1 auxiliary file: 6.Appendix.aux
+Database file #1: bibliography.bib
+Warning--empty journal in Merizette2025ThreeDSES
+Warning--empty author in Ferreira2023PedestrianLiDAR
+Warning--empty journal in Lorente2021PedestrianPointNet
+Warning--can't use both volume and number fields in Wang2019DGCNN
+Warning--empty booktitle in PointVector
+Warning--empty booktitle in PointNeXt
+You've used 34 entries,
+            1876 wiz_defined-function locations,
+            673 strings with 10421 characters,
+and the built_in function-call counts, 7690 in all, are:
+= -- 630
+> -- 437
+< -- 0
++ -- 160
+- -- 126
+* -- 538
+:= -- 1158
+add.period$ -- 43
+call.type$ -- 34
+change.case$ -- 33
+chr.to.int$ -- 0
+cite$ -- 40
+duplicate$ -- 404
+empty$ -- 783
+format.name$ -- 126
+if$ -- 1835
+int.to.chr$ -- 0
+int.to.str$ -- 34
+missing$ -- 27
+newline$ -- 114
+num.names$ -- 33
+pop$ -- 191
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 190
+stack$ -- 0
+substring$ -- 248
+swap$ -- 108
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 6
+while$ -- 54
+width$ -- 36
+write$ -- 301
+(There were 6 warnings)

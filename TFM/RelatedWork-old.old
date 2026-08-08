@@ -1,0 +1,314 @@
+
+
+\section{Introduction and Motivation}
+
+Light Detection and Ranging (LiDAR) has become one of the most important sensing technologies for three-dimensional (3D) environment perception. By measuring the time-of-flight of laser pulses reflected from surrounding surfaces, LiDAR sensors generate dense point clouds containing accurate geometric information. Unlike passive vision systems, LiDAR operates independently of illumination conditions and provides direct metric depth measurements, making it particularly suitable for mapping, navigation, inspection, and autonomous robotics applications.
+
+Traditionally, LiDAR has been widely used in airborne mapping, topographic reconstruction, forestry monitoring, and urban planning. The increasing availability of dense point cloud data has motivated the development of automatic semantic interpretation techniques capable of extracting meaningful information from raw geometric measurements \cite{Guo2020DeepLearningSurvey,Li2020DeepLearningLiDARReview}.
+
+Semantic segmentation aims to assign a semantic label to every point in a point cloud, enabling the identification of structures such as walls, floors, buildings, vegetation, vehicles, or industrial equipment. This capability is essential for autonomous systems that must understand and interact with complex environments. The integration of deep learning with LiDAR processing has significantly improved segmentation performance during the last decade, transforming semantic perception into a key component of modern robotics and remote sensing systems \cite{Qi2017PointNet,Qi2017PointNetPP}.
+
+While substantial progress has been achieved in outdoor environments, the applicability of current LiDAR semantic segmentation methods to indoor UAV operations remains uncertain. Indoor scenarios introduce additional challenges including GNSS-denied navigation, cluttered environments, repetitive structures, dynamic obstacles, and strict computational constraints. These factors significantly affect both perception and localization, making indoor UAV LiDAR semantic segmentation an active and open research area \cite{Bournez2024Indoor}.
+
+\section{LiDAR Semantic Segmentation Approaches}
+
+Research on LiDAR semantic segmentation has evolved from handcrafted geometric descriptors toward fully end-to-end deep learning models.
+
+Early approaches relied on manually engineered features such as curvature, surface normals, planarity, roughness, and height information. These descriptors were combined with machine learning algorithms such as Support Vector Machines (SVM) and Random Forests to classify points into semantic categories. Although these methods were computationally efficient and interpretable, they often exhibited limited generalization capabilities and required extensive parameter tuning and feature engineering \cite{Guo2020DeepLearningSurvey,Li2020DeepLearningLiDARReview,Zhao2021TechnicalSurveyPointCloudClustering}.
+
+The emergence of deep learning transformed the field by enabling direct feature extraction from raw point clouds. PointNet \cite{Qi2017PointNet} was the first architecture capable of directly processing unordered point sets while preserving permutation invariance. However, its limited ability to capture local geometric structures restricted segmentation performance in complex scenes. To address this limitation, PointNet++ \cite{Qi2017PointNetPP} introduced hierarchical feature learning and local neighborhood aggregation, enabling the network to model geometric structures at multiple scales and significantly improving segmentation accuracy.
+
+Although these architectures have demonstrated remarkable performance on large-scale outdoor benchmarks, their effectiveness in UAV-based indoor scenarios remains less understood. Indoor environments impose constraints that are not fully represented in conventional datasets, including severe occlusions, navigation uncertainty, and highly cluttered geometries. Consequently, evaluating the suitability of existing segmentation approaches for indoor UAV applications has become an important research direction.
+
+\begin{table}[htbp]
+\centering
+\caption{High-level taxonomy of LiDAR semantic segmentation approaches.}
+\label{tab:lidar_taxonomy}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Family} & \textbf{Core Idea} & \textbf{Representative Methods} \\
+\hline
+Point-based & Direct processing of raw point sets & PointNet, PointNet++, DGCNN \\
+\hline
+Voxel-based & Discretization into 3D grids & VoxelNet, SparseConvNet \\
+\hline
+Projection-based & Mapping 3D data to 2D representations & SalsaNet, 3D-MiniNet \\
+\hline
+Convolution-based & Local neighborhood aggregation in 3D & KPConv, ConvPoint, RandLA-Net \\
+\hline
+Transformer-based & Global context via attention mechanisms & Point Transformer, PTMF, 3DLST \\
+\hline
+Hybrid (SLAM + DL) & Integration of perception and localization & SLAM + segmentation pipelines \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\linewidth]{semantic.jpg}
+\caption{Semantic segmentation using the PointNet architecture \cite{Qi2017PointNet}.}
+\label{fig:pointnet_segmentation}
+\end{figure}
+
+Several methodological families have subsequently emerged:
+
+\begin{itemize}
+\item \textbf{Point-based networks:} PointNet \cite{Qi2017PointNet}, PointNet++ \cite{Qi2017PointNetPP}, and DGCNN \cite{Wang2019DGCNN} directly process raw point clouds while preserving geometric fidelity. Their main advantage lies in avoiding information loss caused by discretization, although scalability remains challenging for very large point clouds.
+
+\item \textbf{Convolution-based methods:} KPConv \cite{Thomas2019KPConv}, ConvPoint \cite{Boulch2020ConvPoint}, and RandLA-Net \cite{Hu2020RandLANet} aggregate information from local neighborhoods through specialized convolution operators. These methods generally provide an effective balance between accuracy and computational efficiency.
+
+\item \textbf{Projection-based methods:} Architectures such as SalsaNet and 3D-MiniNet transform 3D point clouds into structured 2D representations that can be processed efficiently using conventional convolutional neural networks \cite{Milioto2019SalsaNext}. However, geometric information may be partially lost during the projection process.
+
+\item \textbf{Transformer-based architectures:} Point Transformer \cite{Zhao2021PointTransformer}, PTMF \cite{PTMF2025}, and 3DLST \cite{Robert20233DLST} exploit self-attention mechanisms to model long-range dependencies and global contextual relationships. These models achieve state-of-the-art performance on several benchmarks but often require substantial computational resources.
+
+\item \textbf{Hybrid approaches:} Methods combining semantic segmentation with localization and mapping systems \cite{Suleymanoglu2022IndoorMappingLiDAR}. Such approaches are particularly attractive for autonomous UAV operation because semantic and geometric information can mutually reinforce each other.
+
+\end{itemize}
+
+Transformer-based models currently represent the state of the art in many benchmarks due to their ability to jointly capture local geometry and global context. However, their computational requirements often limit deployment on embedded robotic platforms \cite{Zhao2021PointTransformer,PTMF2025}.
+
+\section{UAV-Mounted LiDAR Segmentation}
+
+Recent advances in sensor miniaturization have enabled lightweight LiDAR systems to be integrated into Unmanned Aerial Vehicles (UAVs). Compared with conventional airborne LiDAR platforms, UAV-mounted systems offer lower operational costs, greater deployment flexibility, and significantly higher spatial resolution \cite{Varney2020DALES,Kolle2021H3D}.
+
+UAV LiDAR has found applications in numerous domains, including:
+
+\begin{itemize}
+\item Infrastructure inspection.
+\item Urban mapping.
+\item Environmental monitoring.
+\item Construction surveying.
+\item Powerline inspection.
+\item Industrial asset monitoring.
+\end{itemize}
+
+The characteristics of UAV-acquired point clouds differ significantly from those of terrestrial and airborne systems. Point density often varies considerably due to flight altitude changes, sensor orientation, and occlusions. Furthermore, aerial scenes typically contain large-scale structures and highly imbalanced semantic classes, creating additional challenges for segmentation algorithms \cite{Varney2020DALES}.
+
+Several benchmark datasets have contributed to the development of UAV-specific segmentation approaches. DALES \cite{Varney2020DALES} contains over one billion points acquired from urban and suburban aerial environments and has become one of the most widely adopted benchmarks for aerial semantic segmentation. Similarly, the Hessigheim 3D dataset provides high-resolution UAV LiDAR point clouds with dense semantic annotations suitable for evaluating advanced deep learning methods \cite{Kolle2021H3D}.
+
+Experimental results on DALES demonstrate a clear progression in performance across different architectural families. PointNet++ achieves approximately 68% mIoU, while KPConv exceeds 81% mIoU. More recently, transformer-based approaches such as PTMF have reached over 82% mIoU, highlighting the importance of global context modeling in large-scale aerial scenes \cite{Varney2020DALES,Thomas2019KPConv,PTMF2025}.
+
+Despite these advances, real-time deployment on UAV platforms remains challenging due to the computational complexity of state-of-the-art networks. Efficient onboard processing therefore remains an active area of research \cite{Hu2020RandLANet,Valseca2019RealtimeLiDAR}.
+
+\section{Indoor UAV LiDAR Semantic Segmentation}
+
+Although outdoor LiDAR perception has received significant attention, indoor UAV LiDAR remains a relatively unexplored domain. Large infrastructures such as warehouses, industrial facilities, tunnels, logistics centers, and underground environments represent important application domains where UAV-mounted LiDAR can provide rapid inspection, mapping, and monitoring capabilities \cite{Bournez2024Indoor}.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison between outdoor and indoor UAV LiDAR perception scenarios.}
+\label{tab:indoor_outdoor_comparison}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Aspect} & \textbf{Outdoor UAV} & \textbf{Indoor UAV} \\
+\hline
+Localization & GNSS-assisted & GNSS-denied \\
+\hline
+Environment scale & Large-scale & Confined spaces \\
+\hline
+Occlusions & Moderate & Severe \\
+\hline
+Point density variation & Moderate & High \\
+\hline
+Dataset availability & Extensive & Limited \\
+\hline
+Current SOTA mIoU & $>$80\% & $\sim$70\% \\
+\hline
+\end{tabular}
+\end{table}
+
+Unlike outdoor environments, indoor operations occur in GNSS-denied conditions. Consequently, localization depends entirely on onboard sensing and LiDAR-based Simultaneous Localization and Mapping (SLAM) systems \cite{Suleymanoglu2022IndoorMappingLiDAR}. Semantic perception and localization therefore become strongly interconnected tasks.
+
+From a formal perspective, semantic segmentation consists of assigning a semantic label to every point in a LiDAR point cloud acquired by the UAV. Each point is represented by spatial coordinates $(x,y,z)$ and may include additional attributes such as intensity, reflectivity, or return information. The objective is to classify points into predefined semantic categories enabling higher-level scene understanding for navigation, inspection, and mapping tasks \cite{Bournez2024Indoor}.
+
+\subsection{Challenges of Indoor UAV Perception}
+
+Indoor environments introduce several challenges that distinguish them from outdoor aerial scenarios.
+
+\subsubsection{Complex Geometry and Clutter}
+
+Warehouses and industrial facilities frequently contain shelves, machinery, pipes, cables, storage racks, and densely packed objects. These structures generate numerous occlusions and create highly irregular point distributions. Fine geometric details become particularly important because semantic classes often differ only through subtle structural variations \cite{Armeni2016S3DIS}.
+
+\subsubsection{GNSS-Denied Localization}
+
+Indoor UAVs cannot rely on GPS measurements. Localization must therefore be performed through LiDAR-based SLAM algorithms that estimate the vehicle trajectory while simultaneously reconstructing the environment \cite{Suleymanoglu2022IndoorMappingLiDAR}.
+
+Localization errors directly affect semantic segmentation performance because registration inaccuracies propagate to subsequent perception modules. This dependency motivates the development of integrated SLAM and semantic perception frameworks.
+
+\subsubsection{Limited Training Data}
+
+Compared with outdoor benchmarks, indoor LiDAR datasets remain scarce. Most available datasets were acquired using static terrestrial scanners rather than aerial platforms. Consequently, they do not fully capture the characteristics of UAV operation, including motion-induced noise, viewpoint variability, and flight dynamics \cite{Armeni2016S3DIS,Bournez2024Indoor}.
+
+\subsubsection{Real-Time Constraints}
+
+Many industrial applications require real-time onboard perception. However, state-of-the-art segmentation networks often contain millions of parameters and require high-end GPUs for inference. This creates a trade-off between segmentation accuracy and computational efficiency \cite{Hu2020RandLANet,Zhao2021PointTransformer}.
+
+\subsection{Current Performance}
+
+Several deep learning architectures have been evaluated on indoor benchmarks such as S3DIS \cite{Armeni2016S3DIS}. PointNet++ achieves approximately 53.5% mIoU, whereas more advanced approaches such as RandLA-Net, KPConv, and Point Transformer achieve around 70% mIoU \cite{Hu2020RandLANet,Thomas2019KPConv,Zhao2021PointTransformer}.
+
+Although these values appear relatively high, indoor segmentation remains substantially more challenging than outdoor UAV segmentation. The combination of cluttered environments, occlusions, repetitive structures, and complex topologies significantly limits performance improvements. Moreover, S3DIS was acquired using terrestrial scanners, meaning that reported results may not directly translate to UAV-based acquisitions \cite{Armeni2016S3DIS}.
+
+\section{Datasets and Evaluation Frameworks}
+
+The evaluation of semantic segmentation algorithms relies heavily on benchmark datasets containing manually annotated point clouds.
+
+\subsection{Outdoor and UAV Datasets}
+
+Several datasets are commonly used for evaluating LiDAR segmentation methods:
+
+\begin{itemize}
+\item \textbf{SemanticKITTI} \cite{Behley2019SemanticKITTI}: large-scale autonomous driving benchmark with point-wise semantic annotations.
+
+\item \textbf{Toronto3D} \cite{Tan2021Toronto3D}: urban mobile LiDAR dataset containing complex streetscape scenes.
+
+\item \textbf{DALES} \cite{Varney2020DALES}: aerial UAV LiDAR benchmark containing over one billion points.
+
+\item \textbf{Hessigheim 3D} \cite{Kolle2021H3D}: high-resolution UAV LiDAR benchmark with dense annotations.
+
+\begin{table}[h!]
+\centering
+\caption{Semantic segmentation results on the DALES dataset \cite{Varney2020DALES}.}
+\label{tab:dales_benchmark}
+\begin{tabular}{|l|c|c|}
+\hline
+\label{tab:uav_lidar}
+\textbf{Method} & \textbf{OA (\%)} & \textbf{mIoU (\%)} \\
+\hline
+Transformer-based (PTMF) \cite{PTMF2025} & 98.2 & 82.2 \\
+KPConv \cite{Thomas2019KPConv,Varney2020DALES} & 97.8 & 81.1 \\
+PointNet++ \cite{Qi2017PointNetPP,Varney2020DALES} & 95.7 & 68.3 \\
+ConvPoint \cite{Boulch2020ConvPoint,Varney2020DALES} & 97.2 & 67.4 \\
+PointCNN \cite{Li2018PointCNN,Varney2020DALES} & 97.2 & 58.4 \\
+ShellNet \cite{Zhang2019ShellNet,Varney2020DALES} & 96.4 & 57.4 \\
+\hline
+\end{tabular}
+\end{table}
+
+\end{itemize}
+
+\subsection{Indoor Datasets}
+
+Indoor benchmarks remain significantly less abundant:
+
+\begin{itemize}
+\item \textbf{S3DIS} \cite{Armeni2016S3DIS}: the most widely adopted benchmark for indoor semantic segmentation.
+
+\item \textbf{3DSES} \cite{Merizette2025ThreeDSES}: recent industrial indoor dataset designed to support semantic segmentation research.
+
+\begin{table}[H]
+\centering
+\caption{Comparative evaluation of indoor point cloud semantic segmentation methods on the S3DIS Area 5 benchmark.}
+\label{tab:indoor_lidar}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Method} & \textbf{Dataset} & \textbf{mIoU (\%)} \\
+\hline
+KPConv \cite{Thomas2019KPConv} & S3DIS & 70.6 \\
+Point Transformer \cite{Zhao2021PointTransformer} & S3DIS & 70.4 \\
+RandLA-Net \cite{Hu2020RandLANet} & S3DIS & 70.0 \\
+PointNet++ \cite{Qi2017PointNetPP} & S3DIS & 53.5 \\
+\hline
+\end{tabular}
+\end{table}
+
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\linewidth]{S3DES.jpg}
+\caption{Example of a semantically annotated scene from the S3DIS dataset \cite{Armeni2016S3DIS}.}
+\label{fig:s3dis}
+\end{figure}
+
+The limited size and diversity of indoor datasets remain major obstacles to the development of robust segmentation models \cite{Merizette2025ThreeDSES,Bournez2024Indoor}.
+
+\subsection{Evaluation Metrics}
+
+Semantic segmentation performance is commonly measured using:
+
+\begin{itemize}
+    \item \textbf{Overall Accuracy (OA)}: The ratio of correctly classified points to the total number of points.
+    \item \textbf{Per-Class Accuracy}: Accuracy computed separately for each semantic class, useful for imbalanced datasets.
+    \item \textbf{Intersection over Union (IoU)}: Measures overlap between predicted and ground-truth point labels for each class:
+    \[
+    IoU = \frac{TP}{TP + FP + FN}
+    \]
+    where \(TP\) is true positives, \(FP\) is false positives, and \(FN\) is false negatives.
+    \item \textbf{F1-score}: Harmonic mean of precision and recall, often used for evaluating performance in imbalanced scenarios.
+    
+\end{itemize}
+
+Among these metrics, mIoU is generally considered the most representative because it balances performance across all semantic classes and mitigates the effects of class imbalance \cite{Behley2019SemanticKITTI,Varney2020DALES}.
+
+\section{Current Limitations and Open Challenges}
+
+Despite substantial progress in LiDAR semantic segmentation, several limitations remain unresolved for indoor UAV applications.
+
+\subsubsection{Limited Segmentation Performance}
+
+State-of-the-art methods such as KPConv \cite{Thomas2019KPConv}, RandLA-Net \cite{Hu2020RandLANet}, and Point Transformer \cite{Zhao2021PointTransformer} achieve approximately 70% mIoU on the S3DIS benchmark \cite{Armeni2016S3DIS}. This performance remains significantly below that achieved on outdoor UAV benchmarks such as DALES, where transformer-based methods exceed 80% mIoU \cite{Varney2020DALES,PTMF2025}.
+
+\subsubsection{Lack of Representative Datasets}
+
+Existing indoor datasets are generally acquired using terrestrial scanners rather than UAV platforms. Consequently, they fail to capture motion-induced artifacts, viewpoint variability, and navigation-related challenges associated with aerial acquisition \cite{Armeni2016S3DIS,Bournez2024Indoor}.
+
+\subsubsection{Computational Complexity}
+
+Transformer-based architectures achieve excellent segmentation performance but require substantial computational resources. Their deployment on embedded UAV hardware remains difficult due to memory, energy, and processing constraints \cite{Zhao2021PointTransformer,PTMF2025}.
+
+\subsubsection{Robustness to Noise and Density Variations}
+
+Indoor UAV point clouds frequently exhibit irregular sampling density, dynamic obstacles, partial occlusions, and sensor noise. These characteristics reduce segmentation robustness and challenge both classical and deep learning approaches \cite{Hu2020RandLANet,Bournez2024Indoor}.
+
+\subsubsection{Integration with SLAM}
+
+Most current methods treat semantic segmentation and localization as independent problems. However, indoor UAV operation requires a tight integration between LiDAR-based SLAM and semantic perception to generate consistent semantic maps suitable for navigation and inspection tasks \cite{Suleymanoglu2022IndoorMappingLiDAR}.
+
+\begin{table}[htbp]
+\centering
+\caption{Mapping of limitations, root causes, and research directions for indoor UAV LiDAR segmentation.}
+\label{tab:limitations_mapping}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|p{4cm}|p{5cm}|p{5cm}|}
+\hline
+\textbf{Limitation} & \textbf{Root Cause} & \textbf{Research Direction} \\
+\hline
+Plateaued indoor segmentation performance (~70\% mIoU) 
+& Complex indoor scenes, clutter, occlusions, and limited annotated datasets 
+& Develop architectures tailored to indoor environments; exploit semi-supervised or synthetic data \\
+\hline
+Performance gap between outdoor and indoor UAV datasets 
+& Irregular point density, GNSS-denied localization, narrow corridors 
+& Integrate SLAM with segmentation; design robust models for irregular data \\
+\hline
+Limited real-time deployment 
+& High computational cost of SOTA deep learning models 
+& Create lightweight, efficient, and real-time capable networks suitable for UAVs \\
+\hline
+Scarcity of high-density indoor benchmarks 
+& Small-scale datasets and sparse annotations 
+& Expand datasets and establish standardized evaluation protocols for indoor UAV LiDAR \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\section{Research Gap and Motivation}
+
+The literature review reveals that indoor UAV LiDAR semantic segmentation remains significantly less mature than outdoor UAV perception.
+
+Three major research gaps can be identified:
+
+\begin{enumerate}
+\item Limited availability of dedicated indoor UAV LiDAR datasets \cite{Armeni2016S3DIS,Merizette2025ThreeDSES}.
+
+\item Lack of lightweight and efficient segmentation architectures suitable for real-time onboard deployment \cite{Hu2020RandLANet,Zhao2021PointTransformer}.
+
+\item Insufficient integration between semantic segmentation and LiDAR-based SLAM systems \cite{Suleymanoglu2022IndoorMappingLiDAR,Bournez2024Indoor}.
+
+\end{enumerate}
+
+These limitations motivate the development of robust and computationally efficient approaches specifically designed for indoor UAV operation. Future research should focus on improving segmentation accuracy under GNSS-denied conditions while maintaining real-time performance and compatibility with onboard localization systems.
+
+Consequently, indoor UAV LiDAR semantic segmentation remains an open research problem with significant practical relevance for industrial inspection, warehouse automation, infrastructure monitoring, and autonomous navigation. The combination of limited datasets, challenging operating conditions, and stringent computational requirements highlights the need for specialized solutions capable of providing accurate and efficient semantic perception in GNSS-denied environments. These challenges directly motivate the research objectives and methodological choices presented in the following chapters.

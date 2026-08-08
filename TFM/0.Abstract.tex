@@ -1,0 +1,53 @@
+%%%%%%%%%%%%%% ABSTRACT PAGE / RESUMEN (VERSION ESPAÑOL) %%%%%%%%%%
+\pagenumbering{roman} \setcounter{page}{1}
+%\addcontentsline{toc}{chapter}{\numberline{}{Resumen}} % Uncomment to add in TOC
+\chapter*{Resumen}
+
+Este Trabajo Fin de Máster presenta el desarrollo y evaluación de un sistema de segmentación semántica basado en LiDAR para la percepción de personas en entornos interiores mediante vehículos aéreos no tripulados (UAV). El trabajo aborda los retos asociados al procesamiento de nubes de puntos tridimensionales adquiridas desde una plataforma aérea, caracterizadas por ser dispersas, irregulares y dependientes de la configuración del sistema de sensado y del entorno. Para ello, se desarrolló un flujo experimental completo que comprende la integración y configuración de una plataforma LiDAR embarcada en un UAV, la adquisición y reconstrucción de nubes de puntos, la generación y anotación de un conjunto de datos, el ajuste de modelos de aprendizaje profundo mediante transferencia de aprendizaje y su evaluación cuantitativa y cualitativa.
+
+Se generó un conjunto de datos propio mediante adquisiciones realizadas en interiores utilizando el sistema de sensado desarrollado. El conjunto final está compuesto por 78 nubes de puntos válidas, con aproximadamente 50.000 puntos por adquisición antes del muestreo. Las adquisiciones incluyen diferentes posturas y orientaciones de personas, puntos de vista, distancias y situaciones de oclusión parcial, proporcionando un escenario específico para evaluar la segmentación semántica de personas desde una perspectiva aérea. Estos datos se utilizaron para ajustar y evaluar seis arquitecturas de segmentación basadas en puntos: PointNet, PointNet++, DGCNN, PointNeXt-S, PointNeXt-XL y PointVector.
+
+Los resultados cuantitativos muestran que todas las arquitecturas evaluadas alcanzan un elevado rendimiento de segmentación. En el conjunto de validación, PointVector obtuvo los mejores resultados, con una precisión del 98,94\%, un mIoU del 94,26\%, un IoU de la clase persona del 89,69\% y un F1-score de persona del 94,57\%. Sin embargo, en el conjunto de prueba independiente, compuesto por escenas no utilizadas durante el entrenamiento, PointNeXt-XL obtuvo el mejor rendimiento, alcanzando una precisión del 98,96\%, un mIoU del 93,77\%, un IoU de persona del 88,66\% y un F1-score del 93,99\%. Estos resultados ponen de manifiesto la importancia de evaluar la capacidad de generalización sobre datos no vistos.
+
+El análisis computacional muestra un compromiso entre rendimiento de segmentación y coste de inferencia. Aunque PointNeXt-XL presenta el mejor rendimiento en el conjunto de prueba y PointVector obtiene los mejores resultados de validación, PointNeXt-S ofrece un equilibrio más favorable entre capacidad de segmentación y eficiencia computacional, por lo que constituye una configuración prometedora para una futura implementación en el sistema de percepción del UAV. La evaluación cualitativa identifica además dificultades asociadas a oclusiones, estructuras del fondo geométricamente similares a personas y escenas sin personas visibles.
+
+En conjunto, los resultados demuestran la viabilidad de aplicar técnicas de aprendizaje profundo para la segmentación semántica de personas en datos LiDAR adquiridos desde plataformas UAV en interiores y establecen una base para futuros trabajos centrados en la mejora de la robustez, la generalización, la eficiencia de inferencia y la integración de estos modelos en sistemas autónomos.
+
+\vfill
+\section*{Palabras clave}
+LiDAR, UAV, nubes de puntos, segmentación semántica, aprendizaje profundo, procesamiento de nubes de puntos 3D, segmentación de personas, percepción en interiores, PointNeXt, PointVector.
+%%%%%%%%%%%%%% ABSTRACT PAGE / RESUMEN (ENGLISH VERSION) %%%%%%%%%%
+\newpage
+%\addcontentsline{toc}{chapter}{\numberline{}{Abstract}} % Uncomment to add in TOC
+\chapter*{Abstract}
+
+This Master's Thesis presents the development and evaluation of a LiDAR-based semantic segmentation system for human perception in indoor Unmanned Aerial Vehicle (UAV) environments. The work addresses the challenges associated with processing three-dimensional point clouds acquired from an aerial platform, which are sparse, irregular, and dependent on the sensing configuration and the surrounding environment. To address these challenges, a complete experimental pipeline was developed, covering the integration and configuration of a UAV-mounted LiDAR sensing platform, point cloud acquisition and reconstruction, dataset generation and annotation, deep learning model fine-tuning through transfer learning, and quantitative and qualitative evaluation.
+
+A custom indoor dataset was collected using the developed sensing system. The resulting dataset contains 78 valid point clouds, with approximately 50,000 points per acquisition before sampling. The acquisitions include different human poses and orientations, viewpoints, distances, and partial occlusions, providing a specific scenario for evaluating human semantic segmentation from an aerial perspective. The generated data were used to fine-tune and evaluate six point-based segmentation architectures: PointNet, PointNet++, DGCNN, PointNeXt-S, PointNeXt-XL, and PointVector.
+
+The quantitative results show that all evaluated architectures achieve high segmentation performance. On the validation set, PointVector obtained the best results, reaching an accuracy of 98.94\%, an mIoU of 94.26\%, a person IoU of 89.69\%, and a person F1-score of 94.57\%. However, on the independent held-out test set, consisting of previously unseen scenes, PointNeXt-XL achieved the best performance, with an accuracy of 98.96\%, an mIoU of 93.77\%, a person IoU of 88.66\%, and a person F1-score of 93.99\%. These results highlight the importance of evaluating model generalization on unseen data rather than relying exclusively on validation performance.
+
+The computational analysis reveals a trade-off between segmentation performance and inference cost. Although PointNeXt-XL provides the best segmentation performance on the held-out test set and PointVector achieves the strongest validation results, PointNeXt-S offers a more favorable balance between segmentation capability and computational efficiency, making it a promising configuration for future deployment in the UAV perception system. The qualitative evaluation also identifies remaining challenges associated with partial occlusions, background structures with geometrical characteristics similar to human points, and scenes without visible people.
+
+Overall, the results demonstrate the feasibility of applying deep learning-based semantic segmentation to LiDAR data acquired from indoor UAV platforms. The developed sensing and processing pipeline, together with the custom dataset and comparative evaluation, establishes a foundation for future work focused on improving robustness, generalization, inference efficiency, and the integration of segmentation models into autonomous indoor UAV systems.
+
+\vfill
+\section*{Keywords}
+LiDAR, UAV, point clouds, semantic segmentation, deep learning, 3D point cloud processing, human segmentation, indoor perception, PointNeXt, PointVector.
+
+%%%%%%%%%%%%%% ACKS PAGE / AGRADECIMIENTOS %%%%%%%%%%
+\newpage
+%\addcontentsline{toc}{chapter}{\numberline{}{Acknoledgements}} % Uncomment to add in TOC
+\chapter*{Acknowledgements}
+
+I would first like to express my sincere gratitude to my thesis supervisors, Carlos Quiterio and Isaac Segovia, for their guidance, support, and advice throughout the development of this Master's Thesis. Their knowledge, availability, and constructive feedback have been essential in overcoming the technical challenges encountered during the project and in bringing this work to completion.
+
+I would also like to thank the HCTLab, the Escuela Politécnica Superior, and the Universidad Autónoma de Madrid for providing the facilities, resources, and academic environment that made this work possible. I am especially grateful for the opportunity to develop this project in an environment that allowed me to combine research, experimentation, and practical engineering.
+
+I would also like to thank Mahdi, a colleague from the laboratory, for his constant willingness to help and for his support whenever I needed assistance throughout the development of the project. His help with the different technical and practical aspects of the work was greatly appreciated.
+
+I would like to give a very special thanks to my mother for her constant support, patience, and encouragement throughout this Master's degree. Her support has been fundamental, especially during the most demanding moments of this journey.
+
+I am also deeply grateful to my father and my uncle Pablo for their help with the assembly and construction of the UAV used in this project. Their time, practical knowledge, and willingness to help were essential during the development of the aerial platform and made it possible to turn the experimental setup into a working system.
+
+Finally, I would like to thank all the people who, in one way or another, supported me throughout this stage. Their encouragement and help, whether directly related to the project or simply by being there when needed, have contributed to making this experience possible and meaningful.

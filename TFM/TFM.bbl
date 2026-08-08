@@ -1,0 +1,176 @@
+\begin{thebibliography}{10}
+
+\bibitem{Armeni2016S3DIS}
+I.~Armeni, O.~Sener, A.~R. Zamir, H.~Jiang, I.~Brilakis, M.~Fischer, and
+  S.~Savarese, ``3d semantic parsing of large-scale indoor spaces,'' in {\em
+  Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, 2016.
+
+\bibitem{Varney2020DALES}
+Q.~G. Nina~Varney, Vijayan K.~Asari, ``Dales: A large-scale aerial lidar
+  dataset for semantic segmentation,'' in {\em CVPR Workshops}, pp.~1--10,
+  2020.
+
+\bibitem{Behley2019SemanticKITTI}
+J.~Behley, M.~Garbade, A.~Milioto, J.~Quenzel, S.~Behnke, and C.~Stachniss,
+  ``Semantickitti: A dataset for semantic scene understanding of lidar
+  sequences,'' {\em Proceedings of the IEEE International Conference on
+  Computer Vision (ICCV)}, pp.~9297--9307, 2019.
+
+\bibitem{Tan2021Toronto3D}
+W.~Tan, J.~Li, M.~Ravanbakhsh, M.~Lu, and J.~Chan, ``Toronto-3d: A large-scale
+  mobile lidar dataset for semantic segmentation of urban scenes,'' in {\em
+  ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information
+  Sciences}, vol.~VIII-2/W1, pp.~221--228, 2021.
+
+\bibitem{Merizette2025ThreeDSES}
+M.~Merizette, N.~Audebert, {\em et~al.}, ``3dses: An indoor lidar point cloud
+  segmentation dataset,'' 2025.
+
+\bibitem{Ferreira2023PedestrianLiDAR}
+``Pedestrian detection with lidar technology in smart-city
+  deployments--challenges and recommendations,'' {\em Computers}, 2023.
+
+\bibitem{Lorente2021PedestrianPointNet}
+O.~Lorente, J.~Casas, {\em et~al.}, ``Pedestrian detection in 3d point clouds
+  using deep neural networks,'' 2021.
+
+\bibitem{Qi2017PointNet}
+C.~R. Qi, H.~Su, K.~Mo, and L.~J. Guibas, ``Pointnet: Deep learning on point
+  sets for 3d classification and segmentation,'' {\em Proceedings of the IEEE
+  Conference on Computer Vision and Pattern Recognition (CVPR)}, pp.~77--85,
+  2017.
+
+\bibitem{Qi2017PointNetPP}
+C.~R. Qi, L.~Yi, H.~Su, and L.~J. Guibas, ``Pointnet++: Deep hierarchical
+  feature learning on point sets in a metric space,'' in {\em Advances in
+  Neural Information Processing Systems (NeurIPS)}, pp.~5099--5108, 2017.
+
+\bibitem{Wang2019DGCNN}
+Y.~Wang, Y.~Sun, Z.~Liu, S.~E. Sarma, M.~M. Bronstein, and J.~M. Solomon,
+  ``Dynamic graph cnn for learning on point clouds,'' in {\em ACM Transactions
+  on Graphics (Proc. SIGGRAPH Asia)}, vol.~38, pp.~1--12, 2019.
+
+\bibitem{Thomas2019KPConv}
+H.~Thomas, C.~R. Qi, J.-E. Deschaud, B.~Marcotegui, F.~Goulette, and L.~J.
+  Guibas, ``Kpconv: Flexible and deformable convolution for point clouds,''
+  {\em ICCV}, 2019.
+
+\bibitem{Hu2020RandLANet}
+Q.~Hu, B.~Yang, S.~Khalid, W.~Xiao, Y.~Wang, A.~Markham, and N.~Trigoni,
+  ``Randla-net: Efficient semantic segmentation of large-scale point clouds,''
+  {\em CVPR}, 2020.
+
+\bibitem{Zhao2021PointTransformer}
+H.~Zhao, L.~Jiang, C.-W. Fu, and J.~Jia, ``Point transformer,'' {\em ICCV},
+  2021.
+
+\bibitem{Guo2020DeepLearningSurvey}
+Y.~Guo, H.~Wang, Q.~Hu, H.~Liu, L.~Liu, and M.~Bennamoun, ``Deep learning for
+  3d point clouds: A survey,'' {\em IEEE Transactions on Pattern Analysis and
+  Machine Intelligence}, 2021.
+\newblock arXiv:1912.12033.
+
+\bibitem{pan2010survey}
+S.~J. Pan and Q.~Yang, ``A survey on transfer learning,'' {\em IEEE
+  Transactions on Knowledge and Data Engineering}, vol.~22, no.~10,
+  pp.~1345--1359, 2010.
+
+\bibitem{Li2020DeepLearningLiDARReview}
+Y.~Li, Y.~Chen, X.~Li, and J.~Zhang, ``Deep learning for lidar point clouds in
+  autonomous driving: A review,'' {\em IEEE Transactions on Neural Networks and
+  Learning Systems}, 2021.
+
+\bibitem{Bournez2024Indoor}
+P.~Bournez, J.~Salzinger, {\em et~al.}, ``Pushing the limit to near real-time
+  indoor lidar-based semantic segmentation,'' in {\em ISPRS Annals of the
+  Photogrammetry, Remote Sensing and Spatial Information Sciences}, 2024.
+
+\bibitem{Suleymanoglu2022IndoorMappingLiDAR}
+B.~Suleymanoglu, M.~Soycan, and C.~Toth, ``Indoor mapping: Experiences with
+  lidar slam,'' in {\em Proceedings of the XXIV ISPRS Congress, International
+  Archives of Photogrammetry, Remote Sensing and Spatial Information Sciences,
+  XLIII-B1}, pp.~279--285, 2022.
+
+\bibitem{Zhao2021TechnicalSurveyPointCloudClustering}
+Y.~Zhao, X.~Zhang, and X.~Huang, ``A technical survey and evaluation of
+  traditional point cloud clustering methods for lidar panoptic segmentation,''
+  in {\em Proceedings of the IEEE/CVF International Conference on Computer
+  Vision Workshops (ICCVW)}, 2021.
+
+\bibitem{PointVector}
+H.~Deng, Q.~Wang, X.~Liu, Z.~Wang, and G.~Huang, ``Pointvector: A vector
+  representation in point cloud analysis,'' 2023.
+
+\bibitem{PointNeXt}
+G.~Qian, Y.~Li, H.~Peng, J.~Mai, H.~Hammoud, M.~Elhoseiny, and B.~Ghanem,
+  ``Pointnext: Revisiting pointnet++ with improved training and scaling
+  strategies,'' 2022.
+
+\bibitem{PTMF2025}
+J.~Pan, J.~Cao, S.~Xing, M.~Dai, J.~Liu, X.~Wang, Y.~Zhang, and G.~Huang, ``An
+  aerial point cloud classification using point transformer via multi-feature
+  fusion,'' {\em Scientific Reports}, vol.~15, p.~22924, 2025.
+
+\bibitem{Robert20233DLST}
+D.~Lu, L.~Xu, J.~Zhou, K.~Y. Gao, and J.~Li, ``3dlst: 3d learnable supertoken
+  transformer for lidar point cloud scene segmentation,'' {\em International
+  Journal of Applied Earth Observation and Geoinformation}, vol.~140,
+  p.~104572, 2025.
+
+\bibitem{pang2022pointmae}
+Y.~Pang, W.~Wang, F.~E.~H. Tay, W.~Liu, and Y.~Tian, ``Point-mae: Masked
+  autoencoders for self-supervised learning on point clouds,'' in {\em ECCV},
+  2022.
+
+\bibitem{jaritz2020xmuda}
+J.~et~al., ``xmuda: Cross-modal unsupervised domain adaptation for 3d semantic
+  segmentation,'' in {\em CVPR}, 2020.
+
+\bibitem{Dai2017ScanNet}
+A.~Dai, A.~X. Chang, M.~Savva, M.~Halber, T.~Funkhouser, and M.~Nie{\ss}ner,
+  ``Scannet: Richly-annotated 3d reconstructions of indoor scenes,'' in {\em
+  CVPR}, 2017.
+
+\bibitem{LSLiDARC16V4}
+{LeiShen Intelligent System Co., Ltd.}, {\em C16 User Manual V4.0.8}.
+\newblock LSLiDAR, Feb. 2023.
+\newblock Version 4.0.8.
+
+\bibitem{github_lidar}
+M.~P. González, ``Aerial lidar data classification and segmentation.''
+  \url{https://github.com/ManupaDogflau/Aerial-Lidar-Data-Classification-And-Segmentation},
+  2026.
+\newblock Source code repository.
+
+\bibitem{HolybroX500V2}
+{Holybro}, ``Px4 development kit -- x500 v2.''
+  \url{https://docs.holybro.com/drone-development-kit/px4-development-kit-x500v2},
+  2025.
+\newblock Accessed: 2026-08-06.
+
+\bibitem{RaspberryPiDocs}
+{Raspberry Pi Foundation}, ``Raspberry pi documentation.''
+  \url{https://www.raspberrypi.com/documentation/}, 2025.
+\newblock Accessed: 2026-08-06.
+
+\bibitem{scapy}
+P.~Biondi, ``Scapy: Packet manipulation tool for computer networks.''
+  \url{https://scapy.net}, 2024.
+\newblock Accessed: 2026-06-12.
+
+\bibitem{Zhou2018Open3D}
+Q.-Y. Zhou, J.~Park, and V.~Koltun, ``Open3d: A modern library for 3d data
+  processing,'' {\em arXiv preprint arXiv:1801.09847}, 2018.
+
+\bibitem{PCDFormat}
+R.~B. Rusu, ``The pcd (point cloud data) file format.''
+  \url{https://pointclouds.org/documentation/tutorials/pcd_file_format.html}.
+\newblock Point Cloud Library (PCL) Documentation, Accessed: 2026-08-07.
+
+\bibitem{pcap_format}
+V.~J. Vishnu, S.~McCanne, and C.~Leres, ``pcap(3) - packet capture library
+  format.'' \url{https://www.tcpdump.org/}, 1987.
+\newblock Accessed: 2026-06-12.
+
+\end{thebibliography}
