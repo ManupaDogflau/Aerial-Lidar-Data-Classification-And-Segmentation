@@ -129,7 +129,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--num_workers",
+    "--seed",
     type=int,
     default=42,
 )
@@ -162,6 +162,7 @@ np.random.seed(args.seed)
 LOG_PATH = (
     OUTPUT_DIR / "test_run.log"
 )
+
 
 class Tee:
 
@@ -376,12 +377,6 @@ def confusion_matrix(
 
     return cm
 
-    return (
-        confusion,
-        total_inference_seconds,
-        total_points
-    )
-
 
 # ============================================================
 # METRICS
@@ -429,7 +424,9 @@ def calculate_metrics(
         where=iou_den != 0,
     )
 
-    precision_den = tp + fp
+    precision_den = (
+        tp + fp
+    )
 
     precision = np.divide(
         tp,
@@ -440,7 +437,9 @@ def calculate_metrics(
         where=precision_den != 0,
     )
 
-    recall_den = tp + fn
+    recall_den = (
+        tp + fn
+    )
 
     recall = np.divide(
         tp,
@@ -451,7 +450,9 @@ def calculate_metrics(
         where=recall_den != 0,
     )
 
-    f1_den = precision + recall
+    f1_den = (
+        precision + recall
+    )
 
     f1 = np.divide(
         2 * precision * recall,
@@ -620,7 +621,9 @@ def make_markdown(df):
             + " |"
         )
 
-    return "\n".join(lines)
+    return "\n".join(
+        lines
+    )
 
 
 # ============================================================
@@ -657,7 +660,7 @@ def main():
     print()
 
     # --------------------------------------------------------
-    # Dataset
+    # Test scenes
     # --------------------------------------------------------
 
     test_scenes = get_test_scenes(
@@ -709,7 +712,9 @@ def main():
             ]
         )
 
-        checkpoints[model_name] = checkpoint
+        checkpoints[
+            model_name
+        ] = checkpoint
 
         print(
             f"{model_name:<15} "
@@ -1142,7 +1147,9 @@ def main():
     results_df = results_df.sort_values(
         "Person IoU",
         ascending=False
-    ).reset_index(drop=True)
+    ).reset_index(
+        drop=True
+    )
 
     scene_df = pd.DataFrame(
         per_scene_results
@@ -1183,8 +1190,9 @@ def main():
     # SAVE CSV
     # ========================================================
 
-    latex_path = (
-        OUTPUT_DIR / "test_results_latex.tex"
+    results_csv = (
+        OUTPUT_DIR
+        / "test_results.csv"
     )
 
     scene_csv = (
@@ -1343,7 +1351,8 @@ def main():
             ]
         ].to_string(
             index=False,
-            float_format=lambda x: f"{x:.4f}"
+            float_format=lambda x:
+                f"{x:.4f}"
         )
     )
 
@@ -1352,20 +1361,22 @@ def main():
         "Saved:"
     )
 
-    best = df.iloc[0]
-
     print(
         f"  {results_csv}"
     )
+
     print(
         f"  {scene_csv}"
     )
+
     print(
         f"  {confusion_csv}"
     )
+
     print(
         f"  {markdown_path}"
     )
+
     print(
         f"  {latex_path}"
     )
@@ -1383,40 +1394,26 @@ def main():
     )
 
     print()
-    print("=" * 90)
-    print("FILES FOR THE TFM")
-    print("=" * 90)
-
     print(
-        f"CSV:             {results_csv}"
+        "IMPORTANT:"
     )
+
     print(
         "Quantitative predictions are generated "
         "by the same inference functions used "
         "by qualitative_results.py."
     )
+
     print(
         "Every original point of every test "
         "scene is evaluated."
     )
-    print(
-        f"Confusion:       {confusion_csv}"
-    )
-    print(
-        f"Scene split:     {split_file}"
-    )
-    print(
-        f"Metadata:        {metadata_path}"
-    )
-    print(
-        f"Log:             {LOG_PATH}"
-    )
 
-    print()
     print(
         "No person-centered test sampling is used."
     )
 
+    print("=" * 90)
 
 
 if __name__ == "__main__":
