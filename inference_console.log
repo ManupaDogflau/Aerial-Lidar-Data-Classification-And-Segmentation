@@ -1,196 +1,737 @@
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:05]
+└─[$] <git:(main*)> python benchmark_inference.py --pointnet-root Pointnet_Pointnet2_pytorch --model PointNet --device cuda
+================================================================================
+STANDALONE-STYLE FULL DATASET INFERENCE
+================================================================================
+Model:    PointNet
+Device:   cuda
+Dataset:  /home/manuel/Documents/GitHub/LiDAR/lidar_database/clean
+Point clouds: 78
 
-import open3d as o3d
-import numpy as np
-import os
+Model:       PointNet
+Checkpoint:  /home/manuel/Documents/GitHub/LiDAR/checkpoints_person/best_model.pth
+/home/manuel/Documents/GitHub/LiDAR/inference/pointnet_model.py:36: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(
 
-# Threshold for detecting "floor-like" blue points
-BLUE_FLOOR_THRESHOLD = 0.3  # tune depending on your colormap
-MAX_DISTANCE = 2.0  # meters
-BOX_MARGIN = 0.10  # metros
+Warming up PointNet...
+Warm-up completed.
 
+================================================================================
+RUNNING FULL DATASET: PointNet
+================================================================================
+[  1/ 78] position1_lying_0.pcd                       23831 pts |  6 patches | 0.0250 s
+[  2/ 78] position1_lying_180.pcd                     24927 pts |  7 patches | 0.0269 s
+[  3/ 78] position1_lying_270.pcd                     24901 pts |  7 patches | 0.0271 s
+[  4/ 78] position1_lying_90.pcd                      24812 pts |  7 patches | 0.0267 s
+[  5/ 78] position1_sitting_0.pcd                     26354 pts |  7 patches | 0.0272 s
+[  6/ 78] position1_sitting_180.pcd                   25723 pts |  7 patches | 0.0254 s
+[  7/ 78] position1_sitting_270.pcd                   26525 pts |  7 patches | 0.0218 s
+[  8/ 78] position1_sitting_90.pcd                    25477 pts |  7 patches | 0.0232 s
+[  9/ 78] position1_standing_0.pcd                    24974 pts |  7 patches | 0.0223 s
+[ 10/ 78] position1_standing_180.pcd                  24905 pts |  7 patches | 0.0222 s
+[ 11/ 78] position1_standing_270.pcd                  24466 pts |  6 patches | 0.0203 s
+[ 12/ 78] position1_standing_90.pcd                   24773 pts |  7 patches | 0.0224 s
+[ 13/ 78] position1_standing_closest.pcd              54041 pts | 14 patches | 0.0431 s
+[ 14/ 78] position1_tpose_0.pcd                       25160 pts |  7 patches | 0.0233 s
+[ 15/ 78] position1_tpose_180.pcd                     24658 pts |  7 patches | 0.0231 s
+[ 16/ 78] position1_tpose_270.pcd                     24938 pts |  7 patches | 0.0230 s
+[ 17/ 78] position1_tpose_90.pcd                      24576 pts |  6 patches | 0.0193 s
+[ 18/ 78] position2_all-barrier.pcd                   49759 pts | 13 patches | 0.0391 s
+[ 19/ 78] position2_all-barrier_sitting_right_270.pcd  50880 pts | 13 patches | 0.0415 s
+[ 20/ 78] position2_all-barrier_standing_left_270.pcd  50331 pts | 13 patches | 0.0414 s
+[ 21/ 78] position2_bottom-barrier.pcd                51243 pts | 13 patches | 0.0452 s
+[ 22/ 78] position2_empty.pcd                         49593 pts | 13 patches | 0.0406 s
+[ 23/ 78] position2_lying_0.pcd                       53155 pts | 13 patches | 0.0431 s
+[ 24/ 78] position2_lying_180.pcd                     53412 pts | 14 patches | 0.0447 s
+[ 25/ 78] position2_lying_270.pcd                     53138 pts | 13 patches | 0.0422 s
+[ 26/ 78] position2_lying_90.pcd                      52456 pts | 13 patches | 0.0412 s
+[ 27/ 78] position2_sitting_0.pcd                     53892 pts | 14 patches | 0.0448 s
+[ 28/ 78] position2_sitting_180.pcd                   53991 pts | 14 patches | 0.0448 s
+[ 29/ 78] position2_sitting_270.pcd                   53676 pts | 14 patches | 0.0445 s
+[ 30/ 78] position2_sitting_90.pcd                    53944 pts | 14 patches | 0.0457 s
+[ 31/ 78] position2_sitting_bottom-barrier_center_0.pcd  52441 pts | 13 patches | 0.0411 s
+[ 32/ 78] position2_sitting_bottom-barrier_center_180.pcd  51590 pts | 13 patches | 0.0417 s
+[ 33/ 78] position2_sitting_bottom-barrier_center_270.pcd  52452 pts | 13 patches | 0.0415 s
+[ 34/ 78] position2_sitting_bottom-barrier_center_90.pcd  51843 pts | 13 patches | 0.0423 s
+[ 35/ 78] position2_sitting_bottom-barrier_left_0.pcd  51139 pts | 13 patches | 0.0409 s
+[ 36/ 78] position2_sitting_bottom-barrier_left_180.pcd  51908 pts | 13 patches | 0.0414 s
+[ 37/ 78] position2_sitting_bottom-barrier_left_270.pcd  51126 pts | 13 patches | 0.0416 s
+[ 38/ 78] position2_sitting_bottom-barrier_left_90.pcd  51899 pts | 13 patches | 0.0424 s
+[ 39/ 78] position2_sitting_bottom-barrier_right_0.pcd  51346 pts | 13 patches | 0.0422 s
+[ 40/ 78] position2_sitting_bottom-barrier_right_180.pcd  51164 pts | 13 patches | 0.0419 s
+[ 41/ 78] position2_sitting_bottom-barrier_right_270.pcd  52499 pts | 13 patches | 0.0416 s
+[ 42/ 78] position2_sitting_bottom-barrier_right_90.pcd  51893 pts | 13 patches | 0.0426 s
+[ 43/ 78] position2_standing_0.pcd                    53461 pts | 14 patches | 0.0445 s
+[ 44/ 78] position2_standing_180.pcd                  53655 pts | 14 patches | 0.0456 s
+[ 45/ 78] position2_standing_270.pcd                  53775 pts | 14 patches | 0.0447 s
+[ 46/ 78] position2_standing_90.pcd                   53753 pts | 14 patches | 0.0455 s
+[ 47/ 78] position2_standing_bottom-barrier_center_0.pcd  51185 pts | 13 patches | 0.0414 s
+[ 48/ 78] position2_standing_bottom-barrier_center_180.pcd  51960 pts | 13 patches | 0.0422 s
+[ 49/ 78] position2_standing_bottom-barrier_center_270.pcd  52048 pts | 13 patches | 0.0416 s
+[ 50/ 78] position2_standing_bottom-barrier_center_90.pcd  51589 pts | 13 patches | 0.0425 s
+[ 51/ 78] position2_standing_bottom-barrier_left_0.pcd  51082 pts | 13 patches | 0.0412 s
+[ 52/ 78] position2_standing_bottom-barrier_left_180.pcd  50148 pts | 13 patches | 0.0419 s
+[ 53/ 78] position2_standing_bottom-barrier_left_270.pcd  50305 pts | 13 patches | 0.0413 s
+[ 54/ 78] position2_standing_bottom-barrier_left_90.pcd  52149 pts | 13 patches | 0.0423 s
+[ 55/ 78] position2_standing_bottom-barrier_right_0.pcd  51748 pts | 13 patches | 0.0417 s
+[ 56/ 78] position2_standing_bottom-barrier_right_180.pcd  51777 pts | 13 patches | 0.0417 s
+[ 57/ 78] position2_standing_bottom-barrier_right_270.pcd  51280 pts | 13 patches | 0.0416 s
+[ 58/ 78] position2_standing_bottom-barrier_right_90.pcd  51843 pts | 13 patches | 0.0424 s
+[ 59/ 78] position2_standing_top-barrier-center.pcd   54683 pts | 14 patches | 0.0447 s
+[ 60/ 78] position2_standing_top-barrier_left.pcd     54312 pts | 14 patches | 0.0450 s
+[ 61/ 78] position2_standing_top-barrier_right.pcd    54489 pts | 14 patches | 0.0445 s
+[ 62/ 78] position2_top-barrier.pcd                   50768 pts | 13 patches | 0.0427 s
+[ 63/ 78] position2_tpose_0.pcd                       53025 pts | 13 patches | 0.0415 s
+[ 64/ 78] position2_tpose_180.pcd                     53810 pts | 14 patches | 0.0447 s
+[ 65/ 78] position2_tpose_270.pcd                     53888 pts | 14 patches | 0.0445 s
+[ 66/ 78] position2_tpose_90.pcd                      54017 pts | 14 patches | 0.0456 s
+[ 67/ 78] position2_tpose_bottom-barrier_center_0.pcd  51594 pts | 13 patches | 0.0418 s
+[ 68/ 78] position2_tpose_bottom-barrier_center_180.pcd  51506 pts | 13 patches | 0.0420 s
+[ 69/ 78] position2_tpose_bottom-barrier_center_270.pcd  52104 pts | 13 patches | 0.0413 s
+[ 70/ 78] position2_tpose_bottom-barrier_center_90.pcd  51583 pts | 13 patches | 0.0420 s
+[ 71/ 78] position2_tpose_bottom-barrier_left_0.pcd   50440 pts | 13 patches | 0.0416 s
+[ 72/ 78] position2_tpose_bottom-barrier_left_180.pcd  50099 pts | 13 patches | 0.0419 s
+[ 73/ 78] position2_tpose_bottom-barrier_left_270.pcd  50567 pts | 13 patches | 0.0414 s
+[ 74/ 78] position2_tpose_bottom-barrier_left_90.pcd  50094 pts | 13 patches | 0.0417 s
+[ 75/ 78] position2_tpose_bottom-barrier_right_0.pcd  52015 pts | 13 patches | 0.0420 s
+[ 76/ 78] position2_tpose_bottom-barrier_right_180.pcd  51567 pts | 13 patches | 0.0422 s
+[ 77/ 78] position2_tpose_bottom-barrier_right_270.pcd  51359 pts | 13 patches | 0.0418 s
+[ 78/ 78] position2_tpose_bottom-barrier_right_90.pcd  51617 pts | 13 patches | 0.0417 s
 
-def is_floor_color(colors):
-    """
-    Detect floor points based on blue dominance.
-    Assumes RGB in [0,1].
-    """
-    r, g, b = colors[:, 0], colors[:, 1], colors[:, 2]
+Summary saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointnet.csv
+Per-cloud results saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointnet_per_cloud.csv
 
-    # "dark blue" heuristic: high B, low R and G
-    return (b > 0.5) & (b > r) & (b > g)
+================================================================================
+RESULTS: PointNet
+================================================================================
+Clouds:             78
+Total points:       3631106
+Total patches:      931
+Total inference:    3.0191 s
+Mean cloud:         0.0387 s
+Points/s:            1202730.57
+Patches/s:           308.37
+================================================================================
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:05]
+└─[$] <git:(main*)> 
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:05]
+└─[$] <git:(main*)> 
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:05]
+└─[$] <git:(main*)> python benchmark_inference.py --pointnet-root Pointnet_Pointnet2_pytorch --model PointNet++ --device cuda
+================================================================================
+STANDALONE-STYLE FULL DATASET INFERENCE
+================================================================================
+Model:    PointNet++
+Device:   cuda
+Dataset:  /home/manuel/Documents/GitHub/LiDAR/lidar_database/clean
+Point clouds: 78
 
+Model:       PointNet++
+Checkpoint:  /home/manuel/Documents/GitHub/LiDAR/checkpoints-pointnet2/best_model.pth
+/home/manuel/Documents/GitHub/LiDAR/inference/pointnet2_model.py:48: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(
 
-def annotate_cloud(ply_file):
+Warming up PointNet++...
+Warm-up completed.
 
-    pcd = o3d.io.read_point_cloud(ply_file)
-    points = np.asarray(pcd.points)
+================================================================================
+RUNNING FULL DATASET: PointNet++
+================================================================================
+[  1/ 78] position1_lying_0.pcd                       23831 pts |  6 patches | 0.7379 s
+[  2/ 78] position1_lying_180.pcd                     24927 pts |  7 patches | 0.8215 s
+[  3/ 78] position1_lying_270.pcd                     24901 pts |  7 patches | 0.8227 s
+[  4/ 78] position1_lying_90.pcd                      24812 pts |  7 patches | 0.8227 s
+[  5/ 78] position1_sitting_0.pcd                     26354 pts |  7 patches | 0.8388 s
+[  6/ 78] position1_sitting_180.pcd                   25723 pts |  7 patches | 0.8299 s
+[  7/ 78] position1_sitting_270.pcd                   26525 pts |  7 patches | 0.8353 s
+[  8/ 78] position1_sitting_90.pcd                    25477 pts |  7 patches | 0.8292 s
+[  9/ 78] position1_standing_0.pcd                    24974 pts |  7 patches | 0.8228 s
+[ 10/ 78] position1_standing_180.pcd                  24905 pts |  7 patches | 0.8228 s
+[ 11/ 78] position1_standing_270.pcd                  24466 pts |  6 patches | 0.7138 s
+[ 12/ 78] position1_standing_90.pcd                   24773 pts |  7 patches | 0.8253 s
+[ 13/ 78] position1_standing_closest.pcd              54041 pts | 14 patches | 1.6871 s
+[ 14/ 78] position1_tpose_0.pcd                       25160 pts |  7 patches | 0.8462 s
+[ 15/ 78] position1_tpose_180.pcd                     24658 pts |  7 patches | 0.8416 s
+[ 16/ 78] position1_tpose_270.pcd                     24938 pts |  7 patches | 0.8388 s
+[ 17/ 78] position1_tpose_90.pcd                      24576 pts |  6 patches | 0.7289 s
+[ 18/ 78] position2_all-barrier.pcd                   49759 pts | 13 patches | 1.5794 s
+[ 19/ 78] position2_all-barrier_sitting_right_270.pcd  50880 pts | 13 patches | 1.6038 s
+[ 20/ 78] position2_all-barrier_standing_left_270.pcd  50331 pts | 13 patches | 1.6077 s
+[ 21/ 78] position2_bottom-barrier.pcd                51243 pts | 13 patches | 1.5821 s
+[ 22/ 78] position2_empty.pcd                         49593 pts | 13 patches | 1.6244 s
+[ 23/ 78] position2_lying_0.pcd                       53155 pts | 13 patches | 1.5746 s
+[ 24/ 78] position2_lying_180.pcd                     53412 pts | 14 patches | 1.6835 s
+[ 25/ 78] position2_lying_270.pcd                     53138 pts | 13 patches | 1.5918 s
+[ 26/ 78] position2_lying_90.pcd                      52456 pts | 13 patches | 1.5819 s
+[ 27/ 78] position2_sitting_0.pcd                     53892 pts | 14 patches | 1.6972 s
+[ 28/ 78] position2_sitting_180.pcd                   53991 pts | 14 patches | 1.6870 s
+[ 29/ 78] position2_sitting_270.pcd                   53676 pts | 14 patches | 1.6825 s
+[ 30/ 78] position2_sitting_90.pcd                    53944 pts | 14 patches | 1.6845 s
+[ 31/ 78] position2_sitting_bottom-barrier_center_0.pcd  52441 pts | 13 patches | 1.5741 s
+[ 32/ 78] position2_sitting_bottom-barrier_center_180.pcd  51590 pts | 13 patches | 1.5705 s
+[ 33/ 78] position2_sitting_bottom-barrier_center_270.pcd  52452 pts | 13 patches | 1.5765 s
+[ 34/ 78] position2_sitting_bottom-barrier_center_90.pcd  51843 pts | 13 patches | 1.5883 s
+[ 35/ 78] position2_sitting_bottom-barrier_left_0.pcd  51139 pts | 13 patches | 1.5760 s
+[ 36/ 78] position2_sitting_bottom-barrier_left_180.pcd  51908 pts | 13 patches | 1.5692 s
+[ 37/ 78] position2_sitting_bottom-barrier_left_270.pcd  51126 pts | 13 patches | 1.5746 s
+[ 38/ 78] position2_sitting_bottom-barrier_left_90.pcd  51899 pts | 13 patches | 1.5813 s
+[ 39/ 78] position2_sitting_bottom-barrier_right_0.pcd  51346 pts | 13 patches | 1.5734 s
+[ 40/ 78] position2_sitting_bottom-barrier_right_180.pcd  51164 pts | 13 patches | 1.5816 s
+[ 41/ 78] position2_sitting_bottom-barrier_right_270.pcd  52499 pts | 13 patches | 1.5736 s
+[ 42/ 78] position2_sitting_bottom-barrier_right_90.pcd  51893 pts | 13 patches | 1.5713 s
+[ 43/ 78] position2_standing_0.pcd                    53461 pts | 14 patches | 1.6821 s
+[ 44/ 78] position2_standing_180.pcd                  53655 pts | 14 patches | 1.6897 s
+[ 45/ 78] position2_standing_270.pcd                  53775 pts | 14 patches | 1.6922 s
+[ 46/ 78] position2_standing_90.pcd                   53753 pts | 14 patches | 1.6873 s
+[ 47/ 78] position2_standing_bottom-barrier_center_0.pcd  51185 pts | 13 patches | 1.5772 s
+[ 48/ 78] position2_standing_bottom-barrier_center_180.pcd  51960 pts | 13 patches | 1.5693 s
+[ 49/ 78] position2_standing_bottom-barrier_center_270.pcd  52048 pts | 13 patches | 1.5787 s
+[ 50/ 78] position2_standing_bottom-barrier_center_90.pcd  51589 pts | 13 patches | 1.5743 s
+[ 51/ 78] position2_standing_bottom-barrier_left_0.pcd  51082 pts | 13 patches | 1.5724 s
+[ 52/ 78] position2_standing_bottom-barrier_left_180.pcd  50148 pts | 13 patches | 1.5710 s
+[ 53/ 78] position2_standing_bottom-barrier_left_270.pcd  50305 pts | 13 patches | 1.5722 s
+[ 54/ 78] position2_standing_bottom-barrier_left_90.pcd  52149 pts | 13 patches | 1.5675 s
+[ 55/ 78] position2_standing_bottom-barrier_right_0.pcd  51748 pts | 13 patches | 1.5703 s
+[ 56/ 78] position2_standing_bottom-barrier_right_180.pcd  51777 pts | 13 patches | 1.5832 s
+[ 57/ 78] position2_standing_bottom-barrier_right_270.pcd  51280 pts | 13 patches | 1.5687 s
+[ 58/ 78] position2_standing_bottom-barrier_right_90.pcd  51843 pts | 13 patches | 1.5724 s
+[ 59/ 78] position2_standing_top-barrier-center.pcd   54683 pts | 14 patches | 1.6880 s
+[ 60/ 78] position2_standing_top-barrier_left.pcd     54312 pts | 14 patches | 1.6851 s
+[ 61/ 78] position2_standing_top-barrier_right.pcd    54489 pts | 14 patches | 1.6870 s
+[ 62/ 78] position2_top-barrier.pcd                   50768 pts | 13 patches | 1.5672 s
+[ 63/ 78] position2_tpose_0.pcd                       53025 pts | 13 patches | 1.5752 s
+[ 64/ 78] position2_tpose_180.pcd                     53810 pts | 14 patches | 1.6854 s
+[ 65/ 78] position2_tpose_270.pcd                     53888 pts | 14 patches | 1.6845 s
+[ 66/ 78] position2_tpose_90.pcd                      54017 pts | 14 patches | 1.6854 s
+[ 67/ 78] position2_tpose_bottom-barrier_center_0.pcd  51594 pts | 13 patches | 1.5693 s
+[ 68/ 78] position2_tpose_bottom-barrier_center_180.pcd  51506 pts | 13 patches | 1.5719 s
+[ 69/ 78] position2_tpose_bottom-barrier_center_270.pcd  52104 pts | 13 patches | 1.5738 s
+[ 70/ 78] position2_tpose_bottom-barrier_center_90.pcd  51583 pts | 13 patches | 1.5741 s
+[ 71/ 78] position2_tpose_bottom-barrier_left_0.pcd   50440 pts | 13 patches | 1.5769 s
+[ 72/ 78] position2_tpose_bottom-barrier_left_180.pcd  50099 pts | 13 patches | 1.5667 s
+[ 73/ 78] position2_tpose_bottom-barrier_left_270.pcd  50567 pts | 13 patches | 1.5688 s
+[ 74/ 78] position2_tpose_bottom-barrier_left_90.pcd  50094 pts | 13 patches | 1.5644 s
+[ 75/ 78] position2_tpose_bottom-barrier_right_0.pcd  52015 pts | 13 patches | 1.5759 s
+[ 76/ 78] position2_tpose_bottom-barrier_right_180.pcd  51567 pts | 13 patches | 1.5679 s
+[ 77/ 78] position2_tpose_bottom-barrier_right_270.pcd  51359 pts | 13 patches | 1.5734 s
+[ 78/ 78] position2_tpose_bottom-barrier_right_90.pcd  51617 pts | 13 patches | 1.5699 s
 
-    # If colors exist
-    has_colors = len(pcd.colors) > 0
-    colors = np.asarray(pcd.colors) if has_colors else None
+Summary saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointnetpp.csv
+Per-cloud results saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointnetpp_per_cloud.csv
 
-    print(f"\nProcessing: {os.path.basename(ply_file)}")
-    print("Select SEED POINTS (SHIFT + Left Click). Press Q when done.")
+================================================================================
+RESULTS: PointNet++
+================================================================================
+Clouds:             78
+Total points:       3631106
+Total patches:      931
+Total inference:    112.4955 s
+Mean cloud:         1.4422 s
+Points/s:            32277.80
+Patches/s:           8.28
+================================================================================
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:07]
+└─[$] <git:(main*)> python benchmark_inference.py --pointnet-root Pointnet_Pointnet2_pytorch --model DGCNN --device cuda
+================================================================================
+STANDALONE-STYLE FULL DATASET INFERENCE
+================================================================================
+Model:    DGCNN
+Device:   cuda
+Dataset:  /home/manuel/Documents/GitHub/LiDAR/lidar_database/clean
+Point clouds: 78
 
-    vis = o3d.visualization.VisualizerWithEditing()
-    vis.create_window(window_name="Select Seeds")
-    vis.add_geometry(pcd)
-    vis.run()
-    vis.destroy_window()
+Model:       DGCNN
+Checkpoint:  /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-dgcnn/best_model.pth
+Config:      /home/manuel/Documents/GitHub/LiDAR/dgcnn.yaml
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/group.py:79: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/upsampling.py:46: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:25: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, x, blocks, pos_embed=None, alpha=0., lambd=1., num_cached = 0):
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:60: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, dy):  # pragma: no cover
+WARNING:root:kwargs: {'emb_dims': 1024, 'block': 'res'} are not used in DGCNN
+/home/manuel/Documents/GitHub/LiDAR/benchmark_inference.py:297: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint_data = torch.load(
 
-    picked = vis.get_picked_points()
+Warming up DGCNN...
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/group.py:93: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  output = torch.cuda.FloatTensor(B, C, nfeatures, nsample, device=features.device)
+Warm-up completed.
 
+================================================================================
+RUNNING FULL DATASET: DGCNN
+================================================================================
+[  1/ 78] position1_lying_0.pcd                       23831 pts |  6 patches | 0.2178 s
+[  2/ 78] position1_lying_180.pcd                     24927 pts |  7 patches | 0.2439 s
+[  3/ 78] position1_lying_270.pcd                     24901 pts |  7 patches | 0.2444 s
+[  4/ 78] position1_lying_90.pcd                      24812 pts |  7 patches | 0.2490 s
+[  5/ 78] position1_sitting_0.pcd                     26354 pts |  7 patches | 0.2865 s
+[  6/ 78] position1_sitting_180.pcd                   25723 pts |  7 patches | 0.2853 s
+[  7/ 78] position1_sitting_270.pcd                   26525 pts |  7 patches | 0.2851 s
+[  8/ 78] position1_sitting_90.pcd                    25477 pts |  7 patches | 0.2862 s
+[  9/ 78] position1_standing_0.pcd                    24974 pts |  7 patches | 0.2855 s
+[ 10/ 78] position1_standing_180.pcd                  24905 pts |  7 patches | 0.2852 s
+[ 11/ 78] position1_standing_270.pcd                  24466 pts |  6 patches | 0.2449 s
+[ 12/ 78] position1_standing_90.pcd                   24773 pts |  7 patches | 0.2864 s
+[ 13/ 78] position1_standing_closest.pcd              54041 pts | 14 patches | 0.5714 s
+[ 14/ 78] position1_tpose_0.pcd                       25160 pts |  7 patches | 0.2868 s
+[ 15/ 78] position1_tpose_180.pcd                     24658 pts |  7 patches | 0.2865 s
+[ 16/ 78] position1_tpose_270.pcd                     24938 pts |  7 patches | 0.2866 s
+[ 17/ 78] position1_tpose_90.pcd                      24576 pts |  6 patches | 0.2459 s
+[ 18/ 78] position2_all-barrier.pcd                   49759 pts | 13 patches | 0.5332 s
+[ 19/ 78] position2_all-barrier_sitting_right_270.pcd  50880 pts | 13 patches | 0.5314 s
+[ 20/ 78] position2_all-barrier_standing_left_270.pcd  50331 pts | 13 patches | 0.5309 s
+[ 21/ 78] position2_bottom-barrier.pcd                51243 pts | 13 patches | 0.5312 s
+[ 22/ 78] position2_empty.pcd                         49593 pts | 13 patches | 0.5318 s
+[ 23/ 78] position2_lying_0.pcd                       53155 pts | 13 patches | 0.5314 s
+[ 24/ 78] position2_lying_180.pcd                     53412 pts | 14 patches | 0.5727 s
+[ 25/ 78] position2_lying_270.pcd                     53138 pts | 13 patches | 0.5319 s
+[ 26/ 78] position2_lying_90.pcd                      52456 pts | 13 patches | 0.5319 s
+[ 27/ 78] position2_sitting_0.pcd                     53892 pts | 14 patches | 0.5719 s
+[ 28/ 78] position2_sitting_180.pcd                   53991 pts | 14 patches | 0.5732 s
+[ 29/ 78] position2_sitting_270.pcd                   53676 pts | 14 patches | 0.5733 s
+[ 30/ 78] position2_sitting_90.pcd                    53944 pts | 14 patches | 0.5738 s
+[ 31/ 78] position2_sitting_bottom-barrier_center_0.pcd  52441 pts | 13 patches | 0.5326 s
+[ 32/ 78] position2_sitting_bottom-barrier_center_180.pcd  51590 pts | 13 patches | 0.5337 s
+[ 33/ 78] position2_sitting_bottom-barrier_center_270.pcd  52452 pts | 13 patches | 0.5319 s
+[ 34/ 78] position2_sitting_bottom-barrier_center_90.pcd  51843 pts | 13 patches | 0.5319 s
+[ 35/ 78] position2_sitting_bottom-barrier_left_0.pcd  51139 pts | 13 patches | 0.5316 s
+[ 36/ 78] position2_sitting_bottom-barrier_left_180.pcd  51908 pts | 13 patches | 0.5318 s
+[ 37/ 78] position2_sitting_bottom-barrier_left_270.pcd  51126 pts | 13 patches | 0.5315 s
+[ 38/ 78] position2_sitting_bottom-barrier_left_90.pcd  51899 pts | 13 patches | 0.5326 s
+[ 39/ 78] position2_sitting_bottom-barrier_right_0.pcd  51346 pts | 13 patches | 0.5327 s
+[ 40/ 78] position2_sitting_bottom-barrier_right_180.pcd  51164 pts | 13 patches | 0.5325 s
+[ 41/ 78] position2_sitting_bottom-barrier_right_270.pcd  52499 pts | 13 patches | 0.5322 s
+[ 42/ 78] position2_sitting_bottom-barrier_right_90.pcd  51893 pts | 13 patches | 0.5352 s
+[ 43/ 78] position2_standing_0.pcd                    53461 pts | 14 patches | 0.5726 s
+[ 44/ 78] position2_standing_180.pcd                  53655 pts | 14 patches | 0.5745 s
+[ 45/ 78] position2_standing_270.pcd                  53775 pts | 14 patches | 0.5750 s
+[ 46/ 78] position2_standing_90.pcd                   53753 pts | 14 patches | 0.5739 s
+[ 47/ 78] position2_standing_bottom-barrier_center_0.pcd  51185 pts | 13 patches | 0.5330 s
+[ 48/ 78] position2_standing_bottom-barrier_center_180.pcd  51960 pts | 13 patches | 0.5331 s
+[ 49/ 78] position2_standing_bottom-barrier_center_270.pcd  52048 pts | 13 patches | 0.5324 s
+[ 50/ 78] position2_standing_bottom-barrier_center_90.pcd  51589 pts | 13 patches | 0.5331 s
+[ 51/ 78] position2_standing_bottom-barrier_left_0.pcd  51082 pts | 13 patches | 0.5334 s
+[ 52/ 78] position2_standing_bottom-barrier_left_180.pcd  50148 pts | 13 patches | 0.5345 s
+[ 53/ 78] position2_standing_bottom-barrier_left_270.pcd  50305 pts | 13 patches | 0.5340 s
+[ 54/ 78] position2_standing_bottom-barrier_left_90.pcd  52149 pts | 13 patches | 0.5340 s
+[ 55/ 78] position2_standing_bottom-barrier_right_0.pcd  51748 pts | 13 patches | 0.5348 s
+[ 56/ 78] position2_standing_bottom-barrier_right_180.pcd  51777 pts | 13 patches | 0.5327 s
+[ 57/ 78] position2_standing_bottom-barrier_right_270.pcd  51280 pts | 13 patches | 0.5314 s
+[ 58/ 78] position2_standing_bottom-barrier_right_90.pcd  51843 pts | 13 patches | 0.5319 s
+[ 59/ 78] position2_standing_top-barrier-center.pcd   54683 pts | 14 patches | 0.5727 s
+[ 60/ 78] position2_standing_top-barrier_left.pcd     54312 pts | 14 patches | 0.5731 s
+[ 61/ 78] position2_standing_top-barrier_right.pcd    54489 pts | 14 patches | 0.5730 s
+[ 62/ 78] position2_top-barrier.pcd                   50768 pts | 13 patches | 0.5328 s
+[ 63/ 78] position2_tpose_0.pcd                       53025 pts | 13 patches | 0.5315 s
+[ 64/ 78] position2_tpose_180.pcd                     53810 pts | 14 patches | 0.5733 s
+[ 65/ 78] position2_tpose_270.pcd                     53888 pts | 14 patches | 0.5729 s
+[ 66/ 78] position2_tpose_90.pcd                      54017 pts | 14 patches | 0.5731 s
+[ 67/ 78] position2_tpose_bottom-barrier_center_0.pcd  51594 pts | 13 patches | 0.5320 s
+[ 68/ 78] position2_tpose_bottom-barrier_center_180.pcd  51506 pts | 13 patches | 0.5320 s
+[ 69/ 78] position2_tpose_bottom-barrier_center_270.pcd  52104 pts | 13 patches | 0.5319 s
+[ 70/ 78] position2_tpose_bottom-barrier_center_90.pcd  51583 pts | 13 patches | 0.5325 s
+[ 71/ 78] position2_tpose_bottom-barrier_left_0.pcd   50440 pts | 13 patches | 0.5317 s
+[ 72/ 78] position2_tpose_bottom-barrier_left_180.pcd  50099 pts | 13 patches | 0.5320 s
+[ 73/ 78] position2_tpose_bottom-barrier_left_270.pcd  50567 pts | 13 patches | 0.5324 s
+[ 74/ 78] position2_tpose_bottom-barrier_left_90.pcd  50094 pts | 13 patches | 0.5322 s
+[ 75/ 78] position2_tpose_bottom-barrier_right_0.pcd  52015 pts | 13 patches | 0.5326 s
+[ 76/ 78] position2_tpose_bottom-barrier_right_180.pcd  51567 pts | 13 patches | 0.5320 s
+[ 77/ 78] position2_tpose_bottom-barrier_right_270.pcd  51359 pts | 13 patches | 0.5325 s
+[ 78/ 78] position2_tpose_bottom-barrier_right_90.pcd  51617 pts | 13 patches | 0.5324 s
 
+Summary saved to: /home/manuel/Documents/GitHub/LiDAR/inference_dgcnn.csv
+Per-cloud results saved to: /home/manuel/Documents/GitHub/LiDAR/inference_dgcnn_per_cloud.csv
 
-    if len(picked) < 1:
-        print("No seeds selected.")
+================================================================================
+RESULTS: DGCNN
+================================================================================
+Clouds:             78
+Total points:       3631106
+Total patches:      931
+Total inference:    37.9691 s
+Mean cloud:         0.4868 s
+Points/s:            95633.24
+Patches/s:           24.52
+================================================================================
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:09]
+└─[$] <git:(main*)> 
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:10]
+└─[$] <git:(main*)> python benchmark_inference.py --pointnet-root Pointnet_Pointnet2_pytorch --model PointNeXt-S --device cuda
+================================================================================
+STANDALONE-STYLE FULL DATASET INFERENCE
+================================================================================
+Model:    PointNeXt-S
+Device:   cuda
+Dataset:  /home/manuel/Documents/GitHub/LiDAR/lidar_database/clean
+Point clouds: 78
 
-        while True:
-            choice = input("Do you want to save an empty selection? [y = save / n = retry / q = quit]: ").strip().lower()
+Model:       PointNeXt-S
+Checkpoint:  /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointnext-s/best_model.pth
+Config:      /home/manuel/Documents/GitHub/LiDAR/pointnext-s.yaml
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/group.py:79: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/upsampling.py:46: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:25: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, x, blocks, pos_embed=None, alpha=0., lambd=1., num_cached = 0):
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:60: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, dy):  # pragma: no cover
+/home/manuel/Documents/GitHub/LiDAR/benchmark_inference.py:297: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint_data = torch.load(
 
-            if choice == "y":
-                # guardar máscara vacía
-                labels_out = np.zeros(len(points), dtype=np.uint8)
-                label_file = os.path.splitext(ply_file)[0] + "_labels.npy"
-                np.save(label_file, labels_out)
+Warming up PointNeXt-S...
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/subsample.py:93: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  output = torch.cuda.IntTensor(B, npoint)
+Warm-up completed.
 
-                print(f"Saved EMPTY annotation: {label_file}")
-                return True
+================================================================================
+RUNNING FULL DATASET: PointNeXt-S
+================================================================================
+[  1/ 78] position1_lying_0.pcd                       23831 pts |  6 patches | 0.0340 s
+[  2/ 78] position1_lying_180.pcd                     24927 pts |  7 patches | 0.0395 s
+[  3/ 78] position1_lying_270.pcd                     24901 pts |  7 patches | 0.0389 s
+[  4/ 78] position1_lying_90.pcd                      24812 pts |  7 patches | 0.0393 s
+[  5/ 78] position1_sitting_0.pcd                     26354 pts |  7 patches | 0.0301 s
+[  6/ 78] position1_sitting_180.pcd                   25723 pts |  7 patches | 0.0276 s
+[  7/ 78] position1_sitting_270.pcd                   26525 pts |  7 patches | 0.0278 s
+[  8/ 78] position1_sitting_90.pcd                    25477 pts |  7 patches | 0.0278 s
+[  9/ 78] position1_standing_0.pcd                    24974 pts |  7 patches | 0.0273 s
+[ 10/ 78] position1_standing_180.pcd                  24905 pts |  7 patches | 0.0276 s
+[ 11/ 78] position1_standing_270.pcd                  24466 pts |  6 patches | 0.0237 s
+[ 12/ 78] position1_standing_90.pcd                   24773 pts |  7 patches | 0.0274 s
+[ 13/ 78] position1_standing_closest.pcd              54041 pts | 14 patches | 0.0550 s
+[ 14/ 78] position1_tpose_0.pcd                       25160 pts |  7 patches | 0.0271 s
+[ 15/ 78] position1_tpose_180.pcd                     24658 pts |  7 patches | 0.0275 s
+[ 16/ 78] position1_tpose_270.pcd                     24938 pts |  7 patches | 0.0275 s
+[ 17/ 78] position1_tpose_90.pcd                      24576 pts |  6 patches | 0.0237 s
+[ 18/ 78] position2_all-barrier.pcd                   49759 pts | 13 patches | 0.0509 s
+[ 19/ 78] position2_all-barrier_sitting_right_270.pcd  50880 pts | 13 patches | 0.0515 s
+[ 20/ 78] position2_all-barrier_standing_left_270.pcd  50331 pts | 13 patches | 0.0511 s
+[ 21/ 78] position2_bottom-barrier.pcd                51243 pts | 13 patches | 0.0508 s
+[ 22/ 78] position2_empty.pcd                         49593 pts | 13 patches | 0.0511 s
+[ 23/ 78] position2_lying_0.pcd                       53155 pts | 13 patches | 0.0509 s
+[ 24/ 78] position2_lying_180.pcd                     53412 pts | 14 patches | 0.0548 s
+[ 25/ 78] position2_lying_270.pcd                     53138 pts | 13 patches | 0.0516 s
+[ 26/ 78] position2_lying_90.pcd                      52456 pts | 13 patches | 0.0510 s
+[ 27/ 78] position2_sitting_0.pcd                     53892 pts | 14 patches | 0.0555 s
+[ 28/ 78] position2_sitting_180.pcd                   53991 pts | 14 patches | 0.0548 s
+[ 29/ 78] position2_sitting_270.pcd                   53676 pts | 14 patches | 0.0549 s
+[ 30/ 78] position2_sitting_90.pcd                    53944 pts | 14 patches | 0.0548 s
+[ 31/ 78] position2_sitting_bottom-barrier_center_0.pcd  52441 pts | 13 patches | 0.0513 s
+[ 32/ 78] position2_sitting_bottom-barrier_center_180.pcd  51590 pts | 13 patches | 0.0512 s
+[ 33/ 78] position2_sitting_bottom-barrier_center_270.pcd  52452 pts | 13 patches | 0.0512 s
+[ 34/ 78] position2_sitting_bottom-barrier_center_90.pcd  51843 pts | 13 patches | 0.0513 s
+[ 35/ 78] position2_sitting_bottom-barrier_left_0.pcd  51139 pts | 13 patches | 0.0512 s
+[ 36/ 78] position2_sitting_bottom-barrier_left_180.pcd  51908 pts | 13 patches | 0.0511 s
+[ 37/ 78] position2_sitting_bottom-barrier_left_270.pcd  51126 pts | 13 patches | 0.0510 s
+[ 38/ 78] position2_sitting_bottom-barrier_left_90.pcd  51899 pts | 13 patches | 0.0511 s
+[ 39/ 78] position2_sitting_bottom-barrier_right_0.pcd  51346 pts | 13 patches | 0.0510 s
+[ 40/ 78] position2_sitting_bottom-barrier_right_180.pcd  51164 pts | 13 patches | 0.0510 s
+[ 41/ 78] position2_sitting_bottom-barrier_right_270.pcd  52499 pts | 13 patches | 0.0525 s
+[ 42/ 78] position2_sitting_bottom-barrier_right_90.pcd  51893 pts | 13 patches | 0.0514 s
+[ 43/ 78] position2_standing_0.pcd                    53461 pts | 14 patches | 0.0548 s
+[ 44/ 78] position2_standing_180.pcd                  53655 pts | 14 patches | 0.0550 s
+[ 45/ 78] position2_standing_270.pcd                  53775 pts | 14 patches | 0.0548 s
+[ 46/ 78] position2_standing_90.pcd                   53753 pts | 14 patches | 0.0548 s
+[ 47/ 78] position2_standing_bottom-barrier_center_0.pcd  51185 pts | 13 patches | 0.0511 s
+[ 48/ 78] position2_standing_bottom-barrier_center_180.pcd  51960 pts | 13 patches | 0.0510 s
+[ 49/ 78] position2_standing_bottom-barrier_center_270.pcd  52048 pts | 13 patches | 0.0511 s
+[ 50/ 78] position2_standing_bottom-barrier_center_90.pcd  51589 pts | 13 patches | 0.0510 s
+[ 51/ 78] position2_standing_bottom-barrier_left_0.pcd  51082 pts | 13 patches | 0.0511 s
+[ 52/ 78] position2_standing_bottom-barrier_left_180.pcd  50148 pts | 13 patches | 0.0509 s
+[ 53/ 78] position2_standing_bottom-barrier_left_270.pcd  50305 pts | 13 patches | 0.0511 s
+[ 54/ 78] position2_standing_bottom-barrier_left_90.pcd  52149 pts | 13 patches | 0.0511 s
+[ 55/ 78] position2_standing_bottom-barrier_right_0.pcd  51748 pts | 13 patches | 0.0513 s
+[ 56/ 78] position2_standing_bottom-barrier_right_180.pcd  51777 pts | 13 patches | 0.0510 s
+[ 57/ 78] position2_standing_bottom-barrier_right_270.pcd  51280 pts | 13 patches | 0.0511 s
+[ 58/ 78] position2_standing_bottom-barrier_right_90.pcd  51843 pts | 13 patches | 0.0510 s
+[ 59/ 78] position2_standing_top-barrier-center.pcd   54683 pts | 14 patches | 0.0549 s
+[ 60/ 78] position2_standing_top-barrier_left.pcd     54312 pts | 14 patches | 0.0547 s
+[ 61/ 78] position2_standing_top-barrier_right.pcd    54489 pts | 14 patches | 0.0548 s
+[ 62/ 78] position2_top-barrier.pcd                   50768 pts | 13 patches | 0.0511 s
+[ 63/ 78] position2_tpose_0.pcd                       53025 pts | 13 patches | 0.0510 s
+[ 64/ 78] position2_tpose_180.pcd                     53810 pts | 14 patches | 0.0548 s
+[ 65/ 78] position2_tpose_270.pcd                     53888 pts | 14 patches | 0.0548 s
+[ 66/ 78] position2_tpose_90.pcd                      54017 pts | 14 patches | 0.0550 s
+[ 67/ 78] position2_tpose_bottom-barrier_center_0.pcd  51594 pts | 13 patches | 0.0509 s
+[ 68/ 78] position2_tpose_bottom-barrier_center_180.pcd  51506 pts | 13 patches | 0.0512 s
+[ 69/ 78] position2_tpose_bottom-barrier_center_270.pcd  52104 pts | 13 patches | 0.0511 s
+[ 70/ 78] position2_tpose_bottom-barrier_center_90.pcd  51583 pts | 13 patches | 0.0512 s
+[ 71/ 78] position2_tpose_bottom-barrier_left_0.pcd   50440 pts | 13 patches | 0.0511 s
+[ 72/ 78] position2_tpose_bottom-barrier_left_180.pcd  50099 pts | 13 patches | 0.0509 s
+[ 73/ 78] position2_tpose_bottom-barrier_left_270.pcd  50567 pts | 13 patches | 0.0511 s
+[ 74/ 78] position2_tpose_bottom-barrier_left_90.pcd  50094 pts | 13 patches | 0.0510 s
+[ 75/ 78] position2_tpose_bottom-barrier_right_0.pcd  52015 pts | 13 patches | 0.0510 s
+[ 76/ 78] position2_tpose_bottom-barrier_right_180.pcd  51567 pts | 13 patches | 0.0510 s
+[ 77/ 78] position2_tpose_bottom-barrier_right_270.pcd  51359 pts | 13 patches | 0.0511 s
+[ 78/ 78] position2_tpose_bottom-barrier_right_90.pcd  51617 pts | 13 patches | 0.0510 s
 
-            elif choice == "n":
-                print("Retrying selection...")
-                return annotate_cloud(ply_file)
+Summary saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointnext_s.csv
+Per-cloud results saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointnext_s_per_cloud.csv
 
-            elif choice == "q":
-                print("Skipping file.")
-                return False
+================================================================================
+RESULTS: PointNeXt-S
+================================================================================
+Clouds:             78
+Total points:       3631106
+Total patches:      931
+Total inference:    3.7066 s
+Mean cloud:         0.0475 s
+Points/s:            979620.09
+Patches/s:           251.17
+================================================================================
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:11]
+└─[$] <git:(main*)> python benchmark_inference.py --pointnet-root Pointnet_Pointnet2_pytorch --model PointNeXt-XL --device cuda
+================================================================================
+STANDALONE-STYLE FULL DATASET INFERENCE
+================================================================================
+Model:    PointNeXt-XL
+Device:   cuda
+Dataset:  /home/manuel/Documents/GitHub/LiDAR/lidar_database/clean
+Point clouds: 78
 
-            else:
-                print("Please type y / n / q.")
+Model:       PointNeXt-XL
+Checkpoint:  /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointnext-xl/best_model.pth
+Config:      /home/manuel/Documents/GitHub/LiDAR/pointnext-xl.yaml
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/group.py:79: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/upsampling.py:46: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:25: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, x, blocks, pos_embed=None, alpha=0., lambd=1., num_cached = 0):
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:60: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, dy):  # pragma: no cover
+/home/manuel/Documents/GitHub/LiDAR/benchmark_inference.py:297: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint_data = torch.load(
 
-    seed_points = points[picked]
+Warming up PointNeXt-XL...
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/subsample.py:93: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  output = torch.cuda.IntTensor(B, npoint)
+Warm-up completed.
 
-    # Bounding box alineada con los ejes (AABB)
-    min_corner = np.min(seed_points, axis=0)
-    max_corner = np.max(seed_points, axis=0)
+================================================================================
+RUNNING FULL DATASET: PointNeXt-XL
+================================================================================
+[  1/ 78] position1_lying_0.pcd                       23831 pts |  6 patches | 0.1138 s
+[  2/ 78] position1_lying_180.pcd                     24927 pts |  7 patches | 0.1254 s
+[  3/ 78] position1_lying_270.pcd                     24901 pts |  7 patches | 0.1086 s
+[  4/ 78] position1_lying_90.pcd                      24812 pts |  7 patches | 0.1081 s
+[  5/ 78] position1_sitting_0.pcd                     26354 pts |  7 patches | 0.1077 s
+[  6/ 78] position1_sitting_180.pcd                   25723 pts |  7 patches | 0.1070 s
+[  7/ 78] position1_sitting_270.pcd                   26525 pts |  7 patches | 0.1083 s
+[  8/ 78] position1_sitting_90.pcd                    25477 pts |  7 patches | 0.1075 s
+[  9/ 78] position1_standing_0.pcd                    24974 pts |  7 patches | 0.1068 s
+[ 10/ 78] position1_standing_180.pcd                  24905 pts |  7 patches | 0.1082 s
+[ 11/ 78] position1_standing_270.pcd                  24466 pts |  6 patches | 0.0944 s
+[ 12/ 78] position1_standing_90.pcd                   24773 pts |  7 patches | 0.1078 s
+[ 13/ 78] position1_standing_closest.pcd              54041 pts | 14 patches | 0.2174 s
+[ 14/ 78] position1_tpose_0.pcd                       25160 pts |  7 patches | 0.1070 s
+[ 15/ 78] position1_tpose_180.pcd                     24658 pts |  7 patches | 0.1079 s
+[ 16/ 78] position1_tpose_270.pcd                     24938 pts |  7 patches | 0.1072 s
+[ 17/ 78] position1_tpose_90.pcd                      24576 pts |  6 patches | 0.0923 s
+[ 18/ 78] position2_all-barrier.pcd                   49759 pts | 13 patches | 0.2008 s
+[ 19/ 78] position2_all-barrier_sitting_right_270.pcd  50880 pts | 13 patches | 0.2028 s
+[ 20/ 78] position2_all-barrier_standing_left_270.pcd  50331 pts | 13 patches | 0.2034 s
+[ 21/ 78] position2_bottom-barrier.pcd                51243 pts | 13 patches | 0.2014 s
+[ 22/ 78] position2_empty.pcd                         49593 pts | 13 patches | 0.2015 s
+[ 23/ 78] position2_lying_0.pcd                       53155 pts | 13 patches | 0.2015 s
+[ 24/ 78] position2_lying_180.pcd                     53412 pts | 14 patches | 0.2210 s
+[ 25/ 78] position2_lying_270.pcd                     53138 pts | 13 patches | 0.2018 s
+[ 26/ 78] position2_lying_90.pcd                      52456 pts | 13 patches | 0.2011 s
+[ 27/ 78] position2_sitting_0.pcd                     53892 pts | 14 patches | 0.2174 s
+[ 28/ 78] position2_sitting_180.pcd                   53991 pts | 14 patches | 0.2173 s
+[ 29/ 78] position2_sitting_270.pcd                   53676 pts | 14 patches | 0.2184 s
+[ 30/ 78] position2_sitting_90.pcd                    53944 pts | 14 patches | 0.2176 s
+[ 31/ 78] position2_sitting_bottom-barrier_center_0.pcd  52441 pts | 13 patches | 0.2017 s
+[ 32/ 78] position2_sitting_bottom-barrier_center_180.pcd  51590 pts | 13 patches | 0.2023 s
+[ 33/ 78] position2_sitting_bottom-barrier_center_270.pcd  52452 pts | 13 patches | 0.2049 s
+[ 34/ 78] position2_sitting_bottom-barrier_center_90.pcd  51843 pts | 13 patches | 0.2033 s
+[ 35/ 78] position2_sitting_bottom-barrier_left_0.pcd  51139 pts | 13 patches | 0.2023 s
+[ 36/ 78] position2_sitting_bottom-barrier_left_180.pcd  51908 pts | 13 patches | 0.2026 s
+[ 37/ 78] position2_sitting_bottom-barrier_left_270.pcd  51126 pts | 13 patches | 0.2014 s
+[ 38/ 78] position2_sitting_bottom-barrier_left_90.pcd  51899 pts | 13 patches | 0.2017 s
+[ 39/ 78] position2_sitting_bottom-barrier_right_0.pcd  51346 pts | 13 patches | 0.2025 s
+[ 40/ 78] position2_sitting_bottom-barrier_right_180.pcd  51164 pts | 13 patches | 0.2017 s
+[ 41/ 78] position2_sitting_bottom-barrier_right_270.pcd  52499 pts | 13 patches | 0.2038 s
+[ 42/ 78] position2_sitting_bottom-barrier_right_90.pcd  51893 pts | 13 patches | 0.2023 s
+[ 43/ 78] position2_standing_0.pcd                    53461 pts | 14 patches | 0.2176 s
+[ 44/ 78] position2_standing_180.pcd                  53655 pts | 14 patches | 0.2166 s
+[ 45/ 78] position2_standing_270.pcd                  53775 pts | 14 patches | 0.2181 s
+[ 46/ 78] position2_standing_90.pcd                   53753 pts | 14 patches | 0.2177 s
+[ 47/ 78] position2_standing_bottom-barrier_center_0.pcd  51185 pts | 13 patches | 0.2026 s
+[ 48/ 78] position2_standing_bottom-barrier_center_180.pcd  51960 pts | 13 patches | 0.2036 s
+[ 49/ 78] position2_standing_bottom-barrier_center_270.pcd  52048 pts | 13 patches | 0.2021 s
+[ 50/ 78] position2_standing_bottom-barrier_center_90.pcd  51589 pts | 13 patches | 0.2044 s
+[ 51/ 78] position2_standing_bottom-barrier_left_0.pcd  51082 pts | 13 patches | 0.2017 s
+[ 52/ 78] position2_standing_bottom-barrier_left_180.pcd  50148 pts | 13 patches | 0.2034 s
+[ 53/ 78] position2_standing_bottom-barrier_left_270.pcd  50305 pts | 13 patches | 0.2023 s
+[ 54/ 78] position2_standing_bottom-barrier_left_90.pcd  52149 pts | 13 patches | 0.2020 s
+[ 55/ 78] position2_standing_bottom-barrier_right_0.pcd  51748 pts | 13 patches | 0.2032 s
+[ 56/ 78] position2_standing_bottom-barrier_right_180.pcd  51777 pts | 13 patches | 0.2030 s
+[ 57/ 78] position2_standing_bottom-barrier_right_270.pcd  51280 pts | 13 patches | 0.2026 s
+[ 58/ 78] position2_standing_bottom-barrier_right_90.pcd  51843 pts | 13 patches | 0.2029 s
+[ 59/ 78] position2_standing_top-barrier-center.pcd   54683 pts | 14 patches | 0.2176 s
+[ 60/ 78] position2_standing_top-barrier_left.pcd     54312 pts | 14 patches | 0.2181 s
+[ 61/ 78] position2_standing_top-barrier_right.pcd    54489 pts | 14 patches | 0.2179 s
+[ 62/ 78] position2_top-barrier.pcd                   50768 pts | 13 patches | 0.2030 s
+[ 63/ 78] position2_tpose_0.pcd                       53025 pts | 13 patches | 0.2049 s
+[ 64/ 78] position2_tpose_180.pcd                     53810 pts | 14 patches | 0.2173 s
+[ 65/ 78] position2_tpose_270.pcd                     53888 pts | 14 patches | 0.2174 s
+[ 66/ 78] position2_tpose_90.pcd                      54017 pts | 14 patches | 0.2189 s
+[ 67/ 78] position2_tpose_bottom-barrier_center_0.pcd  51594 pts | 13 patches | 0.2038 s
+[ 68/ 78] position2_tpose_bottom-barrier_center_180.pcd  51506 pts | 13 patches | 0.2036 s
+[ 69/ 78] position2_tpose_bottom-barrier_center_270.pcd  52104 pts | 13 patches | 0.2018 s
+[ 70/ 78] position2_tpose_bottom-barrier_center_90.pcd  51583 pts | 13 patches | 0.2028 s
+[ 71/ 78] position2_tpose_bottom-barrier_left_0.pcd   50440 pts | 13 patches | 0.2032 s
+[ 72/ 78] position2_tpose_bottom-barrier_left_180.pcd  50099 pts | 13 patches | 0.2046 s
+[ 73/ 78] position2_tpose_bottom-barrier_left_270.pcd  50567 pts | 13 patches | 0.2025 s
+[ 74/ 78] position2_tpose_bottom-barrier_left_90.pcd  50094 pts | 13 patches | 0.2033 s
+[ 75/ 78] position2_tpose_bottom-barrier_right_0.pcd  52015 pts | 13 patches | 0.2025 s
+[ 76/ 78] position2_tpose_bottom-barrier_right_180.pcd  51567 pts | 13 patches | 0.2059 s
+[ 77/ 78] position2_tpose_bottom-barrier_right_270.pcd  51359 pts | 13 patches | 0.2038 s
+[ 78/ 78] position2_tpose_bottom-barrier_right_90.pcd  51617 pts | 13 patches | 0.2031 s
 
-    mask = np.all(
-        (points >= min_corner) &
-        (points <= max_corner),
-        axis=1
-    )
+Summary saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointnext_xl.csv
+Per-cloud results saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointnext_xl_per_cloud.csv
 
-    seed_pcd = o3d.geometry.PointCloud()
-    seed_pcd.points = o3d.utility.Vector3dVector(seed_points)
+================================================================================
+RESULTS: PointNeXt-XL
+================================================================================
+Clouds:             78
+Total points:       3631106
+Total patches:      931
+Total inference:    14.5317 s
+Mean cloud:         0.1863 s
+Points/s:            249875.66
+Patches/s:           64.07
+================================================================================
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:11]
+└─[$] <git:(main*)> python benchmark_inference.py --pointnet-root Pointnet_Pointnet2_pytorch --model PointVector --device cuda
+================================================================================
+STANDALONE-STYLE FULL DATASET INFERENCE
+================================================================================
+Model:    PointVector
+Device:   cuda
+Dataset:  /home/manuel/Documents/GitHub/LiDAR/lidar_database/clean
+Point clouds: 78
 
-    obb = seed_pcd.get_oriented_bounding_box()
+Model:       PointVector
+Checkpoint:  /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointvector/best_model.pth
+Config:      /home/manuel/Documents/GitHub/LiDAR/pointvector.yaml
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/group.py:79: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/upsampling.py:46: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:25: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, x, blocks, pos_embed=None, alpha=0., lambd=1., num_cached = 0):
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/backbone/pointvit_inv.py:60: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, dy):  # pragma: no cover
+/home/manuel/Documents/GitHub/LiDAR/benchmark_inference.py:297: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint_data = torch.load(
 
-    expanded_obb = o3d.geometry.OrientedBoundingBox(
-        obb.center,
-        obb.R,
-        np.asarray(obb.extent) + 2 * BOX_MARGIN
-    )
+Warming up PointVector...
+/home/manuel/Documents/GitHub/LiDAR/openpoints/models/layers/subsample.py:93: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  output = torch.cuda.IntTensor(B, npoint)
+Warm-up completed.
 
-    indices = expanded_obb.get_point_indices_within_bounding_box(
-        o3d.utility.Vector3dVector(points)
-    )
+================================================================================
+RUNNING FULL DATASET: PointVector
+================================================================================
+[  1/ 78] position1_lying_0.pcd                       23831 pts |  6 patches | 0.0933 s
+[  2/ 78] position1_lying_180.pcd                     24927 pts |  7 patches | 0.0971 s
+[  3/ 78] position1_lying_270.pcd                     24901 pts |  7 patches | 0.0936 s
+[  4/ 78] position1_lying_90.pcd                      24812 pts |  7 patches | 0.0849 s
+[  5/ 78] position1_sitting_0.pcd                     26354 pts |  7 patches | 0.0856 s
+[  6/ 78] position1_sitting_180.pcd                   25723 pts |  7 patches | 0.0855 s
+[  7/ 78] position1_sitting_270.pcd                   26525 pts |  7 patches | 0.0848 s
+[  8/ 78] position1_sitting_90.pcd                    25477 pts |  7 patches | 0.0865 s
+[  9/ 78] position1_standing_0.pcd                    24974 pts |  7 patches | 0.0831 s
+[ 10/ 78] position1_standing_180.pcd                  24905 pts |  7 patches | 0.0848 s
+[ 11/ 78] position1_standing_270.pcd                  24466 pts |  6 patches | 0.0722 s
+[ 12/ 78] position1_standing_90.pcd                   24773 pts |  7 patches | 0.0830 s
+[ 13/ 78] position1_standing_closest.pcd              54041 pts | 14 patches | 0.1687 s
+[ 14/ 78] position1_tpose_0.pcd                       25160 pts |  7 patches | 0.0837 s
+[ 15/ 78] position1_tpose_180.pcd                     24658 pts |  7 patches | 0.0835 s
+[ 16/ 78] position1_tpose_270.pcd                     24938 pts |  7 patches | 0.0840 s
+[ 17/ 78] position1_tpose_90.pcd                      24576 pts |  6 patches | 0.0723 s
+[ 18/ 78] position2_all-barrier.pcd                   49759 pts | 13 patches | 0.1571 s
+[ 19/ 78] position2_all-barrier_sitting_right_270.pcd  50880 pts | 13 patches | 0.1575 s
+[ 20/ 78] position2_all-barrier_standing_left_270.pcd  50331 pts | 13 patches | 0.1565 s
+[ 21/ 78] position2_bottom-barrier.pcd                51243 pts | 13 patches | 0.1573 s
+[ 22/ 78] position2_empty.pcd                         49593 pts | 13 patches | 0.1575 s
+[ 23/ 78] position2_lying_0.pcd                       53155 pts | 13 patches | 0.1561 s
+[ 24/ 78] position2_lying_180.pcd                     53412 pts | 14 patches | 0.1680 s
+[ 25/ 78] position2_lying_270.pcd                     53138 pts | 13 patches | 0.1571 s
+[ 26/ 78] position2_lying_90.pcd                      52456 pts | 13 patches | 0.1578 s
+[ 27/ 78] position2_sitting_0.pcd                     53892 pts | 14 patches | 0.1704 s
+[ 28/ 78] position2_sitting_180.pcd                   53991 pts | 14 patches | 0.1697 s
+[ 29/ 78] position2_sitting_270.pcd                   53676 pts | 14 patches | 0.1683 s
+[ 30/ 78] position2_sitting_90.pcd                    53944 pts | 14 patches | 0.1693 s
+[ 31/ 78] position2_sitting_bottom-barrier_center_0.pcd  52441 pts | 13 patches | 0.1572 s
+[ 32/ 78] position2_sitting_bottom-barrier_center_180.pcd  51590 pts | 13 patches | 0.1578 s
+[ 33/ 78] position2_sitting_bottom-barrier_center_270.pcd  52452 pts | 13 patches | 0.1574 s
+[ 34/ 78] position2_sitting_bottom-barrier_center_90.pcd  51843 pts | 13 patches | 0.1576 s
+[ 35/ 78] position2_sitting_bottom-barrier_left_0.pcd  51139 pts | 13 patches | 0.1570 s
+[ 36/ 78] position2_sitting_bottom-barrier_left_180.pcd  51908 pts | 13 patches | 0.1574 s
+[ 37/ 78] position2_sitting_bottom-barrier_left_270.pcd  51126 pts | 13 patches | 0.1578 s
+[ 38/ 78] position2_sitting_bottom-barrier_left_90.pcd  51899 pts | 13 patches | 0.1580 s
+[ 39/ 78] position2_sitting_bottom-barrier_right_0.pcd  51346 pts | 13 patches | 0.1573 s
+[ 40/ 78] position2_sitting_bottom-barrier_right_180.pcd  51164 pts | 13 patches | 0.1588 s
+[ 41/ 78] position2_sitting_bottom-barrier_right_270.pcd  52499 pts | 13 patches | 0.1559 s
+[ 42/ 78] position2_sitting_bottom-barrier_right_90.pcd  51893 pts | 13 patches | 0.1580 s
+[ 43/ 78] position2_standing_0.pcd                    53461 pts | 14 patches | 0.1694 s
+[ 44/ 78] position2_standing_180.pcd                  53655 pts | 14 patches | 0.1690 s
+[ 45/ 78] position2_standing_270.pcd                  53775 pts | 14 patches | 0.1696 s
+[ 46/ 78] position2_standing_90.pcd                   53753 pts | 14 patches | 0.1692 s
+[ 47/ 78] position2_standing_bottom-barrier_center_0.pcd  51185 pts | 13 patches | 0.1580 s
+[ 48/ 78] position2_standing_bottom-barrier_center_180.pcd  51960 pts | 13 patches | 0.1565 s
+[ 49/ 78] position2_standing_bottom-barrier_center_270.pcd  52048 pts | 13 patches | 0.1578 s
+[ 50/ 78] position2_standing_bottom-barrier_center_90.pcd  51589 pts | 13 patches | 0.1564 s
+[ 51/ 78] position2_standing_bottom-barrier_left_0.pcd  51082 pts | 13 patches | 0.1586 s
+[ 52/ 78] position2_standing_bottom-barrier_left_180.pcd  50148 pts | 13 patches | 0.1575 s
+[ 53/ 78] position2_standing_bottom-barrier_left_270.pcd  50305 pts | 13 patches | 0.1573 s
+[ 54/ 78] position2_standing_bottom-barrier_left_90.pcd  52149 pts | 13 patches | 0.1572 s
+[ 55/ 78] position2_standing_bottom-barrier_right_0.pcd  51748 pts | 13 patches | 0.1576 s
+[ 56/ 78] position2_standing_bottom-barrier_right_180.pcd  51777 pts | 13 patches | 0.1576 s
+[ 57/ 78] position2_standing_bottom-barrier_right_270.pcd  51280 pts | 13 patches | 0.1577 s
+[ 58/ 78] position2_standing_bottom-barrier_right_90.pcd  51843 pts | 13 patches | 0.1583 s
+[ 59/ 78] position2_standing_top-barrier-center.pcd   54683 pts | 14 patches | 0.1698 s
+[ 60/ 78] position2_standing_top-barrier_left.pcd     54312 pts | 14 patches | 0.1701 s
+[ 61/ 78] position2_standing_top-barrier_right.pcd    54489 pts | 14 patches | 0.1701 s
+[ 62/ 78] position2_top-barrier.pcd                   50768 pts | 13 patches | 0.1573 s
+[ 63/ 78] position2_tpose_0.pcd                       53025 pts | 13 patches | 0.1573 s
+[ 64/ 78] position2_tpose_180.pcd                     53810 pts | 14 patches | 0.1688 s
+[ 65/ 78] position2_tpose_270.pcd                     53888 pts | 14 patches | 0.1700 s
+[ 66/ 78] position2_tpose_90.pcd                      54017 pts | 14 patches | 0.1708 s
+[ 67/ 78] position2_tpose_bottom-barrier_center_0.pcd  51594 pts | 13 patches | 0.1578 s
+[ 68/ 78] position2_tpose_bottom-barrier_center_180.pcd  51506 pts | 13 patches | 0.1578 s
+[ 69/ 78] position2_tpose_bottom-barrier_center_270.pcd  52104 pts | 13 patches | 0.1585 s
+[ 70/ 78] position2_tpose_bottom-barrier_center_90.pcd  51583 pts | 13 patches | 0.1576 s
+[ 71/ 78] position2_tpose_bottom-barrier_left_0.pcd   50440 pts | 13 patches | 0.1572 s
+[ 72/ 78] position2_tpose_bottom-barrier_left_180.pcd  50099 pts | 13 patches | 0.1583 s
+[ 73/ 78] position2_tpose_bottom-barrier_left_270.pcd  50567 pts | 13 patches | 0.1582 s
+[ 74/ 78] position2_tpose_bottom-barrier_left_90.pcd  50094 pts | 13 patches | 0.1586 s
+[ 75/ 78] position2_tpose_bottom-barrier_right_0.pcd  52015 pts | 13 patches | 0.1580 s
+[ 76/ 78] position2_tpose_bottom-barrier_right_180.pcd  51567 pts | 13 patches | 0.1585 s
+[ 77/ 78] position2_tpose_bottom-barrier_right_270.pcd  51359 pts | 13 patches | 0.1588 s
+[ 78/ 78] position2_tpose_bottom-barrier_right_90.pcd  51617 pts | 13 patches | 0.1585 s
 
-    mask = np.zeros(len(points), dtype=bool)
-    mask[indices] = True
+Summary saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointvector.csv
+Per-cloud results saved to: /home/manuel/Documents/GitHub/LiDAR/inference_pointvector_per_cloud.csv
 
-
-    # -----------------------------
-    # VISUAL CHECK
-    # -----------------------------
-    preview_pcd = o3d.geometry.PointCloud()
-    preview_pcd.points = o3d.utility.Vector3dVector(points)
-
-    preview_colors = np.full((len(points), 3), 0.7)
-    preview_colors[mask] = [1, 0, 0]
-
-    preview_pcd.colors = o3d.utility.Vector3dVector(preview_colors)
-
-    o3d.visualization.draw_geometries(
-        [preview_pcd],
-        window_name="Red = Selected cluster (no floor)"
-    )
-
-    # -----------------------------
-    # ACCEPT / RETRY LOOP
-    # -----------------------------
-    while True:
-        answer = input("Accept annotation? [y/n]: ").strip().lower()
-
-        if answer == "y":
-            break
-
-        elif answer == "n":
-            print("Retrying selection...")
-
-            # recursive retry (clean restart)
-            return annotate_cloud(ply_file)
-
-        else:
-            print("Please type 'y' or 'n'.")
-
-    # -----------------------------
-    # SAVE LABELS
-    # -----------------------------
-    labels_out = np.zeros(len(points), dtype=np.uint8)
-    labels_out[mask] = 1
-
-    label_file = os.path.splitext(ply_file)[0] + "_labels.npy"
-    np.save(label_file, labels_out)
-
-    print(f"Saved: {label_file}")
-    print(f"Selected points: {mask.sum()}")
-
-    return True
-
-def batch_annotate(folder_path):
-
-    files = sorted([
-        f for f in os.listdir(folder_path)
-        if f.lower().endswith(".pcd")
-    ])
-
-    print(f"Found {len(files)} point clouds.")
-
-    # Filter only non-annotated files
-    pending_files = []
-
-    for f in files:
-        pcd_file = os.path.join(folder_path, f)
-        label_file = pcd_file.replace(".pcd", "_labels.npy")
-
-        if os.path.exists(label_file):
-            print(f"[SKIP] Already annotated: {f}")
-            continue
-
-        pending_files.append(f)
-
-    print(f"\nPending annotation: {len(pending_files)} files\n")
-
-    # -----------------------------
-    # MAIN LOOP
-    # -----------------------------
-    for i, f in enumerate(pending_files):
-
-        pcd_file = os.path.join(folder_path, f)
-
-        print(f"\n[{i+1}/{len(pending_files)}] {f}")
-
-        success = annotate_cloud(pcd_file)
-
-        if not success:
-            print("Annotation failed or skipped.")
-
-        cmd = input("Press Enter to continue or 'q' to quit: ").strip().lower()
-
-        if cmd == "q":
-            print("Stopping batch annotation.")
-            break
-
-
-if __name__ == "__main__":
-    batch_annotate("lidar_database/clean")
+================================================================================
+RESULTS: PointVector
+================================================================================
+Clouds:             78
+Total points:       3631106
+Total patches:      931
+Total inference:    11.3189 s
+Mean cloud:         0.1451 s
+Points/s:            320800.15
+Patches/s:           82.25
+================================================================================
+(pointnet2) ┌─[manuel@manuel-Thin-GF63-12VE] - [~/Documents/GitHub/LiDAR] - [Sat Aug 08, 18:11]
+└─[$] <git:(main*)> 
