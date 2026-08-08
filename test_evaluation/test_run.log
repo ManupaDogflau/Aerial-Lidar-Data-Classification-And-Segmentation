@@ -1,0 +1,179 @@
+==========================================================================================
+TFM - FINAL TEST SET EVALUATION
+==========================================================================================
+Repository:      /home/manuel/Documents/GitHub/LiDAR
+Dataset:         /home/manuel/Documents/GitHub/LiDAR/lidar_database/clean
+Split:           TEST
+Random seed:     42
+Points/sample:   4096
+Batch size:      8
+Device:          cuda
+GPU:             NVIDIA GeForce RTX 4050 Laptop GPU
+
+test escenas: 8
+Test scenes:     8
+Test samples:    160
+Samples/scene:   20
+Scene split:     /home/manuel/Documents/GitHub/LiDAR/test_evaluation/test_scene_split.txt
+
+[CHECKPOINT] PointNet: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person/best_model.pth
+[CHECKPOINT] PointNet++: /home/manuel/Documents/GitHub/LiDAR/checkpoints-pointnet2/best_model.pth
+[CHECKPOINT] DGCNN: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-dgcnn/best_model.pth
+[CHECKPOINT] PointNeXt-S: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointnext-s/best_model.pth
+[CHECKPOINT] PointNeXt-XL: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointnext-xl/best_model.pth
+[CHECKPOINT] PointVector: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointvector/best_model.pth
+
+
+==========================================================================================
+EVALUATING: PointNet
+==========================================================================================
+Loading checkpoint: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person/best_model.pth
+    compatible weights: 118
+    skipped weights:    0
+test escenas: 8
+
+RESULT
+--------------------------------------------------
+Accuracy:       0.9783
+mIoU:           0.8722
+Person IoU:     0.7678
+Person Prec.:   0.7873
+Person Recall:  0.9689
+Person F1:      0.8687
+TN: 594055  FP: 12720  FN: 1513  TP: 47072
+Inference:      0.7999 s
+Throughput:     819,326 points/s
+
+==========================================================================================
+EVALUATING: PointNet++
+==========================================================================================
+Loading checkpoint: /home/manuel/Documents/GitHub/LiDAR/checkpoints-pointnet2/best_model.pth
+    compatible weights: 156
+    skipped weights:    0
+test escenas: 8
+
+RESULT
+--------------------------------------------------
+Accuracy:       0.9789
+mIoU:           0.8722
+Person IoU:     0.7671
+Person Prec.:   0.8085
+Person Recall:  0.9375
+Person F1:      0.8682
+TN: 595983  FP: 10792  FN: 3036  TP: 45549
+Inference:      4.1954 s
+Throughput:     156,210 points/s
+
+==========================================================================================
+EVALUATING: DGCNN
+==========================================================================================
+Loading checkpoint: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-dgcnn/best_model.pth
+    compatible weights: 44
+    skipped weights:    0
+test escenas: 8
+
+RESULT
+--------------------------------------------------
+Accuracy:       0.9800
+mIoU:           0.8676
+Person IoU:     0.7565
+Person Prec.:   0.8837
+Person Recall:  0.8402
+Person F1:      0.8614
+TN: 601401  FP: 5374  FN: 7763  TP: 40822
+Inference:      5.6673 s
+Throughput:     115,639 points/s
+
+==========================================================================================
+EVALUATING: PointNeXt-S
+==========================================================================================
+Loading checkpoint: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointnext-s/best_model.pth
+    compatible weights: 114
+    skipped weights:    0
+test escenas: 8
+
+RESULT
+--------------------------------------------------
+Accuracy:       0.9729
+mIoU:           0.8203
+Person IoU:     0.6694
+Person Prec.:   0.8732
+Person Recall:  0.7415
+Person F1:      0.8020
+TN: 601544  FP: 5231  FN: 12560  TP: 36025
+Inference:      0.2765 s
+Throughput:     2,370,308 points/s
+
+==========================================================================================
+EVALUATING: PointNeXt-XL
+==========================================================================================
+Loading checkpoint: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointnext-xl/best_model.pth
+    compatible weights: 352
+    skipped weights:    0
+test escenas: 8
+
+RESULT
+--------------------------------------------------
+Accuracy:       0.9903
+mIoU:           0.9358
+Person IoU:     0.8821
+Person Prec.:   0.8975
+Person Recall:  0.9809
+Person F1:      0.9374
+TN: 601334  FP: 5441  FN: 926  TP: 47659
+Inference:      2.3493 s
+Throughput:     278,960 points/s
+
+==========================================================================================
+EVALUATING: PointVector
+==========================================================================================
+Loading checkpoint: /home/manuel/Documents/GitHub/LiDAR/checkpoints_person-pointvector/best_model.pth
+    compatible weights: 637
+    skipped weights:    0
+test escenas: 8
+
+RESULT
+--------------------------------------------------
+Accuracy:       0.9900
+mIoU:           0.9336
+Person IoU:     0.8780
+Person Prec.:   0.8980
+Person Recall:  0.9753
+Person F1:      0.9351
+TN: 601390  FP: 5385  FN: 1198  TP: 47387
+Inference:      2.3294 s
+Throughput:     281,348 points/s
+
+
+==========================================================================================
+FINAL TEST RESULTS
+==========================================================================================
+       Model  Accuracy   mIoU  Person IoU  Person Precision  Person Recall  Person F1
+PointNeXt-XL    0.9903 0.9358      0.8821            0.8975         0.9809     0.9374
+ PointVector    0.9900 0.9336      0.8780            0.8980         0.9753     0.9351
+    PointNet    0.9783 0.8722      0.7678            0.7873         0.9689     0.8687
+  PointNet++    0.9789 0.8722      0.7671            0.8085         0.9375     0.8682
+       DGCNN    0.9800 0.8676      0.7565            0.8837         0.8402     0.8614
+ PointNeXt-S    0.9729 0.8203      0.6694            0.8732         0.7415     0.8020
+
+==========================================================================================
+BEST TEST MODEL
+==========================================================================================
+Model:          PointNeXt-XL
+Accuracy:       0.9903
+mIoU:           0.9358
+Person IoU:     0.8821
+Person F1:      0.9374
+
+==========================================================================================
+FILES FOR THE TFM
+==========================================================================================
+CSV:             /home/manuel/Documents/GitHub/LiDAR/test_evaluation/test_results.csv
+LaTeX table:     /home/manuel/Documents/GitHub/LiDAR/test_evaluation/test_results_latex.tex
+Markdown table:  /home/manuel/Documents/GitHub/LiDAR/test_evaluation/test_results.md
+Confusion:       /home/manuel/Documents/GitHub/LiDAR/test_evaluation/test_confusion_matrices.csv
+Scene split:     /home/manuel/Documents/GitHub/LiDAR/test_evaluation/test_scene_split.txt
+Metadata:        /home/manuel/Documents/GitHub/LiDAR/test_evaluation/test_metadata.json
+Log:             /home/manuel/Documents/GitHub/LiDAR/test_evaluation/test_run.log
+
+IMPORTANT: The values in this output are TEST-SET results. Do not replace the validation results in the thesis until these values have been checked.

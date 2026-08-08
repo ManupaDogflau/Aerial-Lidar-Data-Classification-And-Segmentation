@@ -1,0 +1,27 @@
+{
+  "evaluation": "held-out test set",
+  "repository_root": "/home/manuel/Documents/GitHub/LiDAR",
+  "data_root": "/home/manuel/Documents/GitHub/LiDAR/lidar_database/clean",
+  "split": "test",
+  "seed": 42,
+  "num_points": 4096,
+  "batch_size": 8,
+  "num_workers": 0,
+  "device": "cuda",
+  "num_test_scenes": 8,
+  "num_test_samples": 160,
+  "samples_per_scene": 20,
+  "augmentation": false,
+  "classes": [
+    "background",
+    "person"
+  ],
+  "models_evaluated": [
+    "PointNeXt-XL",
+    "PointVector",
+    "PointNet",
+    "PointNet++",
+    "DGCNN",
+    "PointNeXt-S"
+  ]
+}
